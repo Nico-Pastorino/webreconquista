@@ -1,0 +1,321 @@
+{
+  "counters": {
+    "product": 7,
+    "installment": 4,
+    "tradeIn": 21,
+    "dollar": 1
+  },
+  "products": [
+    {
+      "id": 7,
+      "slug": "q13",
+      "name": "q13",
+      "category": "iphone",
+      "price_usd": 122,
+      "image_url": "https://i.blogs.es/06d684/apple-iphone-14-color-lineup/1366_2000.webp",
+      "featured": false,
+      "active": true,
+      "description": "",
+      "specs": null,
+      "created_at": "2026-04-29T03:31:45.417Z"
+    },
+    {
+      "id": 1,
+      "slug": "iphone-15-pro-256gb",
+      "name": "iPhone 15 Pro 256GB",
+      "category": "iphone",
+      "price_usd": 1099,
+      "image_url": "https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-pro-finish-select-202309-6-1inch-bluetitanium?wid=5120&hei=2880&fmt=p-jpg&qlt=80&.v=1693009285394",
+      "featured": true,
+      "active": true,
+      "description": "El iPhone más potente con chip A17 Pro y sistema de cámara Pro.",
+      "specs": {
+        "chip": "A17 Pro",
+        "pantalla": "6.1\" Super Retina XDR",
+        "cámara": "48 MP Main",
+        "batería": "Todo el día"
+      },
+      "created_at": "2026-01-10T10:00:00.000Z"
+    },
+    {
+      "id": 2,
+      "slug": "iphone-15-128gb",
+      "name": "iPhone 15 128GB",
+      "category": "iphone",
+      "price_usd": 799,
+      "image_url": "https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-finish-select-202309-6-1inch-pink?wid=5120&hei=2880&fmt=p-jpg&qlt=80&.v=1692937346745",
+      "featured": true,
+      "active": true,
+      "description": "El iPhone 15 con Dynamic Island y cámara de 48 MP.",
+      "specs": {
+        "chip": "A16 Bionic",
+        "pantalla": "6.1\" Super Retina XDR",
+        "cámara": "48 MP Main",
+        "batería": "Todo el día"
+      },
+      "created_at": "2026-01-09T10:00:00.000Z"
+    },
+    {
+      "id": 3,
+      "slug": "ipad-air-m2-256gb",
+      "name": "iPad Air M2 256GB",
+      "category": "ipad",
+      "price_usd": 749,
+      "image_url": "https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/ipad-air-select-wifi-blue-202405?wid=5120&hei=2880&fmt=p-jpg&qlt=80",
+      "featured": false,
+      "active": true,
+      "description": "El iPad Air más potente con chip M2.",
+      "specs": {
+        "chip": "Apple M2",
+        "pantalla": "11\" Liquid Retina",
+        "almacenamiento": "256GB"
+      },
+      "created_at": "2026-01-08T10:00:00.000Z"
+    },
+    {
+      "id": 4,
+      "slug": "macbook-air-m3-8gb-256gb",
+      "name": "MacBook Air M3 8GB 256GB",
+      "category": "mac",
+      "price_usd": 1099,
+      "image_url": "https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/macbook-air-midnight-select-20220606?wid=904&hei=840&fmt=jpeg&qlt=90&.v=1653084303665",
+      "featured": true,
+      "active": true,
+      "description": "La notebook ultradelgada con el poderoso chip M3.",
+      "specs": {
+        "chip": "Apple M3",
+        "pantalla": "13.6\" Liquid Retina",
+        "RAM": "8GB",
+        "almacenamiento": "256GB SSD"
+      },
+      "created_at": "2026-01-07T10:00:00.000Z"
+    },
+    {
+      "id": 5,
+      "slug": "apple-watch-series-9-41mm",
+      "name": "Apple Watch Series 9 41mm",
+      "category": "watch",
+      "price_usd": 399,
+      "image_url": "https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/MQDY3ref_VW_34FR+watch-45-alum-midnight-nc-9s_VW_34FR_WF_CO?wid=700&hei=700&trim=1%2C0&fmt=p-jpg&qlt=95",
+      "featured": false,
+      "active": true,
+      "description": "El Apple Watch más inteligente con chip S9.",
+      "specs": {
+        "chip": "S9",
+        "pantalla": "41mm Always-On Retina",
+        "resistencia": "WR50m"
+      },
+      "created_at": "2026-01-06T10:00:00.000Z"
+    },
+    {
+      "id": 6,
+      "slug": "airpods-pro-2",
+      "name": "AirPods Pro 2da Gen",
+      "category": "airpods",
+      "price_usd": 249,
+      "image_url": "https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/MQD83?wid=532&hei=582&fmt=jpeg&qlt=95",
+      "featured": false,
+      "active": true,
+      "description": "AirPods Pro con cancelación de ruido adaptativa.",
+      "specs": {
+        "chip": "H2",
+        "cancelación": "Activa adaptativa",
+        "resistencia": "IP54"
+      },
+      "created_at": "2026-01-05T10:00:00.000Z"
+    }
+  ],
+  "installment_plans": [
+    {
+      "id": 1,
+      "months": 1,
+      "surcharge_pct": 0,
+      "label": "1 pago sin recargo",
+      "active": false
+    },
+    {
+      "id": 2,
+      "months": 3,
+      "surcharge_pct": 0,
+      "label": "3 cuotas sin interés",
+      "active": false
+    },
+    {
+      "id": 3,
+      "months": 6,
+      "surcharge_pct": 30,
+      "label": "6 cuotas",
+      "active": true
+    },
+    {
+      "id": 4,
+      "months": 12,
+      "surcharge_pct": 12,
+      "label": "Banco Nacion",
+      "active": true
+    }
+  ],
+  "dollar_rate": {
+    "id": 1,
+    "rate": 1430,
+    "updated_at": "2026-04-29T03:30:29.608Z"
+  },
+  "trade_in_values": [
+    {
+      "id": 1,
+      "model": "iPhone 13",
+      "capacity": "128GB",
+      "battery_state": "excelente",
+      "value_usd": 320
+    },
+    {
+      "id": 2,
+      "model": "iPhone 13",
+      "capacity": "128GB",
+      "battery_state": "bueno",
+      "value_usd": 270
+    },
+    {
+      "id": 3,
+      "model": "iPhone 13",
+      "capacity": "128GB",
+      "battery_state": "regular",
+      "value_usd": 200
+    },
+    {
+      "id": 4,
+      "model": "iPhone 13",
+      "capacity": "256GB",
+      "battery_state": "excelente",
+      "value_usd": 370
+    },
+    {
+      "id": 5,
+      "model": "iPhone 13",
+      "capacity": "256GB",
+      "battery_state": "bueno",
+      "value_usd": 310
+    },
+    {
+      "id": 6,
+      "model": "iPhone 13",
+      "capacity": "256GB",
+      "battery_state": "regular",
+      "value_usd": 240
+    },
+    {
+      "id": 7,
+      "model": "iPhone 13 Pro",
+      "capacity": "128GB",
+      "battery_state": "excelente",
+      "value_usd": 420
+    },
+    {
+      "id": 8,
+      "model": "iPhone 13 Pro",
+      "capacity": "128GB",
+      "battery_state": "bueno",
+      "value_usd": 360
+    },
+    {
+      "id": 9,
+      "model": "iPhone 13 Pro",
+      "capacity": "128GB",
+      "battery_state": "regular",
+      "value_usd": 280
+    },
+    {
+      "id": 10,
+      "model": "iPhone 14",
+      "capacity": "128GB",
+      "battery_state": "excelente",
+      "value_usd": 480
+    },
+    {
+      "id": 11,
+      "model": "iPhone 14",
+      "capacity": "128GB",
+      "battery_state": "bueno",
+      "value_usd": 420
+    },
+    {
+      "id": 12,
+      "model": "iPhone 14",
+      "capacity": "128GB",
+      "battery_state": "regular",
+      "value_usd": 330
+    },
+    {
+      "id": 13,
+      "model": "iPhone 14",
+      "capacity": "256GB",
+      "battery_state": "excelente",
+      "value_usd": 530
+    },
+    {
+      "id": 14,
+      "model": "iPhone 14",
+      "capacity": "256GB",
+      "battery_state": "bueno",
+      "value_usd": 460
+    },
+    {
+      "id": 15,
+      "model": "iPhone 14",
+      "capacity": "256GB",
+      "battery_state": "regular",
+      "value_usd": 370
+    },
+    {
+      "id": 16,
+      "model": "iPhone 14 Pro",
+      "capacity": "128GB",
+      "battery_state": "excelente",
+      "value_usd": 580
+    },
+    {
+      "id": 17,
+      "model": "iPhone 14 Pro",
+      "capacity": "128GB",
+      "battery_state": "bueno",
+      "value_usd": 500
+    },
+    {
+      "id": 18,
+      "model": "iPhone 14 Pro",
+      "capacity": "128GB",
+      "battery_state": "regular",
+      "value_usd": 400
+    },
+    {
+      "id": 19,
+      "model": "iPhone 15",
+      "capacity": "128GB",
+      "battery_state": "excelente",
+      "value_usd": 620
+    },
+    {
+      "id": 20,
+      "model": "iPhone 15",
+      "capacity": "128GB",
+      "battery_state": "bueno",
+      "value_usd": 540
+    },
+    {
+      "id": 21,
+      "model": "iPhone 15",
+      "capacity": "128GB",
+      "battery_state": "regular",
+      "value_usd": 430
+    }
+  ],
+  "site_settings": {
+    "whatsapp_number": "5491100000000",
+    "whatsapp_message": "Hola! Me interesa el producto: ",
+    "store_name": "STORE RQTA",
+    "store_tagline": "Productos Apple",
+    "trade_in_enabled": true,
+    "show_usd_price": true,
+    "show_installments": true
+  }
+}
