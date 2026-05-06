@@ -84,7 +84,7 @@ export default function Hero({ storeName, tradeInEnabled = true }: Props) {
 
       <div
         ref={parallaxRef}
-        className="relative mx-auto w-full max-w-7xl px-6 pb-0 pt-[14rem] lg:px-8 lg:pt-[15rem]"
+        className="relative mx-auto w-full max-w-7xl px-6 pb-0 pt-[8rem] sm:pt-[11rem] lg:px-8 lg:pt-[15rem]"
         style={{ willChange: 'transform' }}
       >
         <div className="mx-auto max-w-4xl text-center">
@@ -115,7 +115,7 @@ export default function Hero({ storeName, tradeInEnabled = true }: Props) {
 
           {/* Subtitle */}
           <p
-            className={`mx-auto mt-6 max-w-xl text-lg leading-relaxed ${mounted ? 'anim-fade-up' : 'opacity-0'}`}
+            className={`mx-auto mt-5 max-w-xl text-base sm:text-lg leading-relaxed ${mounted ? 'anim-fade-up' : 'opacity-0'}`}
             style={{ '--delay': '240ms', color: 'rgba(255,255,255,0.5)' } as React.CSSProperties}
           >
             Productos seleccionados, precios claros y una experiencia premium.
@@ -140,7 +140,7 @@ export default function Hero({ storeName, tradeInEnabled = true }: Props) {
 
           {/* Stats */}
           <div
-            className={`mt-14 flex flex-wrap justify-center gap-x-10 gap-y-5 ${mounted ? 'anim-fade-up' : 'opacity-0'}`}
+            className={`mt-8 sm:mt-14 flex flex-wrap justify-center gap-x-7 gap-y-4 sm:gap-x-10 sm:gap-y-5 ${mounted ? 'anim-fade-up' : 'opacity-0'}`}
             style={{ '--delay': '480ms' } as React.CSSProperties}
           >
             {STATS.map(({ value, label }) => (
@@ -154,7 +154,7 @@ export default function Hero({ storeName, tradeInEnabled = true }: Props) {
 
         {/* ── Visual showcase ──────────────────────────────────── */}
         <div
-          className={`mx-auto mt-20 max-w-5xl ${mounted ? 'anim-scale-in' : 'opacity-0'}`}
+          className={`mx-auto mt-12 sm:mt-20 max-w-5xl ${mounted ? 'anim-scale-in' : 'opacity-0'}`}
           style={{ '--delay': '580ms' } as React.CSSProperties}
         >
           <div className="relative overflow-hidden rounded-t-[2rem] border border-b-0 px-6 pt-8 sm:px-10 sm:pt-10"

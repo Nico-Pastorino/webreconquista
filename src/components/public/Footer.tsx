@@ -4,8 +4,8 @@ import SiteLogo from '@/components/shared/SiteLogo'
 export default function Footer({ storeName }: { storeName: string }) {
   return (
     <footer className="bg-[#111111] text-white">
-      <div className="mx-auto w-full max-w-7xl px-6 py-20 lg:px-8 lg:py-24">
-        <div className="grid gap-12 md:grid-cols-2 xl:grid-cols-[1.2fr_0.9fr_0.9fr_1fr]">
+      <div className="mx-auto w-full max-w-7xl px-5 py-10 sm:px-6 md:py-16 lg:px-8 lg:py-20">
+        <div className="grid gap-8 md:gap-12 md:grid-cols-2 xl:grid-cols-[1.2fr_0.9fr_0.9fr_1fr]">
           <div>
             <SiteLogo surface="light" className="mb-5" imageClassName="w-[120px] sm:w-[132px]" />
             <p className="max-w-sm text-sm leading-7 text-white/45">
@@ -38,7 +38,7 @@ export default function Footer({ storeName }: { storeName: string }) {
             ))}
           </div>
         </div>
-        <div className="mt-12 flex flex-wrap items-center justify-between gap-3 border-t border-white/8 pt-6">
+        <div className="mt-8 flex flex-wrap items-center justify-between gap-3 border-t border-white/8 pt-5 md:mt-12">
           <p className="text-xs text-white/25">© {new Date().getFullYear()} {storeName}</p>
           <p className="text-xs text-white/25">Todos los derechos reservados</p>
         </div>

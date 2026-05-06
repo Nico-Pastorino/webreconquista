@@ -30,14 +30,14 @@ export default function CatalogPageContent({
   const categoryHref = (category: Category) => `/${category}`
 
   return (
-    <div className="mx-auto w-full max-w-7xl px-6 py-20 lg:px-8 lg:py-24">
-      <div className="mb-14 max-w-3xl">
-        <p className="mb-4 text-[11px] font-medium uppercase tracking-[0.24em] text-[#6B7280]">Catálogo</p>
-        <h1 className="text-[clamp(2.15rem,4vw,3.9rem)] font-semibold leading-[1.02] tracking-[-0.05em] text-[#111111]">{title}</h1>
-        <p className="mt-4 text-base leading-8 text-[#6B7280]">{description}</p>
+    <div className="mx-auto w-full max-w-7xl px-5 py-10 sm:px-6 md:py-20 lg:px-8 lg:py-24">
+      <div className="mb-8 max-w-3xl md:mb-14">
+        <p className="mb-3 text-[10px] font-medium uppercase tracking-[0.24em] text-[#6B7280] sm:mb-4 sm:text-[11px]">Catálogo</p>
+        <h1 className="text-3xl font-semibold leading-[1.02] tracking-[-0.05em] text-[#111111] sm:text-4xl md:text-[clamp(2.15rem,4vw,3.9rem)]">{title}</h1>
+        <p className="mt-3 text-sm leading-7 text-[#6B7280] sm:mt-4 sm:text-base sm:leading-8">{description}</p>
       </div>
 
-      <div className="mb-8 rounded-[2rem] border border-[#ECECEF] bg-[#F5F5F7] p-3 sm:p-4">
+      <div className="mb-5 rounded-2xl border border-[#ECECEF] bg-[#F5F5F7] p-3 sm:mb-8 sm:rounded-[2rem] sm:p-4">
         <form action="/productos" className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
           <input type="hidden" name="cat" value={activeCategory ?? ''} />
           <div className="flex-1">
@@ -60,10 +60,10 @@ export default function CatalogPageContent({
         </form>
       </div>
 
-      <div className="mb-14 flex flex-wrap gap-3">
+      <div className="mb-8 flex flex-wrap gap-2 sm:gap-3 md:mb-14">
         <Link
           href="/productos"
-          className={`rounded-full px-5 py-2.5 text-sm font-medium transition-colors ${
+          className={`rounded-full px-4 py-2 text-xs font-medium transition-colors sm:px-5 sm:py-2.5 sm:text-sm ${
             !activeCategory
               ? 'bg-black text-white'
               : 'bg-[#F5F5F7] text-[#6B7280] hover:bg-[#ECECEF] hover:text-[#111111]'
@@ -75,7 +75,7 @@ export default function CatalogPageContent({
           <Link
             key={category}
             href={categoryHref(category)}
-            className={`rounded-full px-5 py-2.5 text-sm font-medium transition-colors ${
+            className={`rounded-full px-4 py-2 text-xs font-medium transition-colors sm:px-5 sm:py-2.5 sm:text-sm ${
               activeCategory === category
                 ? 'bg-black text-white'
                 : 'bg-[#F5F5F7] text-[#6B7280] hover:bg-[#ECECEF] hover:text-[#111111]'

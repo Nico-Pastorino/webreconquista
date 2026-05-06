@@ -33,23 +33,23 @@ export default async function CanjecPage() {
   }
 
   return (
-    <div className="mx-auto w-full max-w-7xl px-6 py-20 lg:px-8 lg:py-24">
-      <div className="mb-16 max-w-4xl">
-        <p className="mb-5 text-[11px] font-medium uppercase tracking-[0.24em] text-[#6B7280]">Plan Canje</p>
-        <h1 className="max-w-3xl text-left text-5xl font-semibold tracking-tight text-[#111111] md:text-7xl">
+    <div className="mx-auto w-full max-w-7xl px-5 py-10 sm:px-6 md:py-20 lg:px-8 lg:py-24">
+      <div className="mb-8 max-w-4xl md:mb-16">
+        <p className="mb-3 text-[10px] font-medium uppercase tracking-[0.24em] text-[#6B7280] sm:mb-5 sm:text-[11px]">Plan Canje</p>
+        <h1 className="max-w-3xl text-left text-3xl font-semibold tracking-tight text-[#111111] sm:text-4xl md:text-5xl lg:text-7xl">
           Tu próximo iPhone empieza con el actual.
         </h1>
-        <p className="mt-8 max-w-2xl text-lg leading-relaxed text-[#6B7280]">
+        <p className="mt-4 max-w-2xl text-sm leading-7 text-[#6B7280] sm:mt-6 sm:text-base sm:leading-relaxed md:text-lg">
           Entregá tu usado, conocé el valor al instante y entendé exactamente cuánto pagás.
         </p>
       </div>
 
-      <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr]">
+      <div className="grid gap-6 md:gap-10 lg:grid-cols-[0.9fr_1.1fr]">
         <div>
-          <div className="mb-12 max-w-md">
-            <RefreshCw className="h-6 w-6 text-[#111111]" />
-            <h2 className="mt-8 text-3xl font-semibold tracking-[-0.04em] text-[#111111]">¿Cómo funciona?</h2>
-            <p className="mt-4 text-sm leading-7 text-[#6B7280]">
+          <div className="mb-8 max-w-md md:mb-12">
+            <RefreshCw className="h-5 w-5 text-[#111111] sm:h-6 sm:w-6" />
+            <h2 className="mt-5 text-2xl font-semibold tracking-[-0.04em] text-[#111111] sm:mt-8 sm:text-3xl">¿Cómo funciona?</h2>
+            <p className="mt-3 text-sm leading-7 text-[#6B7280] sm:mt-4">
               Un flujo directo: seleccionás tu modelo, vemos el valor y calculamos la diferencia.
             </p>
           </div>
@@ -88,7 +88,7 @@ export default async function CanjecPage() {
             ))}
           </div>
 
-          <div className="mt-12">
+          <div className="mt-8 md:mt-12">
             <p className="mb-4 text-[11px] font-medium uppercase tracking-[0.24em] text-[#666666]">Por qué canjearnos</p>
             <div className="flex flex-col gap-4">
               {[
@@ -107,9 +107,9 @@ export default async function CanjecPage() {
         </div>
 
         <div>
-          <div className="mb-8 max-w-xl">
-            <p className="mb-4 text-[11px] font-medium uppercase tracking-[0.24em] text-[#6B7280]">Simulador</p>
-            <h2 className="text-3xl font-semibold tracking-[-0.04em] text-[#111111]">Calculá el valor de tu iPhone.</h2>
+          <div className="mb-5 max-w-xl md:mb-8">
+            <p className="mb-3 text-[10px] font-medium uppercase tracking-[0.24em] text-[#6B7280] sm:mb-4 sm:text-[11px]">Simulador</p>
+            <h2 className="text-2xl font-semibold tracking-[-0.04em] text-[#111111] sm:text-3xl">Calculá el valor de tu iPhone.</h2>
           </div>
           {models.length > 0 ? (
             <TradeInSimulator models={models} dollarRate={dollarRate} />

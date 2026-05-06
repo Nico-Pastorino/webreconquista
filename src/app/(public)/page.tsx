@@ -48,34 +48,34 @@ export default async function HomePage() {
     <>
       <Hero storeName={settings.store_name} tradeInEnabled={settings.trade_in_enabled} />
 
-      <section className="bg-white py-20 lg:py-24">
-        <div className="mx-auto w-full max-w-7xl px-6 lg:px-8">
-          <div className="mb-14 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+      <section className="bg-white py-12 md:py-20 lg:py-24">
+        <div className="mx-auto w-full max-w-7xl px-5 sm:px-6 lg:px-8">
+          <div className="mb-8 flex flex-col gap-4 md:mb-14 md:flex-row md:items-end md:justify-between">
             <div>
-              <p className="reveal-heading mb-4 text-[11px] font-medium uppercase tracking-[0.24em] text-[#6B7280]">Categorías</p>
-              <h2 className="reveal-heading text-[clamp(2.15rem,4vw,3.9rem)] font-semibold leading-[1.02] tracking-[-0.05em] text-[#111111]" style={{ transitionDelay: '80ms' }}>Explorá por producto.</h2>
+              <p className="reveal-heading mb-3 text-[10px] font-medium uppercase tracking-[0.24em] text-[#6B7280] sm:mb-4 sm:text-[11px]">Categorías</p>
+              <h2 className="reveal-heading text-3xl font-semibold leading-[1.02] tracking-[-0.05em] text-[#111111] sm:text-4xl md:text-[clamp(2.15rem,4vw,3.9rem)]" style={{ transitionDelay: '80ms' }}>Explorá por producto.</h2>
             </div>
             <Link href="/productos" className="hidden items-center gap-2 text-sm font-medium text-[#111111] transition-opacity hover:opacity-60 md:inline-flex">
               Ver catálogo <ArrowUpRight className="h-4 w-4" />
             </Link>
           </div>
-          <div className="stagger-grid grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="stagger-grid grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-3 lg:gap-6">
             {CATEGORIES.map(({ href, icon: Icon, label }) => (
               <Link
                 key={href}
                 href={href}
-                className="group flex min-h-[180px] flex-col justify-between rounded-[1.5rem] border border-[#E5E7EB] bg-white p-6 transition-all duration-300 hover:-translate-y-1.5 hover:border-[#D1D5DB] hover:shadow-[0_20px_44px_rgba(0,0,0,0.08)]"
+                className="group flex min-h-[130px] flex-col justify-between rounded-2xl border border-[#E5E7EB] bg-white p-4 transition-all duration-300 hover:-translate-y-1.5 hover:border-[#D1D5DB] hover:shadow-[0_20px_44px_rgba(0,0,0,0.08)] sm:min-h-[160px] sm:rounded-[1.5rem] sm:p-5 lg:min-h-[180px] lg:p-6"
               >
-                <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#F5F5F7] transition-all duration-300 group-hover:scale-110 group-hover:bg-[#111111]">
-                  <Icon className="h-5 w-5 text-[#111111] transition-colors duration-300 group-hover:text-white" />
+                <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#F5F5F7] transition-all duration-300 group-hover:scale-110 group-hover:bg-[#111111] sm:h-12 sm:w-12 sm:rounded-2xl">
+                  <Icon className="h-4 w-4 text-[#111111] transition-colors duration-300 group-hover:text-white sm:h-5 sm:w-5" />
                 </span>
                 <div>
-                  <p className="text-xl font-semibold tracking-[-0.03em] text-[#111111]">{label}</p>
-                  <p className="mt-3 max-w-xs text-sm leading-7 text-[#6B7280]">
+                  <p className="text-base font-semibold tracking-[-0.03em] text-[#111111] sm:text-xl">{label}</p>
+                  <p className="mt-2 hidden max-w-xs text-sm leading-7 text-[#6B7280] sm:mt-3 sm:block">
                     Explorá modelos, precios y disponibilidad de forma clara.
                   </p>
-                  <p className="mt-6 inline-flex items-center gap-1 text-sm font-medium text-[#111111]">
-                    Explorar <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-1" />
+                  <p className="mt-3 inline-flex items-center gap-1 text-xs font-medium text-[#111111] sm:mt-6 sm:text-sm">
+                    Explorar <ArrowRight className="h-3.5 w-3.5 transition-transform duration-200 group-hover:translate-x-1 sm:h-4 sm:w-4" />
                   </p>
                 </div>
               </Link>
@@ -84,13 +84,13 @@ export default async function HomePage() {
         </div>
       </section>
 
-      <section className="bg-[#F5F5F7] py-24">
-        <div className="mx-auto w-full max-w-7xl px-6 lg:px-8">
-          <div className="mb-14 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+      <section className="bg-[#F5F5F7] py-12 md:py-20 lg:py-24">
+        <div className="mx-auto w-full max-w-7xl px-5 sm:px-6 lg:px-8">
+          <div className="mb-8 flex flex-col gap-4 md:mb-14 md:flex-row md:items-end md:justify-between">
             <div>
-              <p className="reveal-heading mb-4 text-[11px] font-medium uppercase tracking-[0.24em] text-[#6B7280]">Selección</p>
-              <h2 className="reveal-heading text-[clamp(2.15rem,4vw,3.9rem)] font-semibold leading-[1.02] tracking-[-0.05em] text-[#111111]" style={{ transitionDelay: '80ms' }}>Productos destacados.</h2>
-              <p className="reveal-heading mt-4 max-w-xl text-base leading-8 text-[#6B7280]" style={{ transitionDelay: '160ms' }}>
+              <p className="reveal-heading mb-3 text-[10px] font-medium uppercase tracking-[0.24em] text-[#6B7280] sm:mb-4 sm:text-[11px]">Selección</p>
+              <h2 className="reveal-heading text-3xl font-semibold leading-[1.02] tracking-[-0.05em] text-[#111111] sm:text-4xl md:text-[clamp(2.15rem,4vw,3.9rem)]" style={{ transitionDelay: '80ms' }}>Productos destacados.</h2>
+              <p className="reveal-heading mt-3 max-w-xl text-sm leading-8 text-[#6B7280] sm:mt-4 sm:text-base" style={{ transitionDelay: '160ms' }}>
                 El producto es el protagonista: imagen grande, precio visible y lectura rápida.
               </p>
             </div>
@@ -116,11 +116,11 @@ export default async function HomePage() {
         </div>
       </section>
 
-      <section className="bg-white py-20 lg:py-24">
-        <div className="mx-auto w-full max-w-7xl px-6 lg:px-8">
-          <div className="mb-12 max-w-2xl">
-            <p className="reveal-heading mb-4 text-[11px] font-medium uppercase tracking-[0.24em] text-[#6B7280]">Beneficios</p>
-            <h2 className="reveal-heading text-[clamp(2.15rem,4vw,3.9rem)] font-semibold leading-[1.02] tracking-[-0.05em] text-[#111111]" style={{ transitionDelay: '80ms' }}>Compra clara y experiencia cuidada.</h2>
+      <section className="bg-white py-12 md:py-20 lg:py-24">
+        <div className="mx-auto w-full max-w-7xl px-5 sm:px-6 lg:px-8">
+          <div className="mb-8 max-w-2xl md:mb-12">
+            <p className="reveal-heading mb-3 text-[10px] font-medium uppercase tracking-[0.24em] text-[#6B7280] sm:mb-4 sm:text-[11px]">Beneficios</p>
+            <h2 className="reveal-heading text-3xl font-semibold leading-[1.02] tracking-[-0.05em] text-[#111111] sm:text-4xl md:text-[clamp(2.15rem,4vw,3.9rem)]" style={{ transitionDelay: '80ms' }}>Compra clara y experiencia cuidada.</h2>
           </div>
           <div className="stagger-grid grid gap-6 sm:grid-cols-2 xl:grid-cols-4">
             {[
@@ -141,15 +141,15 @@ export default async function HomePage() {
         </div>
       </section>
 
-      <section className="bg-white py-20 lg:py-24">
-        <div className="mx-auto w-full max-w-7xl px-6 lg:px-8">
-          <div className="reveal-heading rounded-[2rem] border border-[#ECECEF] bg-[#F5F5F7] px-8 py-14 text-center transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_24px_48px_rgba(0,0,0,0.07)] md:px-12 md:py-16">
-            <p className="mb-4 text-[11px] font-medium uppercase tracking-[0.24em] text-[#6B7280]">Plan Canje</p>
-            <h2 className="text-[clamp(2.15rem,4vw,3.9rem)] font-semibold leading-[1.02] tracking-[-0.05em] text-[#111111]">Entregá tu iPhone y pagá la diferencia.</h2>
-            <p className="mx-auto mt-4 max-w-2xl text-lg leading-[1.625] text-[#6B7280]">
+      <section className="bg-white py-10 md:py-20 lg:py-24">
+        <div className="mx-auto w-full max-w-7xl px-5 sm:px-6 lg:px-8">
+          <div className="reveal-heading rounded-[1.5rem] border border-[#ECECEF] bg-[#F5F5F7] px-6 py-10 text-center transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_24px_48px_rgba(0,0,0,0.07)] sm:rounded-[2rem] sm:px-8 sm:py-14 md:px-12 md:py-16">
+            <p className="mb-3 text-[10px] font-medium uppercase tracking-[0.24em] text-[#6B7280] sm:mb-4 sm:text-[11px]">Plan Canje</p>
+            <h2 className="text-2xl font-semibold leading-[1.02] tracking-[-0.05em] text-[#111111] sm:text-3xl md:text-[clamp(2.15rem,4vw,3.9rem)]">Entregá tu iPhone y pagá la diferencia.</h2>
+            <p className="mx-auto mt-3 max-w-2xl text-sm leading-7 text-[#6B7280] sm:mt-4 sm:text-base md:text-lg md:leading-[1.625]">
               Si ya tenés un iPhone, calculá el valor de tu usado y acelerá la compra del próximo.
             </p>
-            <Link href="/plan-canje" className="btn-apple-primary mt-8">
+            <Link href="/plan-canje" className="btn-apple-primary mt-6 sm:mt-8">
               Ir al Plan Canje
               <ArrowRight className="h-3.5 w-3.5" />
             </Link>

@@ -65,8 +65,8 @@ export default async function ProductDetailPage({ params }: Props) {
   const specs = product.specs as Record<string, string> | null
 
   return (
-    <div className="mx-auto w-full max-w-7xl px-6 py-20 lg:px-8 lg:py-24">
-      <nav className="mb-12 flex flex-wrap items-center gap-2 text-sm text-[#6B7280]">
+    <div className="mx-auto w-full max-w-7xl px-5 py-10 sm:px-6 md:py-20 lg:px-8 lg:py-24">
+      <nav className="mb-6 flex flex-wrap items-center gap-2 text-sm text-[#6B7280] md:mb-12">
         <Link href="/productos" className="flex items-center gap-1 transition-colors hover:text-[#111111]">
           <ArrowLeft className="h-3.5 w-3.5" /> Volver
         </Link>
@@ -78,7 +78,7 @@ export default async function ProductDetailPage({ params }: Props) {
         <span className="text-[#111111]">{product.name}</span>
       </nav>
 
-      <div className="grid items-start gap-10 lg:grid-cols-[1.18fr_0.82fr] lg:gap-14">
+      <div className="grid items-start gap-6 md:gap-10 lg:grid-cols-[1.18fr_0.82fr] lg:gap-14">
         {/* Columna izquierda: imagen + trade-in debajo en desktop */}
         <div className="flex flex-col gap-6">
           <div className={
@@ -117,12 +117,12 @@ export default async function ProductDetailPage({ params }: Props) {
           )}
         </div>
 
-        <div className="flex flex-col gap-8">
+        <div className="flex flex-col gap-5 md:gap-8">
           <div>
             <p className="mb-3 text-[11px] font-medium uppercase tracking-[0.24em] text-[#666666]">
               {CATEGORY_LABELS[product.category]}
             </p>
-            <h1 className="text-4xl font-semibold tracking-[-0.05em] text-[#111111] sm:text-5xl">
+            <h1 className="text-3xl font-semibold tracking-[-0.05em] text-[#111111] sm:text-4xl md:text-5xl">
               {product.name}
             </h1>
           </div>
@@ -130,7 +130,7 @@ export default async function ProductDetailPage({ params }: Props) {
           {/* Bloque de precio — sin dólar de referencia */}
           <div className="rounded-[2rem] border border-[#E5E7EB] bg-white p-6 sm:p-8">
             <div className="flex flex-col gap-2">
-              <p className="text-5xl font-semibold tracking-[-0.06em] text-[#111111] sm:text-6xl">
+              <p className="text-4xl font-semibold tracking-[-0.06em] text-[#111111] sm:text-5xl md:text-6xl">
                 {formatARS(priceARS)}
               </p>
               {settings.show_usd_price && (
@@ -179,7 +179,7 @@ export default async function ProductDetailPage({ params }: Props) {
             Consultar por WhatsApp
           </a>
 
-          <div className="grid gap-4 rounded-[2rem] border border-[#ECECEF] bg-[#F5F5F7] p-6">
+          <div className="grid gap-3 rounded-[1.5rem] border border-[#ECECEF] bg-[#F5F5F7] p-4 sm:gap-4 sm:rounded-[2rem] sm:p-6">
             {[
               { icon: Shield, text: 'Garantía oficial 12 meses' },
               { icon: Truck, text: 'Envío a todo el país' },
