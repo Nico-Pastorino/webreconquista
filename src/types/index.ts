@@ -20,24 +20,25 @@ export interface Product {
   created_at: string
 }
 
+// InstallmentPlan: usado internamente para backward-compat con ProductCard y catálogos
 export interface InstallmentPlan {
   id: number
   months: number
-  surcharge_pct: number // 0 = sin recargo, 20 = 20%
-  label: string | null  // ej: "3 cuotas sin interés"
+  surcharge_pct: number
+  label: string | null
   active: boolean
 }
 
 export interface DollarRate {
   id: number
-  rate: number          // valor del dólar en ARS
+  rate: number
   updated_at: string
 }
 
 export interface TradeInValue {
   id: number
-  model: string         // ej: "iPhone 13"
-  capacity: string      // ej: "128GB"
+  model: string
+  capacity: string
   battery_state: 'excelente' | 'bueno' | 'regular'
   value_usd: number
 }
@@ -50,6 +51,25 @@ export interface SiteSettings {
   trade_in_enabled: boolean
   show_usd_price: boolean
   show_installments: boolean
+}
+
+// --- Nuevo modelo de planes de financiación agrupados ---
+
+export interface FinancingGroup {
+  id: number
+  name: string
+  active: boolean
+  sort_order: number
+}
+
+export interface FinancingOption {
+  id: number
+  group_id: number
+  installments: number
+  surcharge_pct: number
+  label: string | null
+  active: boolean
+  sort_order: number
 }
 
 // --- Computed / presentation types ---
@@ -69,6 +89,22 @@ export interface InstallmentOption {
   label: string
   monthly_ars: number
   total_ars: number
+  surcharge_pct: number
+}
+
+export interface ComputedInstallmentOption {
+  id: number
+  installments: number
+  label: string
+  monthly_ars: number
+  total_ars: number
+  surcharge_pct: number
+}
+
+export interface ComputedFinancingGroup {
+  id: number
+  name: string
+  options: ComputedInstallmentOption[]
 }
 
 export interface TradeInResult {

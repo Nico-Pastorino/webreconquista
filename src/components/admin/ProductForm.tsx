@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import type { Product } from '@/types'
-import ProductImage from '@/components/ui/ProductImage'
+import ImagePicker from '@/components/admin/ImagePicker'
 
 const CATEGORIES = [
   { value: 'iphone', label: 'iPhone' },
@@ -27,7 +27,39 @@ function Field({ label, children }: { label: string; children: React.ReactNode }
   )
 }
 
-const inputCls = 'w-full rounded-[1.2rem] border border-[#e5e7eb] bg-white px-5 py-3 text-sm text-[#111111] placeholder:text-[#8d8d8d] outline-none transition-colors focus:border-[#d1d5db] focus:ring-4 focus:ring-black/5'
+function Toggle({
+  checked,
+  onChange,
+  label,
+}: {
+  checked: boolean
+  onChange: () => void
+  label: string
+}) {
+  return (
+    <label className="flex cursor-pointer items-center gap-3">
+      <button
+        type="button"
+        role="switch"
+        aria-checked={checked}
+        onClick={onChange}
+        className={`relative inline-flex h-6 w-11 shrink-0 rounded-full border-2 border-transparent transition-colors duration-200 focus:outline-none ${
+          checked ? 'bg-black' : 'bg-[#d6d6d6]'
+        }`}
+      >
+        <span
+          className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition-transform duration-200 ${
+            checked ? 'translate-x-5' : 'translate-x-0'
+          }`}
+        />
+      </button>
+      <span className="text-sm text-[#111111]">{label}</span>
+    </label>
+  )
+}
+
+const inputCls =
+  'w-full rounded-[1.2rem] border border-[#e5e7eb] bg-white px-5 py-3 text-sm text-[#111111] placeholder:text-[#8d8d8d] outline-none transition-colors focus:border-[#d1d5db] focus:ring-4 focus:ring-black/5'
 
 export default function ProductForm({ product }: Props) {
   const router = useRouter()
@@ -89,6 +121,7 @@ export default function ProductForm({ product }: Props) {
 
       <div className="surface-card rounded-[2rem] p-6 sm:p-8">
         <div className="grid gap-5 sm:grid-cols-2">
+          {/* Nombre */}
           <div className="sm:col-span-2">
             <Field label="Nombre del producto">
               <input
@@ -102,6 +135,7 @@ export default function ProductForm({ product }: Props) {
             </Field>
           </div>
 
+          {/* Categoría */}
           <Field label="Categoría">
             <select
               value={form.category}
@@ -109,11 +143,14 @@ export default function ProductForm({ product }: Props) {
               className={inputCls + ' appearance-none'}
             >
               {CATEGORIES.map((c) => (
-                <option key={c.value} value={c.value}>{c.label}</option>
+                <option key={c.value} value={c.value}>
+                  {c.label}
+                </option>
               ))}
             </select>
           </Field>
 
+          {/* Precio */}
           <Field label="Precio en USD">
             <input
               type="number"
@@ -127,60 +164,40 @@ export default function ProductForm({ product }: Props) {
             />
           </Field>
 
+          {/* Imagen — biblioteca visual */}
           <div className="sm:col-span-2">
-            <Field label="URL de imagen">
-              <input
-                type="url"
-                placeholder="Opcional: https://..."
+            <Field label="Imagen del producto">
+              <ImagePicker
                 value={form.image_url}
-                onChange={(e) => set('image_url', e.target.value)}
-                className={inputCls}
+                onChange={(src) => set('image_url', src)}
               />
-              <div className="mt-3 h-20 w-20 overflow-hidden rounded-[18px] border border-[#eaeaea] bg-[#f5f5f7]">
-                <ProductImage
-                  imageUrl={form.image_url}
-                  alt="Preview"
-                  width={80}
-                  height={80}
-                  className="h-full w-full"
-                  imageClassName="p-2"
-                  placeholderLabel="Sin imagen"
-                />
-              </div>
             </Field>
           </div>
 
+          {/* Descripción */}
           <div className="sm:col-span-2">
             <Field label="Descripción">
               <textarea
                 value={form.description}
                 onChange={(e) => set('description', e.target.value)}
                 rows={3}
-                placeholder="Descripción breve del producto..."
+                placeholder="Descripción breve del producto…"
                 className={inputCls + ' resize-none'}
               />
             </Field>
           </div>
 
-          <label className="flex cursor-pointer items-center gap-3">
-            <div
-              onClick={() => set('featured', !form.featured)}
-              className={`relative h-5 w-9 rounded-full transition-colors ${form.featured ? 'bg-black' : 'bg-[#d6d6d6]'}`}
-            >
-              <span className={`absolute top-0.5 h-4 w-4 rounded-full bg-white shadow transition-transform ${form.featured ? 'translate-x-4' : 'translate-x-0.5'}`} />
-            </div>
-            <span className="text-sm text-[#111111]">Producto destacado</span>
-          </label>
-
-          <label className="flex cursor-pointer items-center gap-3">
-            <div
-              onClick={() => set('active', !form.active)}
-              className={`relative h-5 w-9 rounded-full transition-colors ${form.active ? 'bg-black' : 'bg-[#d6d6d6]'}`}
-            >
-              <span className={`absolute top-0.5 h-4 w-4 rounded-full bg-white shadow transition-transform ${form.active ? 'translate-x-4' : 'translate-x-0.5'}`} />
-            </div>
-            <span className="text-sm text-[#111111]">Activo (visible en tienda)</span>
-          </label>
+          {/* Toggles */}
+          <Toggle
+            checked={form.featured}
+            onChange={() => set('featured', !form.featured)}
+            label="Producto destacado"
+          />
+          <Toggle
+            checked={form.active}
+            onChange={() => set('active', !form.active)}
+            label="Activo (visible en tienda)"
+          />
         </div>
       </div>
 
@@ -199,8 +216,19 @@ export default function ProductForm({ product }: Props) {
         >
           {loading && (
             <svg className="h-4 w-4 animate-spin" fill="none" viewBox="0 0 24 24">
-              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+              <circle
+                className="opacity-25"
+                cx="12"
+                cy="12"
+                r="10"
+                stroke="currentColor"
+                strokeWidth="4"
+              />
+              <path
+                className="opacity-75"
+                fill="currentColor"
+                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
+              />
             </svg>
           )}
           {isEdit ? 'Guardar cambios' : 'Crear producto'}

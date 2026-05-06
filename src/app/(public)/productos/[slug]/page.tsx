@@ -3,13 +3,14 @@ import Link from 'next/link'
 import {
   getProductBySlug,
   getDollarRate,
-  getInstallmentPlans,
+  getFinancingGroups,
+  getFinancingOptions,
   getSiteSettings,
   getTradeInModels,
 } from '@/lib/queries'
 import {
   calcPriceARS,
-  calcInstallments,
+  calcGroupedInstallments,
   formatARS,
   formatUSD,
 } from '@/lib/calculations'
@@ -38,10 +39,11 @@ export async function generateMetadata({ params }: Props) {
 export default async function ProductDetailPage({ params }: Props) {
   const { slug } = await params
 
-  const [product, dollarRate, installmentPlans, settings, tradeInModels] = await Promise.all([
+  const [product, dollarRate, groups, options, settings, tradeInModels] = await Promise.all([
     getProductBySlug(slug),
     getDollarRate(),
-    getInstallmentPlans(),
+    getFinancingGroups(true),
+    getFinancingOptions(undefined, true),
     getSiteSettings(),
     getTradeInModels(),
   ])
@@ -49,13 +51,17 @@ export default async function ProductDetailPage({ params }: Props) {
   if (!product) notFound()
 
   const priceARS = calcPriceARS(product.price_usd, dollarRate)
-  const installmentOptions = calcInstallments(product.price_usd, dollarRate, installmentPlans)
-  const categoryHref = product.category === 'accesorios' ? '/productos?cat=accesorios' : `/${product.category}`
+  const computedGroups = calcGroupedInstallments(product.price_usd, dollarRate, groups, options)
 
+  // Opción de 1 pago sin recargo para mostrar destacada en el bloque de precio
+  const singlePayment = computedGroups
+    .flatMap((g) => g.options)
+    .find((o) => o.installments === 1 && o.surcharge_pct === 0)
+
+  const categoryHref = product.category === 'accesorios' ? '/productos?cat=accesorios' : `/${product.category}`
   const isIphone = product.category === 'iphone'
   const whatsappMsg = `${settings.whatsapp_message}${product.name} - ${formatARS(priceARS)}`
   const whatsappUrl = buildWhatsAppUrl(settings.whatsapp_number, whatsappMsg)
-
   const specs = product.specs as Record<string, string> | null
 
   return (
@@ -75,14 +81,22 @@ export default async function ProductDetailPage({ params }: Props) {
       <div className="grid items-start gap-10 lg:grid-cols-[1.18fr_0.82fr] lg:gap-14">
         {/* Columna izquierda: imagen + trade-in debajo en desktop */}
         <div className="flex flex-col gap-6">
-          <div className="relative aspect-square overflow-hidden rounded-[2rem] border border-[#E5E7EB] bg-gray-100">
+          <div className={
+            isIphone
+              ? 'relative aspect-square overflow-hidden rounded-[2rem] bg-[#F5F5F7]'
+              : 'relative aspect-square isolate overflow-hidden rounded-[2rem] bg-white ring-1 ring-black/[0.07]'
+          }>
             <ProductImage
               imageUrl={product.image_url}
               alt={product.name}
               fill
               sizes="(max-width: 1024px) 100vw, 50vw"
-              className="h-full w-full"
-              imageClassName="p-12 sm:p-16"
+              className={isIphone ? 'h-full w-full bg-[#F5F5F7]' : 'h-full w-full bg-white'}
+              imageClassName={
+                isIphone
+                  ? 'object-contain scale-[1.35] transition-transform duration-500'
+                  : 'object-contain mix-blend-multiply p-12 sm:p-16 transition-transform duration-500'
+              }
               priority
             />
           </div>
@@ -113,24 +127,28 @@ export default async function ProductDetailPage({ params }: Props) {
             </h1>
           </div>
 
+          {/* Bloque de precio — sin dólar de referencia */}
           <div className="rounded-[2rem] border border-[#E5E7EB] bg-white p-6 sm:p-8">
             <div className="flex flex-col gap-2">
-              <p className="text-5xl font-semibold tracking-[-0.06em] text-[#111111] sm:text-6xl">{formatARS(priceARS)}</p>
+              <p className="text-5xl font-semibold tracking-[-0.06em] text-[#111111] sm:text-6xl">
+                {formatARS(priceARS)}
+              </p>
               {settings.show_usd_price && (
                 <p className="text-xs uppercase tracking-[0.2em] text-[#6B7280]">
-                  {formatUSD(product.price_usd)} USD
+                  {formatUSD(product.price_usd)}
                 </p>
               )}
             </div>
-            {installmentOptions[0] && (
+            {singlePayment && (
               <p className="mt-5 rounded-[1.5rem] bg-[#f8f8f9] px-6 py-5 text-sm leading-7 text-[#6B7280]">
-                1 pago sin recargo: {formatARS(installmentOptions[0].total_ars)}. Dólar de referencia ${dollarRate}.
+                {singlePayment.label}: {formatARS(singlePayment.total_ars)}
               </p>
             )}
           </div>
 
-          {settings.show_installments && installmentOptions.length > 0 && (
-            <InstallmentsTable options={installmentOptions} />
+          {/* Tabla de cuotas agrupada */}
+          {settings.show_installments && computedGroups.length > 0 && (
+            <InstallmentsTable groups={computedGroups} />
           )}
 
           {product.description && (
@@ -173,7 +191,6 @@ export default async function ProductDetailPage({ params }: Props) {
               </div>
             ))}
           </div>
-
         </div>
       </div>
 

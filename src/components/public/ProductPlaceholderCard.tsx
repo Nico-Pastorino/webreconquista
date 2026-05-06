@@ -7,7 +7,7 @@ export default function ProductPlaceholderCard({ title = 'Producto Apple disponi
     <div className="flex h-full flex-col overflow-hidden rounded-[1.5rem] border border-[#E5E7EB] bg-white p-4 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md">
       <ProductImage
         alt="Imagen próximamente"
-        className="mb-6 aspect-square rounded-[1.25rem] bg-gray-100"
+        className="mb-6 aspect-square isolate overflow-hidden rounded-[1.25rem] bg-white ring-1 ring-black/[0.06]"
         imageClassName="p-10"
       />
       <p className="mb-2 text-[11px] font-medium uppercase tracking-[0.24em] text-[#6B7280]">

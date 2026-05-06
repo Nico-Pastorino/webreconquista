@@ -2,6 +2,8 @@ import type {
   Product,
   ProductCard,
   InstallmentPlan,
+  FinancingGroup,
+  FinancingOption,
   DollarRate,
   TradeInValue,
   SiteSettings,
@@ -47,6 +49,14 @@ export async function getInstallmentPlans(): Promise<InstallmentPlan[]> {
 
 export async function getAllInstallmentPlans(): Promise<InstallmentPlan[]> {
   return (await getStorage()).getAllInstallmentPlans()
+}
+
+export async function getFinancingGroups(activeOnly = false): Promise<FinancingGroup[]> {
+  return (await getStorage()).getFinancingGroups(activeOnly)
+}
+
+export async function getFinancingOptions(groupId?: number, activeOnly = false): Promise<FinancingOption[]> {
+  return (await getStorage()).getFinancingOptions(groupId, activeOnly)
 }
 
 // ─── Plan Canje ───────────────────────────────────────────────

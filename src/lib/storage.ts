@@ -3,6 +3,8 @@ import path from 'node:path'
 import type {
   Category,
   DollarRate,
+  FinancingGroup,
+  FinancingOption,
   InstallmentPlan,
   Product,
   ProductCard,
@@ -32,12 +34,16 @@ type DemoStoreData = {
     installment: number
     tradeIn: number
     dollar: number
+    financingGroup: number
+    financingOption: number
   }
   products: Product[]
   installment_plans: InstallmentPlan[]
   dollar_rate: DollarRate
   trade_in_values: TradeInValue[]
   site_settings: SiteSettings
+  financing_groups: FinancingGroup[]
+  financing_options: FinancingOption[]
 }
 
 type InstallmentCreateInput = {
@@ -52,6 +58,36 @@ type InstallmentUpdateInput = {
   surcharge_pct: number
   label?: string | null
   active: boolean
+}
+
+type FinancingGroupCreateInput = {
+  name: string
+  sort_order?: number
+}
+
+type FinancingGroupUpdateInput = {
+  id: number
+  name: string
+  active: boolean
+  sort_order: number
+}
+
+type FinancingOptionCreateInput = {
+  group_id: number
+  installments: number
+  surcharge_pct: number
+  label?: string | null
+  sort_order?: number
+}
+
+type FinancingOptionUpdateInput = {
+  id: number
+  group_id: number
+  installments: number
+  surcharge_pct: number
+  label?: string | null
+  active: boolean
+  sort_order: number
 }
 
 type TradeInCreateInput = {
@@ -99,7 +135,13 @@ function normalizeProductPayload(input: ProductInput | ProductUpdateInput) {
 
 async function readDemoStore(): Promise<DemoStoreData> {
   const raw = await fs.readFile(DEMO_STORE_PATH, 'utf8')
-  return JSON.parse(raw) as DemoStoreData
+  const data = JSON.parse(raw) as DemoStoreData
+  // Garantizar arrays aunque el JSON sea viejo
+  data.financing_groups = data.financing_groups ?? []
+  data.financing_options = data.financing_options ?? []
+  data.counters.financingGroup = data.counters.financingGroup ?? data.financing_groups.length
+  data.counters.financingOption = data.counters.financingOption ?? data.financing_options.length
+  return data
 }
 
 async function writeDemoStore(store: DemoStoreData): Promise<void> {
@@ -244,16 +286,34 @@ const demoStorage = {
     return updated
   },
 
-  async getInstallmentPlans(activeOnly = true): Promise<InstallmentPlan[]> {
+  // getInstallmentPlans: retorna opciones activas de financing_options mapeadas
+  // a InstallmentPlan para backward-compat con ProductCard y catálogos
+  async getInstallmentPlans(): Promise<InstallmentPlan[]> {
     const store = await readDemoStore()
-    return store.installment_plans
-      .filter((plan) => !activeOnly || plan.active)
-      .sort((a, b) => a.months - b.months)
-      .map((plan) => ({ ...plan, surcharge_pct: Number(plan.surcharge_pct) }))
+    const activeGroups = new Set(store.financing_groups.filter((g) => g.active).map((g) => g.id))
+    return store.financing_options
+      .filter((o) => o.active && activeGroups.has(o.group_id))
+      .sort((a, b) => a.installments - b.installments)
+      .map((o) => ({
+        id: o.id,
+        months: o.installments,
+        surcharge_pct: Number(o.surcharge_pct),
+        label: o.label,
+        active: o.active,
+      }))
   },
 
   async getAllInstallmentPlans(): Promise<InstallmentPlan[]> {
-    return demoStorage.getInstallmentPlans(false)
+    const store = await readDemoStore()
+    return store.financing_options
+      .sort((a, b) => a.installments - b.installments)
+      .map((o) => ({
+        id: o.id,
+        months: o.installments,
+        surcharge_pct: Number(o.surcharge_pct),
+        label: o.label,
+        active: o.active,
+      }))
   },
 
   async createInstallmentPlan(input: InstallmentCreateInput): Promise<InstallmentPlan> {
@@ -308,6 +368,110 @@ const demoStorage = {
     await writeDemoStore(store)
     return true
   },
+
+  // ─── Financing Groups ─────────────────────────────────────────
+
+  async getFinancingGroups(activeOnly = false): Promise<FinancingGroup[]> {
+    const store = await readDemoStore()
+    return store.financing_groups
+      .filter((g) => !activeOnly || g.active)
+      .sort((a, b) => a.sort_order - b.sort_order || a.id - b.id)
+  },
+
+  async createFinancingGroup(input: FinancingGroupCreateInput): Promise<FinancingGroup> {
+    const store = await readDemoStore()
+    const id = (store.counters.financingGroup ?? 0) + 1
+    const maxOrder = store.financing_groups.reduce((m, g) => Math.max(m, g.sort_order), 0)
+    const group: FinancingGroup = {
+      id,
+      name: input.name,
+      active: true,
+      sort_order: input.sort_order ?? maxOrder + 1,
+    }
+    store.counters.financingGroup = id
+    store.financing_groups.push(group)
+    await writeDemoStore(store)
+    return group
+  },
+
+  async updateFinancingGroup(input: FinancingGroupUpdateInput): Promise<FinancingGroup | null> {
+    const store = await readDemoStore()
+    const index = store.financing_groups.findIndex((g) => g.id === input.id)
+    if (index === -1) return null
+    const updated: FinancingGroup = { id: input.id, name: input.name, active: input.active, sort_order: input.sort_order }
+    store.financing_groups[index] = updated
+    await writeDemoStore(store)
+    return updated
+  },
+
+  async deleteFinancingGroup(id: number): Promise<boolean> {
+    const store = await readDemoStore()
+    const next = store.financing_groups.filter((g) => g.id !== id)
+    if (next.length === store.financing_groups.length) return false
+    store.financing_groups = next
+    store.financing_options = store.financing_options.filter((o) => o.group_id !== id)
+    await writeDemoStore(store)
+    return true
+  },
+
+  // ─── Financing Options ────────────────────────────────────────
+
+  async getFinancingOptions(groupId?: number, activeOnly = false): Promise<FinancingOption[]> {
+    const store = await readDemoStore()
+    return store.financing_options
+      .filter((o) => (!groupId || o.group_id === groupId) && (!activeOnly || o.active))
+      .sort((a, b) => a.sort_order - b.sort_order || a.installments - b.installments)
+      .map((o) => ({ ...o, surcharge_pct: Number(o.surcharge_pct) }))
+  },
+
+  async createFinancingOption(input: FinancingOptionCreateInput): Promise<FinancingOption> {
+    const store = await readDemoStore()
+    const id = (store.counters.financingOption ?? 0) + 1
+    const groupOptions = store.financing_options.filter((o) => o.group_id === input.group_id)
+    const maxOrder = groupOptions.reduce((m, o) => Math.max(m, o.sort_order), 0)
+    const option: FinancingOption = {
+      id,
+      group_id: input.group_id,
+      installments: input.installments,
+      surcharge_pct: Number(input.surcharge_pct),
+      label: input.label ?? null,
+      active: true,
+      sort_order: input.sort_order ?? maxOrder + 1,
+    }
+    store.counters.financingOption = id
+    store.financing_options.push(option)
+    await writeDemoStore(store)
+    return option
+  },
+
+  async updateFinancingOption(input: FinancingOptionUpdateInput): Promise<FinancingOption | null> {
+    const store = await readDemoStore()
+    const index = store.financing_options.findIndex((o) => o.id === input.id)
+    if (index === -1) return null
+    const updated: FinancingOption = {
+      id: input.id,
+      group_id: input.group_id,
+      installments: input.installments,
+      surcharge_pct: Number(input.surcharge_pct),
+      label: input.label ?? null,
+      active: input.active,
+      sort_order: input.sort_order,
+    }
+    store.financing_options[index] = updated
+    await writeDemoStore(store)
+    return updated
+  },
+
+  async deleteFinancingOption(id: number): Promise<boolean> {
+    const store = await readDemoStore()
+    const next = store.financing_options.filter((o) => o.id !== id)
+    if (next.length === store.financing_options.length) return false
+    store.financing_options = next
+    await writeDemoStore(store)
+    return true
+  },
+
+  // ─── Trade-In ─────────────────────────────────────────────────
 
   async getTradeInModels(): Promise<string[]> {
     const store = await readDemoStore()
@@ -379,6 +543,8 @@ const demoStorage = {
     await writeDemoStore(store)
     return true
   },
+
+  // ─── Site Settings ────────────────────────────────────────────
 
   async getSiteSettings(): Promise<SiteSettings> {
     const store = await readDemoStore()
@@ -508,16 +674,34 @@ const postgresStorage = {
     return { ...rows[0], rate: Number(rows[0].rate) }
   },
 
-  async getInstallmentPlans(activeOnly = true): Promise<InstallmentPlan[]> {
+  // getInstallmentPlans: retorna opciones activas mapeadas a InstallmentPlan
+  async getInstallmentPlans(): Promise<InstallmentPlan[]> {
     const sql = getSql()
-    const rows = activeOnly
-      ? await sql<InstallmentPlan[]>`SELECT * FROM installment_plans WHERE active = TRUE ORDER BY months ASC`
-      : await sql<InstallmentPlan[]>`SELECT * FROM installment_plans ORDER BY months ASC`
-    return rows.map((plan) => ({ ...plan, surcharge_pct: Number(plan.surcharge_pct) }))
+    const rows = await sql<FinancingOption[]>`
+      SELECT fo.* FROM financing_options fo
+      JOIN financing_groups fg ON fg.id = fo.group_id
+      WHERE fo.active = TRUE AND fg.active = TRUE
+      ORDER BY fo.installments ASC
+    `
+    return rows.map((o) => ({
+      id: o.id,
+      months: o.installments,
+      surcharge_pct: Number(o.surcharge_pct),
+      label: o.label,
+      active: o.active,
+    }))
   },
 
   async getAllInstallmentPlans(): Promise<InstallmentPlan[]> {
-    return postgresStorage.getInstallmentPlans(false)
+    const sql = getSql()
+    const rows = await sql<FinancingOption[]>`SELECT * FROM financing_options ORDER BY installments ASC`
+    return rows.map((o) => ({
+      id: o.id,
+      months: o.installments,
+      surcharge_pct: Number(o.surcharge_pct),
+      label: o.label,
+      active: o.active,
+    }))
   },
 
   async createInstallmentPlan(input: InstallmentCreateInput): Promise<InstallmentPlan> {
@@ -547,6 +731,87 @@ const postgresStorage = {
     const rows = await sql<{ id: number }[]>`DELETE FROM installment_plans WHERE id = ${id} RETURNING id`
     return rows.length > 0
   },
+
+  // ─── Financing Groups (postgres) ──────────────────────────────
+
+  async getFinancingGroups(activeOnly = false): Promise<FinancingGroup[]> {
+    const sql = getSql()
+    const rows = activeOnly
+      ? await sql<FinancingGroup[]>`SELECT * FROM financing_groups WHERE active = TRUE ORDER BY sort_order ASC, id ASC`
+      : await sql<FinancingGroup[]>`SELECT * FROM financing_groups ORDER BY sort_order ASC, id ASC`
+    return rows
+  },
+
+  async createFinancingGroup(input: FinancingGroupCreateInput): Promise<FinancingGroup> {
+    const sql = getSql()
+    const rows = await sql<FinancingGroup[]>`
+      INSERT INTO financing_groups (name, active, sort_order)
+      VALUES (${input.name}, TRUE, COALESCE(${input.sort_order ?? null}, (SELECT COALESCE(MAX(sort_order), 0) + 1 FROM financing_groups)))
+      RETURNING *
+    `
+    return rows[0]
+  },
+
+  async updateFinancingGroup(input: FinancingGroupUpdateInput): Promise<FinancingGroup | null> {
+    const sql = getSql()
+    const rows = await sql<FinancingGroup[]>`
+      UPDATE financing_groups SET name = ${input.name}, active = ${input.active}, sort_order = ${input.sort_order}
+      WHERE id = ${input.id} RETURNING *
+    `
+    return rows[0] ?? null
+  },
+
+  async deleteFinancingGroup(id: number): Promise<boolean> {
+    const sql = getSql()
+    const rows = await sql<{ id: number }[]>`DELETE FROM financing_groups WHERE id = ${id} RETURNING id`
+    return rows.length > 0
+  },
+
+  // ─── Financing Options (postgres) ─────────────────────────────
+
+  async getFinancingOptions(groupId?: number, activeOnly = false): Promise<FinancingOption[]> {
+    const sql = getSql()
+    const rows = groupId
+      ? activeOnly
+        ? await sql<FinancingOption[]>`SELECT * FROM financing_options WHERE group_id = ${groupId} AND active = TRUE ORDER BY sort_order ASC, installments ASC`
+        : await sql<FinancingOption[]>`SELECT * FROM financing_options WHERE group_id = ${groupId} ORDER BY sort_order ASC, installments ASC`
+      : activeOnly
+        ? await sql<FinancingOption[]>`SELECT * FROM financing_options WHERE active = TRUE ORDER BY sort_order ASC, installments ASC`
+        : await sql<FinancingOption[]>`SELECT * FROM financing_options ORDER BY sort_order ASC, installments ASC`
+    return rows.map((o) => ({ ...o, surcharge_pct: Number(o.surcharge_pct) }))
+  },
+
+  async createFinancingOption(input: FinancingOptionCreateInput): Promise<FinancingOption> {
+    const sql = getSql()
+    const rows = await sql<FinancingOption[]>`
+      INSERT INTO financing_options (group_id, installments, surcharge_pct, label, active, sort_order)
+      VALUES (
+        ${input.group_id}, ${input.installments}, ${input.surcharge_pct}, ${input.label ?? null}, TRUE,
+        COALESCE(${input.sort_order ?? null}, (SELECT COALESCE(MAX(sort_order), 0) + 1 FROM financing_options WHERE group_id = ${input.group_id}))
+      )
+      RETURNING *
+    `
+    return { ...rows[0], surcharge_pct: Number(rows[0].surcharge_pct) }
+  },
+
+  async updateFinancingOption(input: FinancingOptionUpdateInput): Promise<FinancingOption | null> {
+    const sql = getSql()
+    const rows = await sql<FinancingOption[]>`
+      UPDATE financing_options
+      SET group_id = ${input.group_id}, installments = ${input.installments}, surcharge_pct = ${input.surcharge_pct},
+          label = ${input.label ?? null}, active = ${input.active}, sort_order = ${input.sort_order}
+      WHERE id = ${input.id} RETURNING *
+    `
+    return rows[0] ? { ...rows[0], surcharge_pct: Number(rows[0].surcharge_pct) } : null
+  },
+
+  async deleteFinancingOption(id: number): Promise<boolean> {
+    const sql = getSql()
+    const rows = await sql<{ id: number }[]>`DELETE FROM financing_options WHERE id = ${id} RETURNING id`
+    return rows.length > 0
+  },
+
+  // ─── Trade-In (postgres) ──────────────────────────────────────
 
   async getTradeInModels(): Promise<string[]> {
     const sql = getSql()
@@ -599,6 +864,8 @@ const postgresStorage = {
     const rows = await sql<{ id: number }[]>`DELETE FROM trade_in_values WHERE id = ${id} RETURNING id`
     return rows.length > 0
   },
+
+  // ─── Site Settings (postgres) ─────────────────────────────────
 
   async getSiteSettings(): Promise<SiteSettings> {
     const sql = getSql()

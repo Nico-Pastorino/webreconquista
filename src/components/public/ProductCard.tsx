@@ -17,19 +17,47 @@ export default function ProductCard({ product, dollarRate, installmentPlans, sho
   const options = calcInstallments(product.price_usd, dollarRate, installmentPlans)
   const best = calcBestInstallment(options)
 
+  let bestLabel: string | null = null
+  if (best) {
+    if (best.months === 1 && best.surcharge_pct === 0) {
+      bestLabel = `1 pago sin recargo`
+    } else if (best.surcharge_pct === 0) {
+      bestLabel = `Hasta ${best.months} cuotas sin interés de ${formatARS(best.monthly_ars)}`
+    } else {
+      bestLabel = `Hasta ${best.months} cuotas de ${formatARS(best.monthly_ars)}`
+    }
+  }
+
+  // iPhone: la imagen del CDN trae fondo gris incorporado.
+  // Solución: contenedor gris que hace match + imagen escalada al 135% para
+  // que el fondo gris llene el contenedor y no se vea como un recuadro.
+  const isIphone = product.category === 'iphone'
+
+  const containerClass = isIphone
+    ? 'relative mb-6 aspect-square overflow-hidden rounded-[1.25rem] bg-[#F5F5F7]'
+    : 'relative mb-6 aspect-square isolate overflow-hidden rounded-[1.25rem] bg-white ring-1 ring-black/[0.06]'
+
+  const imgWrapperClass = isIphone
+    ? 'h-full w-full bg-[#F5F5F7]'
+    : 'h-full w-full bg-white'
+
+  const imgClass = isIphone
+    ? 'object-contain scale-[1.35] transition-transform duration-500 group-hover:scale-[1.42]'
+    : 'object-contain mix-blend-multiply p-5 transition-transform duration-500 group-hover:scale-[1.04]'
+
   return (
     <Link
       href={`/productos/${product.slug}`}
       className="group flex h-full flex-col overflow-hidden rounded-[1.5rem] border border-[#E5E7EB] bg-white p-4 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md"
     >
-      <div className="relative mb-6 aspect-square overflow-hidden rounded-[1.25rem] bg-gray-100">
+      <div className={containerClass}>
         <ProductImage
           imageUrl={product.image_url}
           alt={product.name}
           fill
           sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
-          className="h-full w-full"
-          imageClassName="p-8 transition-transform duration-500 group-hover:scale-[1.04]"
+          className={imgWrapperClass}
+          imageClassName={imgClass}
         />
       </div>
 
@@ -48,13 +76,11 @@ export default function ProductCard({ product, dollarRate, installmentPlans, sho
           </p>
           {showUSD && (
             <p className="mt-1 text-xs uppercase tracking-[0.18em] text-[#6B7280]">
-              {formatUSD(product.price_usd)} USD
+              {formatUSD(product.price_usd)}
             </p>
           )}
-          {best && (
-            <p className="mt-2 text-sm text-[#6B7280]">
-              {best.months}x {formatARS(best.monthly_ars)}
-            </p>
+          {bestLabel && (
+            <p className="mt-2 text-sm text-[#6B7280]">{bestLabel}</p>
           )}
         </div>
 

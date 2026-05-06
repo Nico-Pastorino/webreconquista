@@ -34,10 +34,12 @@ function Toggle({ checked, onChange, label }: { checked: boolean; onChange: (v: 
       <span className="text-sm text-[#111111]">{label}</span>
       <button
         type="button"
+        role="switch"
+        aria-checked={checked}
         onClick={() => onChange(!checked)}
-        className={`relative h-5 w-9 rounded-full transition-colors ${checked ? 'bg-black' : 'bg-[#d6d6d6]'}`}
+        className={`relative inline-flex h-6 w-11 shrink-0 rounded-full border-2 border-transparent transition-colors duration-200 focus:outline-none ${checked ? 'bg-black' : 'bg-[#d6d6d6]'}`}
       >
-        <span className={`absolute top-0.5 h-4 w-4 rounded-full bg-white shadow transition-transform ${checked ? 'translate-x-4' : 'translate-x-0.5'}`} />
+        <span className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition-transform duration-200 ${checked ? 'translate-x-5' : 'translate-x-0'}`} />
       </button>
     </label>
   )

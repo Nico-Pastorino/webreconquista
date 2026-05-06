@@ -28,7 +28,7 @@ CREATE INDEX idx_products_category ON products(category) WHERE active = TRUE;
 CREATE INDEX idx_products_featured  ON products(featured)  WHERE active = TRUE;
 CREATE INDEX idx_products_slug      ON products(slug);
 
--- Planes de cuotas
+-- Planes de cuotas (legacy — se mantiene para backwards-compat)
 CREATE TABLE installment_plans (
   id             SERIAL PRIMARY KEY,
   months         SMALLINT NOT NULL CHECK (months > 0),
@@ -36,6 +36,25 @@ CREATE TABLE installment_plans (
   label          TEXT,
   active         BOOLEAN NOT NULL DEFAULT TRUE,
   UNIQUE (months)
+);
+
+-- Grupos de financiación (ej: "Banco Nación", "Visa / Mastercard")
+CREATE TABLE financing_groups (
+  id         SERIAL PRIMARY KEY,
+  name       TEXT NOT NULL,
+  active     BOOLEAN NOT NULL DEFAULT TRUE,
+  sort_order SMALLINT NOT NULL DEFAULT 0
+);
+
+-- Opciones de cuotas dentro de cada grupo
+CREATE TABLE financing_options (
+  id            SERIAL PRIMARY KEY,
+  group_id      INTEGER NOT NULL REFERENCES financing_groups(id) ON DELETE CASCADE,
+  installments  SMALLINT NOT NULL CHECK (installments > 0),
+  surcharge_pct NUMERIC(5, 2) NOT NULL DEFAULT 0 CHECK (surcharge_pct >= 0),
+  label         TEXT,
+  active        BOOLEAN NOT NULL DEFAULT TRUE,
+  sort_order    SMALLINT NOT NULL DEFAULT 0
 );
 
 -- Valor del dólar (siempre 1 fila, actualizamos en lugar de insertar)
@@ -72,6 +91,16 @@ INSERT INTO installment_plans (months, surcharge_pct, label) VALUES
   (3,  0,  '3 cuotas sin interés'),
   (6,  30, '6 cuotas'),
   (12, 60, '12 cuotas');
+
+INSERT INTO financing_groups (name, active, sort_order) VALUES
+  ('Efectivo / Débito', TRUE, 1),
+  ('Tarjeta de crédito', TRUE, 2);
+
+INSERT INTO financing_options (group_id, installments, surcharge_pct, label, active, sort_order) VALUES
+  (1, 1,  0,  '1 pago sin recargo',   TRUE, 1),
+  (2, 3,  0,  '3 cuotas sin interés', TRUE, 1),
+  (2, 6,  30, '6 cuotas',             TRUE, 2),
+  (2, 12, 60, '12 cuotas',            TRUE, 3);
 
 INSERT INTO site_settings (key, value) VALUES
   ('whatsapp_number',   '5491100000000'),

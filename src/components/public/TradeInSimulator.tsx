@@ -142,7 +142,7 @@ export default function TradeInSimulator({ models, productPriceUsd, dollarRate }
                     <span className="block text-sm text-[#6B7280]">Pagás</span>
                     <span className="text-3xl font-semibold tracking-[-0.04em] text-[#111111]">{formatARS(result.final_price_ars)}</span>
                   </div>
-                  <span className="text-xs uppercase tracking-[0.18em] text-[#6B7280]">{formatUSD(result.final_price_usd)} USD</span>
+                  <span className="text-xs uppercase tracking-[0.18em] text-[#6B7280]">{formatUSD(result.final_price_usd)}</span>
                 </div>
               </>
             )}

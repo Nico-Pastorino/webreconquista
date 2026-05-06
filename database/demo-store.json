@@ -1,9 +1,11 @@
 {
   "counters": {
     "product": 7,
-    "installment": 4,
+    "installment": 5,
     "tradeIn": 21,
-    "dollar": 1
+    "dollar": 1,
+    "financingGroup": 3,
+    "financingOption": 4
   },
   "products": [
     {
@@ -12,7 +14,7 @@
       "name": "q13",
       "category": "iphone",
       "price_usd": 122,
-      "image_url": "https://i.blogs.es/06d684/apple-iphone-14-color-lineup/1366_2000.webp",
+      "image_url": "https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-16-finish-select-202409-6-1inch-black?wid=800&hei=800&fmt=png-alpha",
       "featured": false,
       "active": true,
       "description": "",
@@ -25,16 +27,11 @@
       "name": "iPhone 15 Pro 256GB",
       "category": "iphone",
       "price_usd": 1099,
-      "image_url": "https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-pro-finish-select-202309-6-1inch-bluetitanium?wid=5120&hei=2880&fmt=p-jpg&qlt=80&.v=1693009285394",
+      "image_url": "https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-pro-finish-select-202309-6-1inch-bluetitanium?wid=800&hei=800&fmt=png-alpha",
       "featured": true,
       "active": true,
       "description": "El iPhone más potente con chip A17 Pro y sistema de cámara Pro.",
-      "specs": {
-        "chip": "A17 Pro",
-        "pantalla": "6.1\" Super Retina XDR",
-        "cámara": "48 MP Main",
-        "batería": "Todo el día"
-      },
+      "specs": null,
       "created_at": "2026-01-10T10:00:00.000Z"
     },
     {
@@ -43,7 +40,7 @@
       "name": "iPhone 15 128GB",
       "category": "iphone",
       "price_usd": 799,
-      "image_url": "https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-finish-select-202309-6-1inch-pink?wid=5120&hei=2880&fmt=p-jpg&qlt=80&.v=1692937346745",
+      "image_url": "https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-finish-select-202309-6-1inch-pink?wid=800&hei=800&fmt=png-alpha",
       "featured": true,
       "active": true,
       "description": "El iPhone 15 con Dynamic Island y cámara de 48 MP.",
@@ -61,15 +58,11 @@
       "name": "iPad Air M2 256GB",
       "category": "ipad",
       "price_usd": 749,
-      "image_url": "https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/ipad-air-select-wifi-blue-202405?wid=5120&hei=2880&fmt=p-jpg&qlt=80",
+      "image_url": "https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/ipad-mini-select-wifi-blue-202410?wid=800&hei=800&fmt=png-alpha",
       "featured": false,
       "active": true,
       "description": "El iPad Air más potente con chip M2.",
-      "specs": {
-        "chip": "Apple M2",
-        "pantalla": "11\" Liquid Retina",
-        "almacenamiento": "256GB"
-      },
+      "specs": null,
       "created_at": "2026-01-08T10:00:00.000Z"
     },
     {
@@ -78,7 +71,7 @@
       "name": "MacBook Air M3 8GB 256GB",
       "category": "mac",
       "price_usd": 1099,
-      "image_url": "https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/macbook-air-midnight-select-20220606?wid=904&hei=840&fmt=jpeg&qlt=90&.v=1653084303665",
+      "image_url": "https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/macbook-air-midnight-select-20220606?wid=800&hei=800&fmt=p-jpg&qlt=80",
       "featured": true,
       "active": true,
       "description": "La notebook ultradelgada con el poderoso chip M3.",
@@ -96,15 +89,11 @@
       "name": "Apple Watch Series 9 41mm",
       "category": "watch",
       "price_usd": 399,
-      "image_url": "https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/MQDY3ref_VW_34FR+watch-45-alum-midnight-nc-9s_VW_34FR_WF_CO?wid=700&hei=700&trim=1%2C0&fmt=p-jpg&qlt=95",
+      "image_url": null,
       "featured": false,
       "active": true,
       "description": "El Apple Watch más inteligente con chip S9.",
-      "specs": {
-        "chip": "S9",
-        "pantalla": "41mm Always-On Retina",
-        "resistencia": "WR50m"
-      },
+      "specs": null,
       "created_at": "2026-01-06T10:00:00.000Z"
     },
     {
@@ -113,7 +102,7 @@
       "name": "AirPods Pro 2da Gen",
       "category": "airpods",
       "price_usd": 249,
-      "image_url": "https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/MQD83?wid=532&hei=582&fmt=jpeg&qlt=95",
+      "image_url": "https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/MQD83?wid=800&hei=800&fmt=p-jpg&qlt=80",
       "featured": false,
       "active": true,
       "description": "AirPods Pro con cancelación de ruido adaptativa.",
@@ -129,16 +118,16 @@
     {
       "id": 1,
       "months": 1,
-      "surcharge_pct": 0,
-      "label": "1 pago sin recargo",
-      "active": false
+      "surcharge_pct": 4,
+      "label": "131",
+      "active": true
     },
     {
       "id": 2,
       "months": 3,
-      "surcharge_pct": 0,
-      "label": "3 cuotas sin interés",
-      "active": false
+      "surcharge_pct": 34,
+      "label": "Tarjeta naranja",
+      "active": true
     },
     {
       "id": 3,
@@ -153,12 +142,19 @@
       "surcharge_pct": 12,
       "label": "Banco Nacion",
       "active": true
+    },
+    {
+      "id": 5,
+      "months": 9,
+      "surcharge_pct": 23,
+      "label": "131313",
+      "active": true
     }
   ],
   "dollar_rate": {
     "id": 1,
-    "rate": 1430,
-    "updated_at": "2026-04-29T03:30:29.608Z"
+    "rate": 1410,
+    "updated_at": "2026-05-06T18:14:11.914Z"
   },
   "trade_in_values": [
     {
@@ -315,7 +311,65 @@
     "store_name": "STORE RQTA",
     "store_tagline": "Productos Apple",
     "trade_in_enabled": true,
-    "show_usd_price": true,
+    "show_usd_price": false,
     "show_installments": true
-  }
+  },
+  "financing_groups": [
+    {
+      "id": 1,
+      "name": "Efectivo / Débito",
+      "active": true,
+      "sort_order": 1
+    },
+    {
+      "id": 2,
+      "name": "Tarjeta de crédito",
+      "active": true,
+      "sort_order": 2
+    },
+    {
+      "id": 3,
+      "name": "Banco nacion",
+      "active": true,
+      "sort_order": 3
+    }
+  ],
+  "financing_options": [
+    {
+      "id": 1,
+      "group_id": 1,
+      "installments": 1,
+      "surcharge_pct": 0,
+      "label": "1 pago sin recargo",
+      "active": true,
+      "sort_order": 1
+    },
+    {
+      "id": 2,
+      "group_id": 2,
+      "installments": 3,
+      "surcharge_pct": 0,
+      "label": "3 cuotas sin interés",
+      "active": true,
+      "sort_order": 1
+    },
+    {
+      "id": 3,
+      "group_id": 2,
+      "installments": 6,
+      "surcharge_pct": 30,
+      "label": "6 cuotas",
+      "active": true,
+      "sort_order": 2
+    },
+    {
+      "id": 4,
+      "group_id": 2,
+      "installments": 12,
+      "surcharge_pct": 60,
+      "label": "12 cuotas",
+      "active": true,
+      "sort_order": 3
+    }
+  ]
 }
