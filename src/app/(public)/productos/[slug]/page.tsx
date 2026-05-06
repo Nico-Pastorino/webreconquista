@@ -58,7 +58,7 @@ export default async function ProductDetailPage({ params }: Props) {
     .flatMap((g) => g.options)
     .find((o) => o.installments === 1 && o.surcharge_pct === 0)
 
-  const categoryHref = product.category === 'accesorios' ? '/productos?cat=accesorios' : `/${product.category}`
+  const categoryHref = `/${product.category}`
   const isIphone = product.category === 'iphone'
   const whatsappMsg = `${settings.whatsapp_message}${product.name} - ${formatARS(priceARS)}`
   const whatsappUrl = buildWhatsAppUrl(settings.whatsapp_number, whatsappMsg)

@@ -27,8 +27,7 @@ export default function CatalogPageContent({
   installmentPlans,
   showUSD,
 }: CatalogPageContentProps) {
-  const categoryHref = (category: Category) =>
-    category === 'accesorios' ? '/productos?cat=accesorios' : `/${category}`
+  const categoryHref = (category: Category) => `/${category}`
 
   return (
     <div className="mx-auto w-full max-w-7xl px-6 py-20 lg:px-8 lg:py-24">
