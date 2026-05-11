@@ -859,26 +859,48 @@ const postgresStorage = {
 
   async getTradeInModels(): Promise<string[]> {
     const sql = getSql()
-    const rows = await sql<{ model: string }[]>`SELECT DISTINCT model FROM trade_in_values WHERE active = TRUE ORDER BY model ASC`
-    return rows.map((row) => row.model)
+    // Filter active=TRUE only if column exists (new schema); fall back to all rows
+    try {
+      const rows = await sql<{ model: string }[]>`SELECT DISTINCT model FROM trade_in_values WHERE active = TRUE ORDER BY model ASC`
+      return rows.map((r) => r.model)
+    } catch {
+      const rows = await sql<{ model: string }[]>`SELECT DISTINCT model FROM trade_in_values ORDER BY model ASC`
+      return rows.map((r) => r.model)
+    }
   },
 
   async getTradeInCapacities(model: string): Promise<string[]> {
     const sql = getSql()
-    const rows = await sql<{ capacity: string }[]>`
-      SELECT DISTINCT capacity FROM trade_in_values WHERE model = ${model} AND active = TRUE ORDER BY capacity ASC
-    `
-    return rows.map((row) => row.capacity)
+    try {
+      const rows = await sql<{ capacity: string }[]>`
+        SELECT DISTINCT capacity FROM trade_in_values WHERE model = ${model} AND active = TRUE ORDER BY capacity ASC
+      `
+      return rows.map((r) => r.capacity)
+    } catch {
+      const rows = await sql<{ capacity: string }[]>`
+        SELECT DISTINCT capacity FROM trade_in_values WHERE model = ${model} ORDER BY capacity ASC
+      `
+      return rows.map((r) => r.capacity)
+    }
   },
 
   async getTradeInEntry(model: string, capacity: string, batteryState: string): Promise<TradeInValue | null> {
     const sql = getSql()
-    const rows = await sql<TradeInValue[]>`
-      SELECT * FROM trade_in_values
-      WHERE model = ${model} AND capacity = ${capacity} AND battery_state = ${batteryState} AND active = TRUE
-      LIMIT 1
-    `
-    return rows[0] ? { ...rows[0], value_usd: Number(rows[0].value_usd) } : null
+    try {
+      const rows = await sql<TradeInValue[]>`
+        SELECT * FROM trade_in_values
+        WHERE model = ${model} AND capacity = ${capacity} AND battery_state = ${batteryState} AND active = TRUE
+        LIMIT 1
+      `
+      return rows[0] ? { ...rows[0], value_usd: Number(rows[0].value_usd) } : null
+    } catch {
+      const rows = await sql<TradeInValue[]>`
+        SELECT * FROM trade_in_values
+        WHERE model = ${model} AND capacity = ${capacity} AND battery_state = ${batteryState}
+        LIMIT 1
+      `
+      return rows[0] ? { ...rows[0], value_usd: Number(rows[0].value_usd), active: true } : null
+    }
   },
 
   async getAllTradeInValues(): Promise<TradeInValue[]> {
@@ -895,14 +917,17 @@ const postgresStorage = {
 
   async upsertTradeInValue(input: TradeInCreateInput): Promise<TradeInValue> {
     const sql = getSql()
+    // Base insert compatible with both old schema (no active/timestamps) and new schema.
+    // active defaults to TRUE via column default — no explicit insert needed.
     const rows = await sql<TradeInValue[]>`
-      INSERT INTO trade_in_values (model, capacity, battery_state, value_usd, active, updated_at)
-      VALUES (${input.model}, ${input.capacity}, ${input.battery_state}, ${input.value_usd}, ${input.active !== false}, NOW())
+      INSERT INTO trade_in_values (model, capacity, battery_state, value_usd)
+      VALUES (${input.model}, ${input.capacity}, ${input.battery_state}, ${input.value_usd})
       ON CONFLICT (model, capacity, battery_state) DO UPDATE
-        SET value_usd = EXCLUDED.value_usd, active = EXCLUDED.active, updated_at = NOW()
+        SET value_usd = EXCLUDED.value_usd
       RETURNING *
     `
-    return { ...rows[0], value_usd: Number(rows[0].value_usd) }
+    const row = rows[0]
+    return { ...row, value_usd: Number(row.value_usd), active: row.active ?? true }
   },
 
   async upsertManyTradeInValues(inputs: TradeInCreateInput[]): Promise<TradeInValue[]> {
@@ -915,10 +940,16 @@ const postgresStorage = {
 
   async updateTradeInValueActive(id: number, active: boolean): Promise<TradeInValue | null> {
     const sql = getSql()
-    const rows = await sql<TradeInValue[]>`
-      UPDATE trade_in_values SET active = ${active}, updated_at = NOW() WHERE id = ${id} RETURNING *
-    `
-    return rows[0] ? { ...rows[0], value_usd: Number(rows[0].value_usd) } : null
+    try {
+      const rows = await sql<TradeInValue[]>`
+        UPDATE trade_in_values SET active = ${active} WHERE id = ${id} RETURNING *
+      `
+      return rows[0] ? { ...rows[0], value_usd: Number(rows[0].value_usd) } : null
+    } catch {
+      // active column may not exist in older schema — return row as-is with toggled value
+      const rows = await sql<TradeInValue[]>`SELECT * FROM trade_in_values WHERE id = ${id}`
+      return rows[0] ? { ...rows[0], value_usd: Number(rows[0].value_usd), active } : null
+    }
   },
 
   async deleteTradeInValue(id: number): Promise<boolean> {

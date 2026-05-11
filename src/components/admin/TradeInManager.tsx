@@ -722,7 +722,7 @@ function QuickLoadPanel({
       </div>
       {effectiveModel && selectedCaps.size > 0 && (
         <p className="mt-3 text-xs text-[#666]">
-          Se crearán {selectedCaps.size * 3} combinaciones: {[...selectedCaps].join(', ')} × Excelente / Bueno / Regular
+          Se crearán {selectedCaps.size * 3} combinaciones: {[...selectedCaps].join(', ')} × 100% a 90% / 89% a 70% / Menos de 70%
         </p>
       )}
       <div className="mt-5 flex gap-2">
