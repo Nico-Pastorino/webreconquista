@@ -26,12 +26,12 @@ export async function POST(req: NextRequest) {
     const validated = body.map((item) => ({
       model: String(item.model ?? '').trim(),
       capacity: String(item.capacity ?? '').trim(),
-      battery_state: item.battery_state as 'excelente' | 'bueno' | 'regular',
+      battery_state: item.battery_state as '100-90' | '89-70' | 'MENOS-70',
       value_usd: Number(item.value_usd ?? 0),
       active: item.active !== false,
     }))
     const invalid = validated.find(
-      (v) => !v.model || !v.capacity || !['excelente', 'bueno', 'regular'].includes(v.battery_state) || v.value_usd < 0
+      (v) => !v.model || !v.capacity || !['100-90', '89-70', 'MENOS-70'].includes(v.battery_state) || v.value_usd < 0
     )
     if (invalid) return NextResponse.json({ error: 'Datos inválidos en alguna entrada' }, { status: 400 })
     const values = await upsertManyTradeInValues(validated)
@@ -42,7 +42,7 @@ export async function POST(req: NextRequest) {
 
   // Single upsert
   const { model, capacity, battery_state, value_usd } = body
-  if (!model || !capacity || !['excelente', 'bueno', 'regular'].includes(battery_state)) {
+  if (!model || !capacity || !['100-90', '89-70', 'MENOS-70'].includes(battery_state)) {
     return NextResponse.json({ error: 'Datos requeridos' }, { status: 400 })
   }
   const value = await (await getStorage()).upsertTradeInValue({

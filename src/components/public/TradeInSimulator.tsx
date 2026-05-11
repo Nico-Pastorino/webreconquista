@@ -13,16 +13,16 @@ interface Props {
 }
 
 const BATTERY_OPTIONS = [
-  { value: 'excelente', label: 'Excelente (batería > 85%)' },
-  { value: 'bueno', label: 'Bueno (batería 70-85%)' },
-  { value: 'regular', label: 'Regular (batería < 70%)' },
+  { value: '100-90',   label: '100% a 90%' },
+  { value: '89-70',    label: '89% a 70%' },
+  { value: 'MENOS-70', label: 'Menos de 70%' },
 ]
 
 export default function TradeInSimulator({ models, productPriceUsd, dollarRate }: Props) {
   const [selectedModel, setSelectedModel] = useState('')
   const [capacities, setCapacities] = useState<string[]>([])
   const [selectedCapacity, setSelectedCapacity] = useState('')
-  const [batteryState, setBatteryState] = useState('excelente')
+  const [batteryState, setBatteryState] = useState('100-90')
   const [result, setResult] = useState<TradeInResult | null>(null)
   const [loading, setLoading] = useState(false)
   const [loadingCaps, setLoadingCaps] = useState(false)

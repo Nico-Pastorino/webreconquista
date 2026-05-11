@@ -39,7 +39,8 @@ export interface TradeInValue {
   id: number
   model: string
   capacity: string
-  battery_state: 'excelente' | 'bueno' | 'regular'
+  /** '100-90' = 100% a 90% | '89-70' = 89% a 70% | 'MENOS-70' = Menos de 70% */
+  battery_state: '100-90' | '89-70' | 'MENOS-70'
   value_usd: number
   active: boolean
 }

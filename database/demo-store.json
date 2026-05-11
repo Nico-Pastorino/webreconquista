@@ -161,7 +161,7 @@
       "id": 1,
       "model": "iPhone 12",
       "capacity": "64GB",
-      "battery_state": "excelente",
+      "battery_state": "100-90",
       "value_usd": 210,
       "active": true
     },
@@ -169,7 +169,7 @@
       "id": 2,
       "model": "iPhone 12",
       "capacity": "64GB",
-      "battery_state": "bueno",
+      "battery_state": "89-70",
       "value_usd": 175,
       "active": true
     },
@@ -177,7 +177,7 @@
       "id": 3,
       "model": "iPhone 12",
       "capacity": "64GB",
-      "battery_state": "regular",
+      "battery_state": "MENOS-70",
       "value_usd": 130,
       "active": true
     },
@@ -185,7 +185,7 @@
       "id": 4,
       "model": "iPhone 12",
       "capacity": "128GB",
-      "battery_state": "excelente",
+      "battery_state": "100-90",
       "value_usd": 240,
       "active": true
     },
@@ -193,7 +193,7 @@
       "id": 5,
       "model": "iPhone 12",
       "capacity": "128GB",
-      "battery_state": "bueno",
+      "battery_state": "89-70",
       "value_usd": 200,
       "active": true
     },
@@ -201,7 +201,7 @@
       "id": 6,
       "model": "iPhone 12",
       "capacity": "128GB",
-      "battery_state": "regular",
+      "battery_state": "MENOS-70",
       "value_usd": 155,
       "active": true
     },
@@ -209,7 +209,7 @@
       "id": 7,
       "model": "iPhone 12",
       "capacity": "256GB",
-      "battery_state": "excelente",
+      "battery_state": "100-90",
       "value_usd": 285,
       "active": true
     },
@@ -217,7 +217,7 @@
       "id": 8,
       "model": "iPhone 12",
       "capacity": "256GB",
-      "battery_state": "bueno",
+      "battery_state": "89-70",
       "value_usd": 240,
       "active": true
     },
@@ -225,7 +225,7 @@
       "id": 9,
       "model": "iPhone 12",
       "capacity": "256GB",
-      "battery_state": "regular",
+      "battery_state": "MENOS-70",
       "value_usd": 185,
       "active": true
     },
@@ -233,7 +233,7 @@
       "id": 10,
       "model": "iPhone 12 mini",
       "capacity": "64GB",
-      "battery_state": "excelente",
+      "battery_state": "100-90",
       "value_usd": 185,
       "active": true
     },
@@ -241,7 +241,7 @@
       "id": 11,
       "model": "iPhone 12 mini",
       "capacity": "64GB",
-      "battery_state": "bueno",
+      "battery_state": "89-70",
       "value_usd": 155,
       "active": true
     },
@@ -249,7 +249,7 @@
       "id": 12,
       "model": "iPhone 12 mini",
       "capacity": "64GB",
-      "battery_state": "regular",
+      "battery_state": "MENOS-70",
       "value_usd": 115,
       "active": true
     },
@@ -257,7 +257,7 @@
       "id": 13,
       "model": "iPhone 12 mini",
       "capacity": "128GB",
-      "battery_state": "excelente",
+      "battery_state": "100-90",
       "value_usd": 215,
       "active": true
     },
@@ -265,7 +265,7 @@
       "id": 14,
       "model": "iPhone 12 mini",
       "capacity": "128GB",
-      "battery_state": "bueno",
+      "battery_state": "89-70",
       "value_usd": 180,
       "active": true
     },
@@ -273,7 +273,7 @@
       "id": 15,
       "model": "iPhone 12 mini",
       "capacity": "128GB",
-      "battery_state": "regular",
+      "battery_state": "MENOS-70",
       "value_usd": 138,
       "active": true
     },
@@ -281,7 +281,7 @@
       "id": 16,
       "model": "iPhone 12 mini",
       "capacity": "256GB",
-      "battery_state": "excelente",
+      "battery_state": "100-90",
       "value_usd": 255,
       "active": true
     },
@@ -289,7 +289,7 @@
       "id": 17,
       "model": "iPhone 12 mini",
       "capacity": "256GB",
-      "battery_state": "bueno",
+      "battery_state": "89-70",
       "value_usd": 215,
       "active": true
     },
@@ -297,7 +297,7 @@
       "id": 18,
       "model": "iPhone 12 mini",
       "capacity": "256GB",
-      "battery_state": "regular",
+      "battery_state": "MENOS-70",
       "value_usd": 165,
       "active": true
     },
@@ -305,7 +305,7 @@
       "id": 19,
       "model": "iPhone 12 Pro",
       "capacity": "128GB",
-      "battery_state": "excelente",
+      "battery_state": "100-90",
       "value_usd": 300,
       "active": true
     },
@@ -313,7 +313,7 @@
       "id": 20,
       "model": "iPhone 12 Pro",
       "capacity": "128GB",
-      "battery_state": "bueno",
+      "battery_state": "89-70",
       "value_usd": 255,
       "active": true
     },
@@ -321,7 +321,7 @@
       "id": 21,
       "model": "iPhone 12 Pro",
       "capacity": "128GB",
-      "battery_state": "regular",
+      "battery_state": "MENOS-70",
       "value_usd": 195,
       "active": true
     },
@@ -329,7 +329,7 @@
       "id": 22,
       "model": "iPhone 12 Pro",
       "capacity": "256GB",
-      "battery_state": "excelente",
+      "battery_state": "100-90",
       "value_usd": 345,
       "active": true
     },
@@ -337,7 +337,7 @@
       "id": 23,
       "model": "iPhone 12 Pro",
       "capacity": "256GB",
-      "battery_state": "bueno",
+      "battery_state": "89-70",
       "value_usd": 295,
       "active": true
     },
@@ -345,7 +345,7 @@
       "id": 24,
       "model": "iPhone 12 Pro",
       "capacity": "256GB",
-      "battery_state": "regular",
+      "battery_state": "MENOS-70",
       "value_usd": 230,
       "active": true
     },
@@ -353,7 +353,7 @@
       "id": 25,
       "model": "iPhone 12 Pro",
       "capacity": "512GB",
-      "battery_state": "excelente",
+      "battery_state": "100-90",
       "value_usd": 400,
       "active": true
     },
@@ -361,7 +361,7 @@
       "id": 26,
       "model": "iPhone 12 Pro",
       "capacity": "512GB",
-      "battery_state": "bueno",
+      "battery_state": "89-70",
       "value_usd": 340,
       "active": true
     },
@@ -369,7 +369,7 @@
       "id": 27,
       "model": "iPhone 12 Pro",
       "capacity": "512GB",
-      "battery_state": "regular",
+      "battery_state": "MENOS-70",
       "value_usd": 265,
       "active": true
     },
@@ -377,7 +377,7 @@
       "id": 28,
       "model": "iPhone 12 Pro Max",
       "capacity": "128GB",
-      "battery_state": "excelente",
+      "battery_state": "100-90",
       "value_usd": 330,
       "active": true
     },
@@ -385,7 +385,7 @@
       "id": 29,
       "model": "iPhone 12 Pro Max",
       "capacity": "128GB",
-      "battery_state": "bueno",
+      "battery_state": "89-70",
       "value_usd": 280,
       "active": true
     },
@@ -393,7 +393,7 @@
       "id": 30,
       "model": "iPhone 12 Pro Max",
       "capacity": "128GB",
-      "battery_state": "regular",
+      "battery_state": "MENOS-70",
       "value_usd": 215,
       "active": true
     },
@@ -401,7 +401,7 @@
       "id": 31,
       "model": "iPhone 12 Pro Max",
       "capacity": "256GB",
-      "battery_state": "excelente",
+      "battery_state": "100-90",
       "value_usd": 375,
       "active": true
     },
@@ -409,7 +409,7 @@
       "id": 32,
       "model": "iPhone 12 Pro Max",
       "capacity": "256GB",
-      "battery_state": "bueno",
+      "battery_state": "89-70",
       "value_usd": 320,
       "active": true
     },
@@ -417,7 +417,7 @@
       "id": 33,
       "model": "iPhone 12 Pro Max",
       "capacity": "256GB",
-      "battery_state": "regular",
+      "battery_state": "MENOS-70",
       "value_usd": 248,
       "active": true
     },
@@ -425,7 +425,7 @@
       "id": 34,
       "model": "iPhone 12 Pro Max",
       "capacity": "512GB",
-      "battery_state": "excelente",
+      "battery_state": "100-90",
       "value_usd": 435,
       "active": true
     },
@@ -433,7 +433,7 @@
       "id": 35,
       "model": "iPhone 12 Pro Max",
       "capacity": "512GB",
-      "battery_state": "bueno",
+      "battery_state": "89-70",
       "value_usd": 370,
       "active": true
     },
@@ -441,7 +441,7 @@
       "id": 36,
       "model": "iPhone 12 Pro Max",
       "capacity": "512GB",
-      "battery_state": "regular",
+      "battery_state": "MENOS-70",
       "value_usd": 290,
       "active": true
     },
@@ -449,7 +449,7 @@
       "id": 37,
       "model": "iPhone 13",
       "capacity": "128GB",
-      "battery_state": "excelente",
+      "battery_state": "100-90",
       "value_usd": 320,
       "active": true
     },
@@ -457,7 +457,7 @@
       "id": 38,
       "model": "iPhone 13",
       "capacity": "128GB",
-      "battery_state": "bueno",
+      "battery_state": "89-70",
       "value_usd": 270,
       "active": true
     },
@@ -465,7 +465,7 @@
       "id": 39,
       "model": "iPhone 13",
       "capacity": "128GB",
-      "battery_state": "regular",
+      "battery_state": "MENOS-70",
       "value_usd": 200,
       "active": true
     },
@@ -473,7 +473,7 @@
       "id": 40,
       "model": "iPhone 13",
       "capacity": "256GB",
-      "battery_state": "excelente",
+      "battery_state": "100-90",
       "value_usd": 370,
       "active": true
     },
@@ -481,7 +481,7 @@
       "id": 41,
       "model": "iPhone 13",
       "capacity": "256GB",
-      "battery_state": "bueno",
+      "battery_state": "89-70",
       "value_usd": 310,
       "active": true
     },
@@ -489,7 +489,7 @@
       "id": 42,
       "model": "iPhone 13",
       "capacity": "256GB",
-      "battery_state": "regular",
+      "battery_state": "MENOS-70",
       "value_usd": 240,
       "active": true
     },
@@ -497,7 +497,7 @@
       "id": 43,
       "model": "iPhone 13",
       "capacity": "512GB",
-      "battery_state": "excelente",
+      "battery_state": "100-90",
       "value_usd": 425,
       "active": true
     },
@@ -505,7 +505,7 @@
       "id": 44,
       "model": "iPhone 13",
       "capacity": "512GB",
-      "battery_state": "bueno",
+      "battery_state": "89-70",
       "value_usd": 360,
       "active": true
     },
@@ -513,7 +513,7 @@
       "id": 45,
       "model": "iPhone 13",
       "capacity": "512GB",
-      "battery_state": "regular",
+      "battery_state": "MENOS-70",
       "value_usd": 280,
       "active": true
     },
@@ -521,7 +521,7 @@
       "id": 46,
       "model": "iPhone 13 mini",
       "capacity": "128GB",
-      "battery_state": "excelente",
+      "battery_state": "100-90",
       "value_usd": 285,
       "active": true
     },
@@ -529,7 +529,7 @@
       "id": 47,
       "model": "iPhone 13 mini",
       "capacity": "128GB",
-      "battery_state": "bueno",
+      "battery_state": "89-70",
       "value_usd": 240,
       "active": true
     },
@@ -537,7 +537,7 @@
       "id": 48,
       "model": "iPhone 13 mini",
       "capacity": "128GB",
-      "battery_state": "regular",
+      "battery_state": "MENOS-70",
       "value_usd": 185,
       "active": true
     },
@@ -545,7 +545,7 @@
       "id": 49,
       "model": "iPhone 13 mini",
       "capacity": "256GB",
-      "battery_state": "excelente",
+      "battery_state": "100-90",
       "value_usd": 330,
       "active": true
     },
@@ -553,7 +553,7 @@
       "id": 50,
       "model": "iPhone 13 mini",
       "capacity": "256GB",
-      "battery_state": "bueno",
+      "battery_state": "89-70",
       "value_usd": 278,
       "active": true
     },
@@ -561,7 +561,7 @@
       "id": 51,
       "model": "iPhone 13 mini",
       "capacity": "256GB",
-      "battery_state": "regular",
+      "battery_state": "MENOS-70",
       "value_usd": 215,
       "active": true
     },
@@ -569,7 +569,7 @@
       "id": 52,
       "model": "iPhone 13 mini",
       "capacity": "512GB",
-      "battery_state": "excelente",
+      "battery_state": "100-90",
       "value_usd": 380,
       "active": true
     },
@@ -577,7 +577,7 @@
       "id": 53,
       "model": "iPhone 13 mini",
       "capacity": "512GB",
-      "battery_state": "bueno",
+      "battery_state": "89-70",
       "value_usd": 320,
       "active": true
     },
@@ -585,7 +585,7 @@
       "id": 54,
       "model": "iPhone 13 mini",
       "capacity": "512GB",
-      "battery_state": "regular",
+      "battery_state": "MENOS-70",
       "value_usd": 250,
       "active": true
     },
@@ -593,7 +593,7 @@
       "id": 55,
       "model": "iPhone 13 Pro",
       "capacity": "128GB",
-      "battery_state": "excelente",
+      "battery_state": "100-90",
       "value_usd": 420,
       "active": true
     },
@@ -601,7 +601,7 @@
       "id": 56,
       "model": "iPhone 13 Pro",
       "capacity": "128GB",
-      "battery_state": "bueno",
+      "battery_state": "89-70",
       "value_usd": 360,
       "active": true
     },
@@ -609,7 +609,7 @@
       "id": 57,
       "model": "iPhone 13 Pro",
       "capacity": "128GB",
-      "battery_state": "regular",
+      "battery_state": "MENOS-70",
       "value_usd": 280,
       "active": true
     },
@@ -617,7 +617,7 @@
       "id": 58,
       "model": "iPhone 13 Pro",
       "capacity": "256GB",
-      "battery_state": "excelente",
+      "battery_state": "100-90",
       "value_usd": 475,
       "active": true
     },
@@ -625,7 +625,7 @@
       "id": 59,
       "model": "iPhone 13 Pro",
       "capacity": "256GB",
-      "battery_state": "bueno",
+      "battery_state": "89-70",
       "value_usd": 410,
       "active": true
     },
@@ -633,7 +633,7 @@
       "id": 60,
       "model": "iPhone 13 Pro",
       "capacity": "256GB",
-      "battery_state": "regular",
+      "battery_state": "MENOS-70",
       "value_usd": 320,
       "active": true
     },
@@ -641,7 +641,7 @@
       "id": 61,
       "model": "iPhone 13 Pro",
       "capacity": "512GB",
-      "battery_state": "excelente",
+      "battery_state": "100-90",
       "value_usd": 545,
       "active": true
     },
@@ -649,7 +649,7 @@
       "id": 62,
       "model": "iPhone 13 Pro",
       "capacity": "512GB",
-      "battery_state": "bueno",
+      "battery_state": "89-70",
       "value_usd": 470,
       "active": true
     },
@@ -657,7 +657,7 @@
       "id": 63,
       "model": "iPhone 13 Pro",
       "capacity": "512GB",
-      "battery_state": "regular",
+      "battery_state": "MENOS-70",
       "value_usd": 370,
       "active": true
     },
@@ -665,7 +665,7 @@
       "id": 64,
       "model": "iPhone 13 Pro",
       "capacity": "1TB",
-      "battery_state": "excelente",
+      "battery_state": "100-90",
       "value_usd": 620,
       "active": true
     },
@@ -673,7 +673,7 @@
       "id": 65,
       "model": "iPhone 13 Pro",
       "capacity": "1TB",
-      "battery_state": "bueno",
+      "battery_state": "89-70",
       "value_usd": 535,
       "active": true
     },
@@ -681,7 +681,7 @@
       "id": 66,
       "model": "iPhone 13 Pro",
       "capacity": "1TB",
-      "battery_state": "regular",
+      "battery_state": "MENOS-70",
       "value_usd": 425,
       "active": true
     },
@@ -689,7 +689,7 @@
       "id": 67,
       "model": "iPhone 13 Pro Max",
       "capacity": "128GB",
-      "battery_state": "excelente",
+      "battery_state": "100-90",
       "value_usd": 455,
       "active": true
     },
@@ -697,7 +697,7 @@
       "id": 68,
       "model": "iPhone 13 Pro Max",
       "capacity": "128GB",
-      "battery_state": "bueno",
+      "battery_state": "89-70",
       "value_usd": 390,
       "active": true
     },
@@ -705,7 +705,7 @@
       "id": 69,
       "model": "iPhone 13 Pro Max",
       "capacity": "128GB",
-      "battery_state": "regular",
+      "battery_state": "MENOS-70",
       "value_usd": 305,
       "active": true
     },
@@ -713,7 +713,7 @@
       "id": 70,
       "model": "iPhone 13 Pro Max",
       "capacity": "256GB",
-      "battery_state": "excelente",
+      "battery_state": "100-90",
       "value_usd": 510,
       "active": true
     },
@@ -721,7 +721,7 @@
       "id": 71,
       "model": "iPhone 13 Pro Max",
       "capacity": "256GB",
-      "battery_state": "bueno",
+      "battery_state": "89-70",
       "value_usd": 440,
       "active": true
     },
@@ -729,7 +729,7 @@
       "id": 72,
       "model": "iPhone 13 Pro Max",
       "capacity": "256GB",
-      "battery_state": "regular",
+      "battery_state": "MENOS-70",
       "value_usd": 345,
       "active": true
     },
@@ -737,7 +737,7 @@
       "id": 73,
       "model": "iPhone 13 Pro Max",
       "capacity": "512GB",
-      "battery_state": "excelente",
+      "battery_state": "100-90",
       "value_usd": 585,
       "active": true
     },
@@ -745,7 +745,7 @@
       "id": 74,
       "model": "iPhone 13 Pro Max",
       "capacity": "512GB",
-      "battery_state": "bueno",
+      "battery_state": "89-70",
       "value_usd": 505,
       "active": true
     },
@@ -753,7 +753,7 @@
       "id": 75,
       "model": "iPhone 13 Pro Max",
       "capacity": "512GB",
-      "battery_state": "regular",
+      "battery_state": "MENOS-70",
       "value_usd": 400,
       "active": true
     },
@@ -761,7 +761,7 @@
       "id": 76,
       "model": "iPhone 13 Pro Max",
       "capacity": "1TB",
-      "battery_state": "excelente",
+      "battery_state": "100-90",
       "value_usd": 670,
       "active": true
     },
@@ -769,7 +769,7 @@
       "id": 77,
       "model": "iPhone 13 Pro Max",
       "capacity": "1TB",
-      "battery_state": "bueno",
+      "battery_state": "89-70",
       "value_usd": 578,
       "active": true
     },
@@ -777,7 +777,7 @@
       "id": 78,
       "model": "iPhone 13 Pro Max",
       "capacity": "1TB",
-      "battery_state": "regular",
+      "battery_state": "MENOS-70",
       "value_usd": 460,
       "active": true
     },
@@ -785,7 +785,7 @@
       "id": 79,
       "model": "iPhone 14",
       "capacity": "128GB",
-      "battery_state": "excelente",
+      "battery_state": "100-90",
       "value_usd": 480,
       "active": true
     },
@@ -793,7 +793,7 @@
       "id": 80,
       "model": "iPhone 14",
       "capacity": "128GB",
-      "battery_state": "bueno",
+      "battery_state": "89-70",
       "value_usd": 420,
       "active": true
     },
@@ -801,7 +801,7 @@
       "id": 81,
       "model": "iPhone 14",
       "capacity": "128GB",
-      "battery_state": "regular",
+      "battery_state": "MENOS-70",
       "value_usd": 330,
       "active": true
     },
@@ -809,7 +809,7 @@
       "id": 82,
       "model": "iPhone 14",
       "capacity": "256GB",
-      "battery_state": "excelente",
+      "battery_state": "100-90",
       "value_usd": 530,
       "active": true
     },
@@ -817,7 +817,7 @@
       "id": 83,
       "model": "iPhone 14",
       "capacity": "256GB",
-      "battery_state": "bueno",
+      "battery_state": "89-70",
       "value_usd": 460,
       "active": true
     },
@@ -825,7 +825,7 @@
       "id": 84,
       "model": "iPhone 14",
       "capacity": "256GB",
-      "battery_state": "regular",
+      "battery_state": "MENOS-70",
       "value_usd": 365,
       "active": true
     },
@@ -833,7 +833,7 @@
       "id": 85,
       "model": "iPhone 14",
       "capacity": "512GB",
-      "battery_state": "excelente",
+      "battery_state": "100-90",
       "value_usd": 610,
       "active": true
     },
@@ -841,7 +841,7 @@
       "id": 86,
       "model": "iPhone 14",
       "capacity": "512GB",
-      "battery_state": "bueno",
+      "battery_state": "89-70",
       "value_usd": 530,
       "active": true
     },
@@ -849,7 +849,7 @@
       "id": 87,
       "model": "iPhone 14",
       "capacity": "512GB",
-      "battery_state": "regular",
+      "battery_state": "MENOS-70",
       "value_usd": 420,
       "active": true
     },
@@ -857,7 +857,7 @@
       "id": 88,
       "model": "iPhone 14 Plus",
       "capacity": "128GB",
-      "battery_state": "excelente",
+      "battery_state": "100-90",
       "value_usd": 515,
       "active": true
     },
@@ -865,7 +865,7 @@
       "id": 89,
       "model": "iPhone 14 Plus",
       "capacity": "128GB",
-      "battery_state": "bueno",
+      "battery_state": "89-70",
       "value_usd": 448,
       "active": true
     },
@@ -873,7 +873,7 @@
       "id": 90,
       "model": "iPhone 14 Plus",
       "capacity": "128GB",
-      "battery_state": "regular",
+      "battery_state": "MENOS-70",
       "value_usd": 355,
       "active": true
     },
@@ -881,7 +881,7 @@
       "id": 91,
       "model": "iPhone 14 Plus",
       "capacity": "256GB",
-      "battery_state": "excelente",
+      "battery_state": "100-90",
       "value_usd": 570,
       "active": true
     },
@@ -889,7 +889,7 @@
       "id": 92,
       "model": "iPhone 14 Plus",
       "capacity": "256GB",
-      "battery_state": "bueno",
+      "battery_state": "89-70",
       "value_usd": 496,
       "active": true
     },
@@ -897,7 +897,7 @@
       "id": 93,
       "model": "iPhone 14 Plus",
       "capacity": "256GB",
-      "battery_state": "regular",
+      "battery_state": "MENOS-70",
       "value_usd": 395,
       "active": true
     },
@@ -905,7 +905,7 @@
       "id": 94,
       "model": "iPhone 14 Plus",
       "capacity": "512GB",
-      "battery_state": "excelente",
+      "battery_state": "100-90",
       "value_usd": 650,
       "active": true
     },
@@ -913,7 +913,7 @@
       "id": 95,
       "model": "iPhone 14 Plus",
       "capacity": "512GB",
-      "battery_state": "bueno",
+      "battery_state": "89-70",
       "value_usd": 568,
       "active": true
     },
@@ -921,7 +921,7 @@
       "id": 96,
       "model": "iPhone 14 Plus",
       "capacity": "512GB",
-      "battery_state": "regular",
+      "battery_state": "MENOS-70",
       "value_usd": 450,
       "active": true
     },
@@ -929,7 +929,7 @@
       "id": 97,
       "model": "iPhone 14 Pro",
       "capacity": "128GB",
-      "battery_state": "excelente",
+      "battery_state": "100-90",
       "value_usd": 580,
       "active": true
     },
@@ -937,7 +937,7 @@
       "id": 98,
       "model": "iPhone 14 Pro",
       "capacity": "128GB",
-      "battery_state": "bueno",
+      "battery_state": "89-70",
       "value_usd": 500,
       "active": true
     },
@@ -945,7 +945,7 @@
       "id": 99,
       "model": "iPhone 14 Pro",
       "capacity": "128GB",
-      "battery_state": "regular",
+      "battery_state": "MENOS-70",
       "value_usd": 400,
       "active": true
     },
@@ -953,7 +953,7 @@
       "id": 100,
       "model": "iPhone 14 Pro",
       "capacity": "256GB",
-      "battery_state": "excelente",
+      "battery_state": "100-90",
       "value_usd": 645,
       "active": true
     },
@@ -961,7 +961,7 @@
       "id": 101,
       "model": "iPhone 14 Pro",
       "capacity": "256GB",
-      "battery_state": "bueno",
+      "battery_state": "89-70",
       "value_usd": 560,
       "active": true
     },
@@ -969,7 +969,7 @@
       "id": 102,
       "model": "iPhone 14 Pro",
       "capacity": "256GB",
-      "battery_state": "regular",
+      "battery_state": "MENOS-70",
       "value_usd": 450,
       "active": true
     },
@@ -977,7 +977,7 @@
       "id": 103,
       "model": "iPhone 14 Pro",
       "capacity": "512GB",
-      "battery_state": "excelente",
+      "battery_state": "100-90",
       "value_usd": 735,
       "active": true
     },
@@ -985,7 +985,7 @@
       "id": 104,
       "model": "iPhone 14 Pro",
       "capacity": "512GB",
-      "battery_state": "bueno",
+      "battery_state": "89-70",
       "value_usd": 638,
       "active": true
     },
@@ -993,7 +993,7 @@
       "id": 105,
       "model": "iPhone 14 Pro",
       "capacity": "512GB",
-      "battery_state": "regular",
+      "battery_state": "MENOS-70",
       "value_usd": 512,
       "active": true
     },
@@ -1001,7 +1001,7 @@
       "id": 106,
       "model": "iPhone 14 Pro",
       "capacity": "1TB",
-      "battery_state": "excelente",
+      "battery_state": "100-90",
       "value_usd": 845,
       "active": true
     },
@@ -1009,7 +1009,7 @@
       "id": 107,
       "model": "iPhone 14 Pro",
       "capacity": "1TB",
-      "battery_state": "bueno",
+      "battery_state": "89-70",
       "value_usd": 733,
       "active": true
     },
@@ -1017,7 +1017,7 @@
       "id": 108,
       "model": "iPhone 14 Pro",
       "capacity": "1TB",
-      "battery_state": "regular",
+      "battery_state": "MENOS-70",
       "value_usd": 588,
       "active": true
     },
@@ -1025,7 +1025,7 @@
       "id": 109,
       "model": "iPhone 14 Pro Max",
       "capacity": "128GB",
-      "battery_state": "excelente",
+      "battery_state": "100-90",
       "value_usd": 625,
       "active": true
     },
@@ -1033,7 +1033,7 @@
       "id": 110,
       "model": "iPhone 14 Pro Max",
       "capacity": "128GB",
-      "battery_state": "bueno",
+      "battery_state": "89-70",
       "value_usd": 540,
       "active": true
     },
@@ -1041,7 +1041,7 @@
       "id": 111,
       "model": "iPhone 14 Pro Max",
       "capacity": "128GB",
-      "battery_state": "regular",
+      "battery_state": "MENOS-70",
       "value_usd": 433,
       "active": true
     },
@@ -1049,7 +1049,7 @@
       "id": 112,
       "model": "iPhone 14 Pro Max",
       "capacity": "256GB",
-      "battery_state": "excelente",
+      "battery_state": "100-90",
       "value_usd": 690,
       "active": true
     },
@@ -1057,7 +1057,7 @@
       "id": 113,
       "model": "iPhone 14 Pro Max",
       "capacity": "256GB",
-      "battery_state": "bueno",
+      "battery_state": "89-70",
       "value_usd": 600,
       "active": true
     },
@@ -1065,7 +1065,7 @@
       "id": 114,
       "model": "iPhone 14 Pro Max",
       "capacity": "256GB",
-      "battery_state": "regular",
+      "battery_state": "MENOS-70",
       "value_usd": 480,
       "active": true
     },
@@ -1073,7 +1073,7 @@
       "id": 115,
       "model": "iPhone 14 Pro Max",
       "capacity": "512GB",
-      "battery_state": "excelente",
+      "battery_state": "100-90",
       "value_usd": 790,
       "active": true
     },
@@ -1081,7 +1081,7 @@
       "id": 116,
       "model": "iPhone 14 Pro Max",
       "capacity": "512GB",
-      "battery_state": "bueno",
+      "battery_state": "89-70",
       "value_usd": 685,
       "active": true
     },
@@ -1089,7 +1089,7 @@
       "id": 117,
       "model": "iPhone 14 Pro Max",
       "capacity": "512GB",
-      "battery_state": "regular",
+      "battery_state": "MENOS-70",
       "value_usd": 548,
       "active": true
     },
@@ -1097,7 +1097,7 @@
       "id": 118,
       "model": "iPhone 14 Pro Max",
       "capacity": "1TB",
-      "battery_state": "excelente",
+      "battery_state": "100-90",
       "value_usd": 905,
       "active": true
     },
@@ -1105,7 +1105,7 @@
       "id": 119,
       "model": "iPhone 14 Pro Max",
       "capacity": "1TB",
-      "battery_state": "bueno",
+      "battery_state": "89-70",
       "value_usd": 785,
       "active": true
     },
@@ -1113,7 +1113,7 @@
       "id": 120,
       "model": "iPhone 14 Pro Max",
       "capacity": "1TB",
-      "battery_state": "regular",
+      "battery_state": "MENOS-70",
       "value_usd": 628,
       "active": true
     },
@@ -1121,7 +1121,7 @@
       "id": 121,
       "model": "iPhone 15",
       "capacity": "128GB",
-      "battery_state": "excelente",
+      "battery_state": "100-90",
       "value_usd": 620,
       "active": true
     },
@@ -1129,7 +1129,7 @@
       "id": 122,
       "model": "iPhone 15",
       "capacity": "128GB",
-      "battery_state": "bueno",
+      "battery_state": "89-70",
       "value_usd": 540,
       "active": true
     },
@@ -1137,7 +1137,7 @@
       "id": 123,
       "model": "iPhone 15",
       "capacity": "128GB",
-      "battery_state": "regular",
+      "battery_state": "MENOS-70",
       "value_usd": 430,
       "active": true
     },
@@ -1145,7 +1145,7 @@
       "id": 124,
       "model": "iPhone 15",
       "capacity": "256GB",
-      "battery_state": "excelente",
+      "battery_state": "100-90",
       "value_usd": 685,
       "active": true
     },
@@ -1153,7 +1153,7 @@
       "id": 125,
       "model": "iPhone 15",
       "capacity": "256GB",
-      "battery_state": "bueno",
+      "battery_state": "89-70",
       "value_usd": 595,
       "active": true
     },
@@ -1161,7 +1161,7 @@
       "id": 126,
       "model": "iPhone 15",
       "capacity": "256GB",
-      "battery_state": "regular",
+      "battery_state": "MENOS-70",
       "value_usd": 478,
       "active": true
     },
@@ -1169,7 +1169,7 @@
       "id": 127,
       "model": "iPhone 15",
       "capacity": "512GB",
-      "battery_state": "excelente",
+      "battery_state": "100-90",
       "value_usd": 785,
       "active": true
     },
@@ -1177,7 +1177,7 @@
       "id": 128,
       "model": "iPhone 15",
       "capacity": "512GB",
-      "battery_state": "bueno",
+      "battery_state": "89-70",
       "value_usd": 682,
       "active": true
     },
@@ -1185,7 +1185,7 @@
       "id": 129,
       "model": "iPhone 15",
       "capacity": "512GB",
-      "battery_state": "regular",
+      "battery_state": "MENOS-70",
       "value_usd": 548,
       "active": true
     },
@@ -1193,7 +1193,7 @@
       "id": 130,
       "model": "iPhone 15 Plus",
       "capacity": "128GB",
-      "battery_state": "excelente",
+      "battery_state": "100-90",
       "value_usd": 660,
       "active": true
     },
@@ -1201,7 +1201,7 @@
       "id": 131,
       "model": "iPhone 15 Plus",
       "capacity": "128GB",
-      "battery_state": "bueno",
+      "battery_state": "89-70",
       "value_usd": 573,
       "active": true
     },
@@ -1209,7 +1209,7 @@
       "id": 132,
       "model": "iPhone 15 Plus",
       "capacity": "128GB",
-      "battery_state": "regular",
+      "battery_state": "MENOS-70",
       "value_usd": 458,
       "active": true
     },
@@ -1217,7 +1217,7 @@
       "id": 133,
       "model": "iPhone 15 Plus",
       "capacity": "256GB",
-      "battery_state": "excelente",
+      "battery_state": "100-90",
       "value_usd": 730,
       "active": true
     },
@@ -1225,7 +1225,7 @@
       "id": 134,
       "model": "iPhone 15 Plus",
       "capacity": "256GB",
-      "battery_state": "bueno",
+      "battery_state": "89-70",
       "value_usd": 635,
       "active": true
     },
@@ -1233,7 +1233,7 @@
       "id": 135,
       "model": "iPhone 15 Plus",
       "capacity": "256GB",
-      "battery_state": "regular",
+      "battery_state": "MENOS-70",
       "value_usd": 508,
       "active": true
     },
@@ -1241,7 +1241,7 @@
       "id": 136,
       "model": "iPhone 15 Plus",
       "capacity": "512GB",
-      "battery_state": "excelente",
+      "battery_state": "100-90",
       "value_usd": 835,
       "active": true
     },
@@ -1249,7 +1249,7 @@
       "id": 137,
       "model": "iPhone 15 Plus",
       "capacity": "512GB",
-      "battery_state": "bueno",
+      "battery_state": "89-70",
       "value_usd": 725,
       "active": true
     },
@@ -1257,7 +1257,7 @@
       "id": 138,
       "model": "iPhone 15 Plus",
       "capacity": "512GB",
-      "battery_state": "regular",
+      "battery_state": "MENOS-70",
       "value_usd": 582,
       "active": true
     },
@@ -1265,7 +1265,7 @@
       "id": 139,
       "model": "iPhone 15 Pro",
       "capacity": "256GB",
-      "battery_state": "excelente",
+      "battery_state": "100-90",
       "value_usd": 820,
       "active": true
     },
@@ -1273,7 +1273,7 @@
       "id": 140,
       "model": "iPhone 15 Pro",
       "capacity": "256GB",
-      "battery_state": "bueno",
+      "battery_state": "89-70",
       "value_usd": 712,
       "active": true
     },
@@ -1281,7 +1281,7 @@
       "id": 141,
       "model": "iPhone 15 Pro",
       "capacity": "256GB",
-      "battery_state": "regular",
+      "battery_state": "MENOS-70",
       "value_usd": 572,
       "active": true
     },
@@ -1289,7 +1289,7 @@
       "id": 142,
       "model": "iPhone 15 Pro",
       "capacity": "512GB",
-      "battery_state": "excelente",
+      "battery_state": "100-90",
       "value_usd": 925,
       "active": true
     },
@@ -1297,7 +1297,7 @@
       "id": 143,
       "model": "iPhone 15 Pro",
       "capacity": "512GB",
-      "battery_state": "bueno",
+      "battery_state": "89-70",
       "value_usd": 803,
       "active": true
     },
@@ -1305,7 +1305,7 @@
       "id": 144,
       "model": "iPhone 15 Pro",
       "capacity": "512GB",
-      "battery_state": "regular",
+      "battery_state": "MENOS-70",
       "value_usd": 645,
       "active": true
     },
@@ -1313,7 +1313,7 @@
       "id": 145,
       "model": "iPhone 15 Pro",
       "capacity": "1TB",
-      "battery_state": "excelente",
+      "battery_state": "100-90",
       "value_usd": 1065,
       "active": true
     },
@@ -1321,7 +1321,7 @@
       "id": 146,
       "model": "iPhone 15 Pro",
       "capacity": "1TB",
-      "battery_state": "bueno",
+      "battery_state": "89-70",
       "value_usd": 923,
       "active": true
     },
@@ -1329,7 +1329,7 @@
       "id": 147,
       "model": "iPhone 15 Pro",
       "capacity": "1TB",
-      "battery_state": "regular",
+      "battery_state": "MENOS-70",
       "value_usd": 742,
       "active": true
     },
@@ -1337,7 +1337,7 @@
       "id": 148,
       "model": "iPhone 15 Pro Max",
       "capacity": "256GB",
-      "battery_state": "excelente",
+      "battery_state": "100-90",
       "value_usd": 885,
       "active": true
     },
@@ -1345,7 +1345,7 @@
       "id": 149,
       "model": "iPhone 15 Pro Max",
       "capacity": "256GB",
-      "battery_state": "bueno",
+      "battery_state": "89-70",
       "value_usd": 768,
       "active": true
     },
@@ -1353,7 +1353,7 @@
       "id": 150,
       "model": "iPhone 15 Pro Max",
       "capacity": "256GB",
-      "battery_state": "regular",
+      "battery_state": "MENOS-70",
       "value_usd": 618,
       "active": true
     },
@@ -1361,7 +1361,7 @@
       "id": 151,
       "model": "iPhone 15 Pro Max",
       "capacity": "512GB",
-      "battery_state": "excelente",
+      "battery_state": "100-90",
       "value_usd": 990,
       "active": true
     },
@@ -1369,7 +1369,7 @@
       "id": 152,
       "model": "iPhone 15 Pro Max",
       "capacity": "512GB",
-      "battery_state": "bueno",
+      "battery_state": "89-70",
       "value_usd": 858,
       "active": true
     },
@@ -1377,7 +1377,7 @@
       "id": 153,
       "model": "iPhone 15 Pro Max",
       "capacity": "512GB",
-      "battery_state": "regular",
+      "battery_state": "MENOS-70",
       "value_usd": 692,
       "active": true
     },
@@ -1385,7 +1385,7 @@
       "id": 154,
       "model": "iPhone 15 Pro Max",
       "capacity": "1TB",
-      "battery_state": "excelente",
+      "battery_state": "100-90",
       "value_usd": 1140,
       "active": true
     },
@@ -1393,7 +1393,7 @@
       "id": 155,
       "model": "iPhone 15 Pro Max",
       "capacity": "1TB",
-      "battery_state": "bueno",
+      "battery_state": "89-70",
       "value_usd": 988,
       "active": true
     },
@@ -1401,7 +1401,7 @@
       "id": 156,
       "model": "iPhone 15 Pro Max",
       "capacity": "1TB",
-      "battery_state": "regular",
+      "battery_state": "MENOS-70",
       "value_usd": 798,
       "active": true
     },
@@ -1409,7 +1409,7 @@
       "id": 157,
       "model": "iPhone 16",
       "capacity": "128GB",
-      "battery_state": "excelente",
+      "battery_state": "100-90",
       "value_usd": 780,
       "active": true
     },
@@ -1417,7 +1417,7 @@
       "id": 158,
       "model": "iPhone 16",
       "capacity": "128GB",
-      "battery_state": "bueno",
+      "battery_state": "89-70",
       "value_usd": 678,
       "active": true
     },
@@ -1425,7 +1425,7 @@
       "id": 159,
       "model": "iPhone 16",
       "capacity": "128GB",
-      "battery_state": "regular",
+      "battery_state": "MENOS-70",
       "value_usd": 548,
       "active": true
     },
@@ -1433,7 +1433,7 @@
       "id": 160,
       "model": "iPhone 16",
       "capacity": "256GB",
-      "battery_state": "excelente",
+      "battery_state": "100-90",
       "value_usd": 860,
       "active": true
     },
@@ -1441,7 +1441,7 @@
       "id": 161,
       "model": "iPhone 16",
       "capacity": "256GB",
-      "battery_state": "bueno",
+      "battery_state": "89-70",
       "value_usd": 748,
       "active": true
     },
@@ -1449,7 +1449,7 @@
       "id": 162,
       "model": "iPhone 16",
       "capacity": "256GB",
-      "battery_state": "regular",
+      "battery_state": "MENOS-70",
       "value_usd": 602,
       "active": true
     },
@@ -1457,7 +1457,7 @@
       "id": 163,
       "model": "iPhone 16",
       "capacity": "512GB",
-      "battery_state": "excelente",
+      "battery_state": "100-90",
       "value_usd": 978,
       "active": true
     },
@@ -1465,7 +1465,7 @@
       "id": 164,
       "model": "iPhone 16",
       "capacity": "512GB",
-      "battery_state": "bueno",
+      "battery_state": "89-70",
       "value_usd": 852,
       "active": true
     },
@@ -1473,7 +1473,7 @@
       "id": 165,
       "model": "iPhone 16",
       "capacity": "512GB",
-      "battery_state": "regular",
+      "battery_state": "MENOS-70",
       "value_usd": 688,
       "active": true
     },
@@ -1481,7 +1481,7 @@
       "id": 166,
       "model": "iPhone 16 Plus",
       "capacity": "128GB",
-      "battery_state": "excelente",
+      "battery_state": "100-90",
       "value_usd": 830,
       "active": true
     },
@@ -1489,7 +1489,7 @@
       "id": 167,
       "model": "iPhone 16 Plus",
       "capacity": "128GB",
-      "battery_state": "bueno",
+      "battery_state": "89-70",
       "value_usd": 722,
       "active": true
     },
@@ -1497,7 +1497,7 @@
       "id": 168,
       "model": "iPhone 16 Plus",
       "capacity": "128GB",
-      "battery_state": "regular",
+      "battery_state": "MENOS-70",
       "value_usd": 582,
       "active": true
     },
@@ -1505,7 +1505,7 @@
       "id": 169,
       "model": "iPhone 16 Plus",
       "capacity": "256GB",
-      "battery_state": "excelente",
+      "battery_state": "100-90",
       "value_usd": 915,
       "active": true
     },
@@ -1513,7 +1513,7 @@
       "id": 170,
       "model": "iPhone 16 Plus",
       "capacity": "256GB",
-      "battery_state": "bueno",
+      "battery_state": "89-70",
       "value_usd": 798,
       "active": true
     },
@@ -1521,7 +1521,7 @@
       "id": 171,
       "model": "iPhone 16 Plus",
       "capacity": "256GB",
-      "battery_state": "regular",
+      "battery_state": "MENOS-70",
       "value_usd": 642,
       "active": true
     },
@@ -1529,7 +1529,7 @@
       "id": 172,
       "model": "iPhone 16 Plus",
       "capacity": "512GB",
-      "battery_state": "excelente",
+      "battery_state": "100-90",
       "value_usd": 1045,
       "active": true
     },
@@ -1537,7 +1537,7 @@
       "id": 173,
       "model": "iPhone 16 Plus",
       "capacity": "512GB",
-      "battery_state": "bueno",
+      "battery_state": "89-70",
       "value_usd": 908,
       "active": true
     },
@@ -1545,7 +1545,7 @@
       "id": 174,
       "model": "iPhone 16 Plus",
       "capacity": "512GB",
-      "battery_state": "regular",
+      "battery_state": "MENOS-70",
       "value_usd": 732,
       "active": true
     },
@@ -1553,7 +1553,7 @@
       "id": 175,
       "model": "iPhone 16 Pro",
       "capacity": "256GB",
-      "battery_state": "excelente",
+      "battery_state": "100-90",
       "value_usd": 1000,
       "active": true
     },
@@ -1561,7 +1561,7 @@
       "id": 176,
       "model": "iPhone 16 Pro",
       "capacity": "256GB",
-      "battery_state": "bueno",
+      "battery_state": "89-70",
       "value_usd": 868,
       "active": true
     },
@@ -1569,7 +1569,7 @@
       "id": 177,
       "model": "iPhone 16 Pro",
       "capacity": "256GB",
-      "battery_state": "regular",
+      "battery_state": "MENOS-70",
       "value_usd": 702,
       "active": true
     },
@@ -1577,7 +1577,7 @@
       "id": 178,
       "model": "iPhone 16 Pro",
       "capacity": "512GB",
-      "battery_state": "excelente",
+      "battery_state": "100-90",
       "value_usd": 1120,
       "active": true
     },
@@ -1585,7 +1585,7 @@
       "id": 179,
       "model": "iPhone 16 Pro",
       "capacity": "512GB",
-      "battery_state": "bueno",
+      "battery_state": "89-70",
       "value_usd": 972,
       "active": true
     },
@@ -1593,7 +1593,7 @@
       "id": 180,
       "model": "iPhone 16 Pro",
       "capacity": "512GB",
-      "battery_state": "regular",
+      "battery_state": "MENOS-70",
       "value_usd": 788,
       "active": true
     },
@@ -1601,7 +1601,7 @@
       "id": 181,
       "model": "iPhone 16 Pro",
       "capacity": "1TB",
-      "battery_state": "excelente",
+      "battery_state": "100-90",
       "value_usd": 1295,
       "active": true
     },
@@ -1609,7 +1609,7 @@
       "id": 182,
       "model": "iPhone 16 Pro",
       "capacity": "1TB",
-      "battery_state": "bueno",
+      "battery_state": "89-70",
       "value_usd": 1122,
       "active": true
     },
@@ -1617,7 +1617,7 @@
       "id": 183,
       "model": "iPhone 16 Pro",
       "capacity": "1TB",
-      "battery_state": "regular",
+      "battery_state": "MENOS-70",
       "value_usd": 908,
       "active": true
     },
@@ -1625,7 +1625,7 @@
       "id": 184,
       "model": "iPhone 16 Pro Max",
       "capacity": "256GB",
-      "battery_state": "excelente",
+      "battery_state": "100-90",
       "value_usd": 1075,
       "active": true
     },
@@ -1633,7 +1633,7 @@
       "id": 185,
       "model": "iPhone 16 Pro Max",
       "capacity": "256GB",
-      "battery_state": "bueno",
+      "battery_state": "89-70",
       "value_usd": 932,
       "active": true
     },
@@ -1641,7 +1641,7 @@
       "id": 186,
       "model": "iPhone 16 Pro Max",
       "capacity": "256GB",
-      "battery_state": "regular",
+      "battery_state": "MENOS-70",
       "value_usd": 752,
       "active": true
     },
@@ -1649,7 +1649,7 @@
       "id": 187,
       "model": "iPhone 16 Pro Max",
       "capacity": "512GB",
-      "battery_state": "excelente",
+      "battery_state": "100-90",
       "value_usd": 1200,
       "active": true
     },
@@ -1657,7 +1657,7 @@
       "id": 188,
       "model": "iPhone 16 Pro Max",
       "capacity": "512GB",
-      "battery_state": "bueno",
+      "battery_state": "89-70",
       "value_usd": 1042,
       "active": true
     },
@@ -1665,7 +1665,7 @@
       "id": 189,
       "model": "iPhone 16 Pro Max",
       "capacity": "512GB",
-      "battery_state": "regular",
+      "battery_state": "MENOS-70",
       "value_usd": 842,
       "active": true
     },
@@ -1673,7 +1673,7 @@
       "id": 190,
       "model": "iPhone 16 Pro Max",
       "capacity": "1TB",
-      "battery_state": "excelente",
+      "battery_state": "100-90",
       "value_usd": 1385,
       "active": true
     },
@@ -1681,7 +1681,7 @@
       "id": 191,
       "model": "iPhone 16 Pro Max",
       "capacity": "1TB",
-      "battery_state": "bueno",
+      "battery_state": "89-70",
       "value_usd": 1202,
       "active": true
     },
@@ -1689,7 +1689,7 @@
       "id": 192,
       "model": "iPhone 16 Pro Max",
       "capacity": "1TB",
-      "battery_state": "regular",
+      "battery_state": "MENOS-70",
       "value_usd": 972,
       "active": true
     },
@@ -1697,7 +1697,7 @@
       "id": 193,
       "model": "iPhone 17",
       "capacity": "128GB",
-      "battery_state": "excelente",
+      "battery_state": "100-90",
       "value_usd": 0,
       "active": true
     },
@@ -1705,7 +1705,7 @@
       "id": 194,
       "model": "iPhone 17",
       "capacity": "128GB",
-      "battery_state": "bueno",
+      "battery_state": "89-70",
       "value_usd": 0,
       "active": true
     },
@@ -1713,7 +1713,7 @@
       "id": 195,
       "model": "iPhone 17",
       "capacity": "128GB",
-      "battery_state": "regular",
+      "battery_state": "MENOS-70",
       "value_usd": 0,
       "active": true
     },
@@ -1721,7 +1721,7 @@
       "id": 196,
       "model": "iPhone 17",
       "capacity": "256GB",
-      "battery_state": "excelente",
+      "battery_state": "100-90",
       "value_usd": 0,
       "active": true
     },
@@ -1729,7 +1729,7 @@
       "id": 197,
       "model": "iPhone 17",
       "capacity": "256GB",
-      "battery_state": "bueno",
+      "battery_state": "89-70",
       "value_usd": 0,
       "active": true
     },
@@ -1737,7 +1737,7 @@
       "id": 198,
       "model": "iPhone 17",
       "capacity": "256GB",
-      "battery_state": "regular",
+      "battery_state": "MENOS-70",
       "value_usd": 0,
       "active": true
     },
@@ -1745,7 +1745,7 @@
       "id": 199,
       "model": "iPhone 17",
       "capacity": "512GB",
-      "battery_state": "excelente",
+      "battery_state": "100-90",
       "value_usd": 0,
       "active": true
     },
@@ -1753,7 +1753,7 @@
       "id": 200,
       "model": "iPhone 17",
       "capacity": "512GB",
-      "battery_state": "bueno",
+      "battery_state": "89-70",
       "value_usd": 0,
       "active": true
     },
@@ -1761,7 +1761,7 @@
       "id": 201,
       "model": "iPhone 17",
       "capacity": "512GB",
-      "battery_state": "regular",
+      "battery_state": "MENOS-70",
       "value_usd": 0,
       "active": true
     },
@@ -1769,7 +1769,7 @@
       "id": 202,
       "model": "iPhone 17 Plus",
       "capacity": "128GB",
-      "battery_state": "excelente",
+      "battery_state": "100-90",
       "value_usd": 0,
       "active": true
     },
@@ -1777,7 +1777,7 @@
       "id": 203,
       "model": "iPhone 17 Plus",
       "capacity": "128GB",
-      "battery_state": "bueno",
+      "battery_state": "89-70",
       "value_usd": 0,
       "active": true
     },
@@ -1785,7 +1785,7 @@
       "id": 204,
       "model": "iPhone 17 Plus",
       "capacity": "128GB",
-      "battery_state": "regular",
+      "battery_state": "MENOS-70",
       "value_usd": 0,
       "active": true
     },
@@ -1793,7 +1793,7 @@
       "id": 205,
       "model": "iPhone 17 Plus",
       "capacity": "256GB",
-      "battery_state": "excelente",
+      "battery_state": "100-90",
       "value_usd": 0,
       "active": true
     },
@@ -1801,7 +1801,7 @@
       "id": 206,
       "model": "iPhone 17 Plus",
       "capacity": "256GB",
-      "battery_state": "bueno",
+      "battery_state": "89-70",
       "value_usd": 0,
       "active": true
     },
@@ -1809,7 +1809,7 @@
       "id": 207,
       "model": "iPhone 17 Plus",
       "capacity": "256GB",
-      "battery_state": "regular",
+      "battery_state": "MENOS-70",
       "value_usd": 0,
       "active": true
     },
@@ -1817,7 +1817,7 @@
       "id": 208,
       "model": "iPhone 17 Plus",
       "capacity": "512GB",
-      "battery_state": "excelente",
+      "battery_state": "100-90",
       "value_usd": 0,
       "active": true
     },
@@ -1825,7 +1825,7 @@
       "id": 209,
       "model": "iPhone 17 Plus",
       "capacity": "512GB",
-      "battery_state": "bueno",
+      "battery_state": "89-70",
       "value_usd": 0,
       "active": true
     },
@@ -1833,7 +1833,7 @@
       "id": 210,
       "model": "iPhone 17 Plus",
       "capacity": "512GB",
-      "battery_state": "regular",
+      "battery_state": "MENOS-70",
       "value_usd": 0,
       "active": true
     },
@@ -1841,7 +1841,7 @@
       "id": 211,
       "model": "iPhone 17 Pro",
       "capacity": "256GB",
-      "battery_state": "excelente",
+      "battery_state": "100-90",
       "value_usd": 0,
       "active": true
     },
@@ -1849,7 +1849,7 @@
       "id": 212,
       "model": "iPhone 17 Pro",
       "capacity": "256GB",
-      "battery_state": "bueno",
+      "battery_state": "89-70",
       "value_usd": 0,
       "active": true
     },
@@ -1857,7 +1857,7 @@
       "id": 213,
       "model": "iPhone 17 Pro",
       "capacity": "256GB",
-      "battery_state": "regular",
+      "battery_state": "MENOS-70",
       "value_usd": 0,
       "active": true
     },
@@ -1865,7 +1865,7 @@
       "id": 214,
       "model": "iPhone 17 Pro",
       "capacity": "512GB",
-      "battery_state": "excelente",
+      "battery_state": "100-90",
       "value_usd": 0,
       "active": true
     },
@@ -1873,7 +1873,7 @@
       "id": 215,
       "model": "iPhone 17 Pro",
       "capacity": "512GB",
-      "battery_state": "bueno",
+      "battery_state": "89-70",
       "value_usd": 0,
       "active": true
     },
@@ -1881,7 +1881,7 @@
       "id": 216,
       "model": "iPhone 17 Pro",
       "capacity": "512GB",
-      "battery_state": "regular",
+      "battery_state": "MENOS-70",
       "value_usd": 0,
       "active": true
     },
@@ -1889,7 +1889,7 @@
       "id": 217,
       "model": "iPhone 17 Pro",
       "capacity": "1TB",
-      "battery_state": "excelente",
+      "battery_state": "100-90",
       "value_usd": 0,
       "active": true
     },
@@ -1897,7 +1897,7 @@
       "id": 218,
       "model": "iPhone 17 Pro",
       "capacity": "1TB",
-      "battery_state": "bueno",
+      "battery_state": "89-70",
       "value_usd": 0,
       "active": true
     },
@@ -1905,7 +1905,7 @@
       "id": 219,
       "model": "iPhone 17 Pro",
       "capacity": "1TB",
-      "battery_state": "regular",
+      "battery_state": "MENOS-70",
       "value_usd": 0,
       "active": true
     },
@@ -1913,7 +1913,7 @@
       "id": 220,
       "model": "iPhone 17 Pro Max",
       "capacity": "256GB",
-      "battery_state": "excelente",
+      "battery_state": "100-90",
       "value_usd": 0,
       "active": true
     },
@@ -1921,7 +1921,7 @@
       "id": 221,
       "model": "iPhone 17 Pro Max",
       "capacity": "256GB",
-      "battery_state": "bueno",
+      "battery_state": "89-70",
       "value_usd": 0,
       "active": true
     },
@@ -1929,7 +1929,7 @@
       "id": 222,
       "model": "iPhone 17 Pro Max",
       "capacity": "256GB",
-      "battery_state": "regular",
+      "battery_state": "MENOS-70",
       "value_usd": 0,
       "active": true
     },
@@ -1937,7 +1937,7 @@
       "id": 223,
       "model": "iPhone 17 Pro Max",
       "capacity": "512GB",
-      "battery_state": "excelente",
+      "battery_state": "100-90",
       "value_usd": 0,
       "active": true
     },
@@ -1945,7 +1945,7 @@
       "id": 224,
       "model": "iPhone 17 Pro Max",
       "capacity": "512GB",
-      "battery_state": "bueno",
+      "battery_state": "89-70",
       "value_usd": 0,
       "active": true
     },
@@ -1953,7 +1953,7 @@
       "id": 225,
       "model": "iPhone 17 Pro Max",
       "capacity": "512GB",
-      "battery_state": "regular",
+      "battery_state": "MENOS-70",
       "value_usd": 0,
       "active": true
     },
@@ -1961,7 +1961,7 @@
       "id": 226,
       "model": "iPhone 17 Pro Max",
       "capacity": "1TB",
-      "battery_state": "excelente",
+      "battery_state": "100-90",
       "value_usd": 0,
       "active": true
     },
@@ -1969,7 +1969,7 @@
       "id": 227,
       "model": "iPhone 17 Pro Max",
       "capacity": "1TB",
-      "battery_state": "bueno",
+      "battery_state": "89-70",
       "value_usd": 0,
       "active": true
     },
@@ -1977,7 +1977,7 @@
       "id": 228,
       "model": "iPhone 17 Pro Max",
       "capacity": "1TB",
-      "battery_state": "regular",
+      "battery_state": "MENOS-70",
       "value_usd": 0,
       "active": true
     }

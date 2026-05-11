@@ -7,7 +7,12 @@ CREATE TYPE product_category AS ENUM (
   'iphone', 'ipad', 'mac', 'watch', 'airpods', 'accesorios'
 );
 
-CREATE TYPE battery_state AS ENUM ('excelente', 'bueno', 'regular');
+-- battery_state values: '100-90' (100% a 90%) | '89-70' (89% a 70%) | 'MENOS-70' (Menos de 70%)
+-- Migration from old values: excelente→100-90, bueno→89-70, regular→MENOS-70
+-- ALTER TYPE battery_state RENAME VALUE 'excelente' TO '100-90';
+-- ALTER TYPE battery_state RENAME VALUE 'bueno' TO '89-70';
+-- ALTER TYPE battery_state RENAME VALUE 'regular' TO 'MENOS-70';
+CREATE TYPE battery_state AS ENUM ('100-90', '89-70', 'MENOS-70');
 
 -- Productos
 CREATE TABLE products (

@@ -6,9 +6,13 @@ import { ChevronDown, ChevronRight, Copy, Plus, Trash2, Zap } from 'lucide-react
 
 // ─── Constants ────────────────────────────────────────────────
 
-const CONDITIONS = ['excelente', 'bueno', 'regular'] as const
+const CONDITIONS = ['100-90', '89-70', 'MENOS-70'] as const
 type Condition = (typeof CONDITIONS)[number]
-const COND_LABELS: Record<Condition, string> = { excelente: 'Excelente', bueno: 'Bueno', regular: 'Regular' }
+const COND_LABELS: Record<Condition, string> = {
+  '100-90': '100% a 90%',
+  '89-70': '89% a 70%',
+  'MENOS-70': 'Menos de 70%',
+}
 
 const DEFAULT_CAPACITIES = ['64GB', '128GB', '256GB', '512GB', '1TB']
 
@@ -88,7 +92,7 @@ export default function TradeInManager({ initialValues }: Props) {
     const map: Record<string, Record<string, Record<Condition, TradeInValue | undefined>>> = {}
     for (const v of values) {
       map[v.model] ??= {}
-      map[v.model][v.capacity] ??= { excelente: undefined, bueno: undefined, regular: undefined }
+      map[v.model][v.capacity] ??= { '100-90': undefined, '89-70': undefined, 'MENOS-70': undefined }
       map[v.model][v.capacity][v.battery_state] = v
     }
     return map
@@ -467,9 +471,9 @@ function AddModelPanel({
   const [modelName, setModelName] = useState('')
   const [selectedCaps, setSelectedCaps] = useState<Set<string>>(new Set(['128GB', '256GB', '512GB']))
   const [customCap, setCustomCap] = useState('')
-  const [excelente, setExcelente] = useState('0')
-  const [bueno, setBueno] = useState('0')
-  const [regular, setRegular] = useState('0')
+  const [val90, setVal90] = useState('0')
+  const [val70, setVal70] = useState('0')
+  const [valMenos, setValMenos] = useState('0')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
 
@@ -487,15 +491,16 @@ function AddModelPanel({
     if (!name) return setError('El nombre del modelo es obligatorio.')
     if (existingModels.includes(name)) return setError('Ya existe un modelo con ese nombre.')
     if (selectedCaps.size === 0) return setError('Seleccioná al menos una capacidad.')
-    if (Number(excelente) < 0 || Number(bueno) < 0 || Number(regular) < 0) return setError('Los valores deben ser ≥ 0.')
+    if (Number(val90) < 0 || Number(val70) < 0 || Number(valMenos) < 0) return setError('Los valores deben ser ≥ 0.')
 
     setLoading(true)
+    const valMap: Record<string, string> = { '100-90': val90, '89-70': val70, 'MENOS-70': valMenos }
     const entries = [...selectedCaps].flatMap((cap) =>
       CONDITIONS.map((cond) => ({
         model: name,
         capacity: cap,
         battery_state: cond,
-        value_usd: Number(cond === 'excelente' ? excelente : cond === 'bueno' ? bueno : regular),
+        value_usd: Number(valMap[cond]),
         active: true,
       }))
     )
@@ -562,17 +567,17 @@ function AddModelPanel({
           </div>
         </div>
         <div className="flex flex-col gap-2">
-          <label className="text-xs font-medium text-[#666]">Valores iniciales USD</label>
+          <label className="text-xs font-medium text-[#666]">Valores iniciales USD por estado de batería</label>
           <div className="grid grid-cols-3 gap-2">
-            {[['Excelente', excelente, setExcelente], ['Bueno', bueno, setBueno], ['Regular', regular, setRegular]].map(
+            {([['100% a 90%', val90, setVal90], ['89% a 70%', val70, setVal70], ['Menos de 70%', valMenos, setValMenos]] as [string, string, (v: string) => void][]).map(
               ([label, val, setter]) => (
-                <div key={label as string} className="flex flex-col gap-1">
-                  <span className="text-[10px] text-[#999]">{label as string}</span>
+                <div key={label} className="flex flex-col gap-1">
+                  <span className="text-[10px] text-[#999]">{label}</span>
                   <input
                     type="number"
                     min="0"
-                    value={val as string}
-                    onChange={(e) => (setter as (v: string) => void)(e.target.value)}
+                    value={val}
+                    onChange={(e) => setter(e.target.value)}
                     className={inputCls}
                   />
                 </div>
@@ -606,9 +611,9 @@ function QuickLoadPanel({
   const [modelName, setModelName] = useState('')
   const [customModelName, setCustomModelName] = useState('')
   const [selectedCaps, setSelectedCaps] = useState<Set<string>>(new Set(['128GB', '256GB', '512GB']))
-  const [excelente, setExcelente] = useState('')
-  const [bueno, setBueno] = useState('')
-  const [regular, setRegular] = useState('')
+  const [val90, setVal90] = useState('')
+  const [val70, setVal70] = useState('')
+  const [valMenos, setValMenos] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
 
@@ -626,16 +631,17 @@ function QuickLoadPanel({
     setError('')
     if (!effectiveModel) return setError('Seleccioná o escribí un modelo.')
     if (selectedCaps.size === 0) return setError('Seleccioná al menos una capacidad.')
-    if (excelente === '' || bueno === '' || regular === '') return setError('Completá los tres valores.')
-    if (Number(excelente) < 0 || Number(bueno) < 0 || Number(regular) < 0) return setError('Los valores deben ser ≥ 0.')
+    if (val90 === '' || val70 === '' || valMenos === '') return setError('Completá los tres valores.')
+    if (Number(val90) < 0 || Number(val70) < 0 || Number(valMenos) < 0) return setError('Los valores deben ser ≥ 0.')
 
     setLoading(true)
+    const valMap: Record<string, string> = { '100-90': val90, '89-70': val70, 'MENOS-70': valMenos }
     const entries = [...selectedCaps].flatMap((cap) =>
       CONDITIONS.map((cond) => ({
         model: effectiveModel,
         capacity: cap,
         battery_state: cond,
-        value_usd: Number(cond === 'excelente' ? excelente : cond === 'bueno' ? bueno : regular),
+        value_usd: Number(valMap[cond]),
         active: true,
       }))
     )
@@ -694,18 +700,18 @@ function QuickLoadPanel({
           </div>
         </div>
         <div className="flex flex-col gap-2 sm:col-span-2">
-          <label className="text-xs font-medium text-[#666]">Valor por estado (se aplica a todas las capacidades seleccionadas)</label>
+          <label className="text-xs font-medium text-[#666]">Valor por estado de batería (se aplica a todas las capacidades seleccionadas)</label>
           <div className="grid grid-cols-3 gap-3">
-            {[['Excelente', excelente, setExcelente], ['Bueno', bueno, setBueno], ['Regular', regular, setRegular]].map(
+            {([['100% a 90%', val90, setVal90], ['89% a 70%', val70, setVal70], ['Menos de 70%', valMenos, setValMenos]] as [string, string, (v: string) => void][]).map(
               ([label, val, setter]) => (
-                <div key={label as string} className="flex flex-col gap-1">
-                  <span className="text-[10px] text-[#999]">{label as string}</span>
+                <div key={label} className="flex flex-col gap-1">
+                  <span className="text-[10px] text-[#999]">{label}</span>
                   <input
                     type="number"
                     min="0"
                     placeholder="0"
-                    value={val as string}
-                    onChange={(e) => (setter as (v: string) => void)(e.target.value)}
+                    value={val}
+                    onChange={(e) => setter(e.target.value)}
                     className={inputCls}
                   />
                 </div>
