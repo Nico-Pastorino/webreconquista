@@ -95,6 +95,7 @@ type TradeInCreateInput = {
   capacity: string
   battery_state: TradeInValue['battery_state']
   value_usd: number
+  active?: boolean
 }
 
 type SiteSettingsUpdate = Partial<SiteSettings>
@@ -475,26 +476,35 @@ const demoStorage = {
 
   async getTradeInModels(): Promise<string[]> {
     const store = await readDemoStore()
-    return [...new Set(store.trade_in_values.map((value) => value.model))].sort((a, b) => a.localeCompare(b))
+    const cap: (v: TradeInValue) => boolean = (v) => v.active !== false
+    return [...new Set(store.trade_in_values.filter(cap).map((v) => v.model))].sort((a, b) => a.localeCompare(b))
   },
 
   async getTradeInCapacities(model: string): Promise<string[]> {
     const store = await readDemoStore()
-    return [...new Set(store.trade_in_values.filter((value) => value.model === model).map((value) => value.capacity))].sort((a, b) => a.localeCompare(b))
+    return [...new Set(
+      store.trade_in_values
+        .filter((v) => v.model === model && v.active !== false)
+        .map((v) => v.capacity)
+    )].sort((a, b) => a.localeCompare(b))
   },
 
   async getTradeInEntry(model: string, capacity: string, batteryState: string): Promise<TradeInValue | null> {
     const store = await readDemoStore()
-    return store.trade_in_values.find((value) => value.model === model && value.capacity === capacity && value.battery_state === batteryState) ?? null
+    return store.trade_in_values.find(
+      (v) => v.model === model && v.capacity === capacity && v.battery_state === batteryState && v.active !== false
+    ) ?? null
   },
 
   async getAllTradeInValues(): Promise<TradeInValue[]> {
     const store = await readDemoStore()
-    return [...store.trade_in_values].sort((a, b) =>
-      a.model.localeCompare(b.model) ||
-      a.capacity.localeCompare(b.capacity) ||
-      a.battery_state.localeCompare(b.battery_state),
-    )
+    return [...store.trade_in_values]
+      .map((v) => ({ ...v, active: v.active !== false }))
+      .sort((a, b) =>
+        a.model.localeCompare(b.model) ||
+        a.capacity.localeCompare(b.capacity) ||
+        a.battery_state.localeCompare(b.battery_state),
+      )
   },
 
   async getTradeInCount(): Promise<number> {
@@ -505,16 +515,14 @@ const demoStorage = {
   async upsertTradeInValue(input: TradeInCreateInput): Promise<TradeInValue> {
     const store = await readDemoStore()
     const existingIndex = store.trade_in_values.findIndex(
-      (value) =>
-        value.model === input.model &&
-        value.capacity === input.capacity &&
-        value.battery_state === input.battery_state,
+      (v) => v.model === input.model && v.capacity === input.capacity && v.battery_state === input.battery_state,
     )
 
     if (existingIndex >= 0) {
-      const updated = {
+      const updated: TradeInValue = {
         ...store.trade_in_values[existingIndex],
         value_usd: Number(input.value_usd),
+        active: input.active !== undefined ? input.active : (store.trade_in_values[existingIndex].active !== false),
       }
       store.trade_in_values[existingIndex] = updated
       await writeDemoStore(store)
@@ -528,6 +536,7 @@ const demoStorage = {
       capacity: input.capacity,
       battery_state: input.battery_state,
       value_usd: Number(input.value_usd),
+      active: input.active !== false,
     }
     store.counters.tradeIn = id
     store.trade_in_values.push(value)
@@ -535,9 +544,44 @@ const demoStorage = {
     return value
   },
 
+  async upsertManyTradeInValues(inputs: TradeInCreateInput[]): Promise<TradeInValue[]> {
+    const store = await readDemoStore()
+    const results: TradeInValue[] = []
+    for (const input of inputs) {
+      const idx = store.trade_in_values.findIndex(
+        (v) => v.model === input.model && v.capacity === input.capacity && v.battery_state === input.battery_state,
+      )
+      if (idx >= 0) {
+        const updated: TradeInValue = { ...store.trade_in_values[idx], value_usd: Number(input.value_usd), active: input.active !== false }
+        store.trade_in_values[idx] = updated
+        results.push(updated)
+      } else {
+        const id = store.counters.tradeIn + 1
+        const value: TradeInValue = {
+          id, model: input.model, capacity: input.capacity, battery_state: input.battery_state,
+          value_usd: Number(input.value_usd), active: input.active !== false,
+        }
+        store.counters.tradeIn = id
+        store.trade_in_values.push(value)
+        results.push(value)
+      }
+    }
+    await writeDemoStore(store)
+    return results
+  },
+
+  async updateTradeInValueActive(id: number, active: boolean): Promise<TradeInValue | null> {
+    const store = await readDemoStore()
+    const idx = store.trade_in_values.findIndex((v) => v.id === id)
+    if (idx === -1) return null
+    store.trade_in_values[idx] = { ...store.trade_in_values[idx], active }
+    await writeDemoStore(store)
+    return { ...store.trade_in_values[idx] }
+  },
+
   async deleteTradeInValue(id: number): Promise<boolean> {
     const store = await readDemoStore()
-    const nextValues = store.trade_in_values.filter((value) => value.id !== id)
+    const nextValues = store.trade_in_values.filter((v) => v.id !== id)
     if (nextValues.length === store.trade_in_values.length) return false
     store.trade_in_values = nextValues
     await writeDemoStore(store)
@@ -815,14 +859,14 @@ const postgresStorage = {
 
   async getTradeInModels(): Promise<string[]> {
     const sql = getSql()
-    const rows = await sql<{ model: string }[]>`SELECT DISTINCT model FROM trade_in_values ORDER BY model ASC`
+    const rows = await sql<{ model: string }[]>`SELECT DISTINCT model FROM trade_in_values WHERE active = TRUE ORDER BY model ASC`
     return rows.map((row) => row.model)
   },
 
   async getTradeInCapacities(model: string): Promise<string[]> {
     const sql = getSql()
     const rows = await sql<{ capacity: string }[]>`
-      SELECT DISTINCT capacity FROM trade_in_values WHERE model = ${model} ORDER BY capacity ASC
+      SELECT DISTINCT capacity FROM trade_in_values WHERE model = ${model} AND active = TRUE ORDER BY capacity ASC
     `
     return rows.map((row) => row.capacity)
   },
@@ -831,15 +875,16 @@ const postgresStorage = {
     const sql = getSql()
     const rows = await sql<TradeInValue[]>`
       SELECT * FROM trade_in_values
-      WHERE model = ${model} AND capacity = ${capacity} AND battery_state = ${batteryState}
+      WHERE model = ${model} AND capacity = ${capacity} AND battery_state = ${batteryState} AND active = TRUE
       LIMIT 1
     `
-    return rows[0] ?? null
+    return rows[0] ? { ...rows[0], value_usd: Number(rows[0].value_usd) } : null
   },
 
   async getAllTradeInValues(): Promise<TradeInValue[]> {
     const sql = getSql()
-    return sql<TradeInValue[]>`SELECT * FROM trade_in_values ORDER BY model, capacity, battery_state`
+    const rows = await sql<TradeInValue[]>`SELECT * FROM trade_in_values ORDER BY model, capacity, battery_state`
+    return rows.map((r) => ({ ...r, value_usd: Number(r.value_usd) }))
   },
 
   async getTradeInCount(): Promise<number> {
@@ -851,12 +896,29 @@ const postgresStorage = {
   async upsertTradeInValue(input: TradeInCreateInput): Promise<TradeInValue> {
     const sql = getSql()
     const rows = await sql<TradeInValue[]>`
-      INSERT INTO trade_in_values (model, capacity, battery_state, value_usd)
-      VALUES (${input.model}, ${input.capacity}, ${input.battery_state}, ${input.value_usd})
-      ON CONFLICT (model, capacity, battery_state) DO UPDATE SET value_usd = EXCLUDED.value_usd
+      INSERT INTO trade_in_values (model, capacity, battery_state, value_usd, active, updated_at)
+      VALUES (${input.model}, ${input.capacity}, ${input.battery_state}, ${input.value_usd}, ${input.active !== false}, NOW())
+      ON CONFLICT (model, capacity, battery_state) DO UPDATE
+        SET value_usd = EXCLUDED.value_usd, active = EXCLUDED.active, updated_at = NOW()
       RETURNING *
     `
     return { ...rows[0], value_usd: Number(rows[0].value_usd) }
+  },
+
+  async upsertManyTradeInValues(inputs: TradeInCreateInput[]): Promise<TradeInValue[]> {
+    const results: TradeInValue[] = []
+    for (const input of inputs) {
+      results.push(await postgresStorage.upsertTradeInValue(input))
+    }
+    return results
+  },
+
+  async updateTradeInValueActive(id: number, active: boolean): Promise<TradeInValue | null> {
+    const sql = getSql()
+    const rows = await sql<TradeInValue[]>`
+      UPDATE trade_in_values SET active = ${active}, updated_at = NOW() WHERE id = ${id} RETURNING *
+    `
+    return rows[0] ? { ...rows[0], value_usd: Number(rows[0].value_usd) } : null
   },
 
   async deleteTradeInValue(id: number): Promise<boolean> {

@@ -85,6 +85,16 @@ export async function getTradeInCount(): Promise<number> {
   return (await getStorage()).getTradeInCount()
 }
 
+export async function upsertManyTradeInValues(
+  inputs: { model: string; capacity: string; battery_state: TradeInValue['battery_state']; value_usd: number; active?: boolean }[]
+): Promise<TradeInValue[]> {
+  return (await getStorage()).upsertManyTradeInValues(inputs)
+}
+
+export async function updateTradeInValueActive(id: number, active: boolean): Promise<TradeInValue | null> {
+  return (await getStorage()).updateTradeInValueActive(id, active)
+}
+
 // ─── Site Settings ────────────────────────────────────────────
 
 export async function getSiteSettings(): Promise<SiteSettings> {

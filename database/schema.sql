@@ -70,9 +70,15 @@ CREATE TABLE trade_in_values (
   model         TEXT NOT NULL,
   capacity      TEXT NOT NULL,
   battery_state battery_state NOT NULL,
-  value_usd     NUMERIC(10, 2) NOT NULL CHECK (value_usd >= 0),
+  value_usd     NUMERIC(10, 2) NOT NULL DEFAULT 0 CHECK (value_usd >= 0),
+  active        BOOLEAN NOT NULL DEFAULT TRUE,
+  created_at    TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at    TIMESTAMPTZ NOT NULL DEFAULT NOW(),
   UNIQUE (model, capacity, battery_state)
 );
+
+CREATE INDEX idx_tradein_model   ON trade_in_values(model)  WHERE active = TRUE;
+CREATE INDEX idx_tradein_active  ON trade_in_values(active);
 
 -- Configuración del sitio
 CREATE TABLE site_settings (

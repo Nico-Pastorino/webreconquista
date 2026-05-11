@@ -41,6 +41,7 @@ export interface TradeInValue {
   capacity: string
   battery_state: 'excelente' | 'bueno' | 'regular'
   value_usd: number
+  active: boolean
 }
 
 export interface SiteSettings {
