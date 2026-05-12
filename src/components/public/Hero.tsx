@@ -1,5 +1,6 @@
 'use client'
 
+import Image from 'next/image'
 import Link from 'next/link'
 import { useEffect, useRef, useState } from 'react'
 import { ArrowRight, Headphones, Laptop, Smartphone, Tablet } from 'lucide-react'
@@ -16,20 +17,13 @@ const PREVIEWS = [
   { label: 'AirPods', Icon: Headphones },
 ]
 
-const STATS = [
-  { value: '12 meses',  label: 'Garantía oficial'   },
-  { value: 'Hasta 12x', label: 'Cuotas sin recargo' },
-  { value: 'Sin cargo', label: 'Envío incluido'     },
-]
-
-export default function Hero({ storeName, tradeInEnabled = true }: Props) {
+export default function Hero({ tradeInEnabled = true }: Props) {
   const [mounted, setMounted] = useState(false)
   const sectionRef  = useRef<HTMLElement>(null)
   const parallaxRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     const raf = requestAnimationFrame(() => setMounted(true))
-    // Paint body/html dark so no white gap shows above the hero
     document.documentElement.style.background = '#0a0a0a'
     document.body.style.background = '#0a0a0a'
     return () => {
@@ -59,7 +53,7 @@ export default function Hero({ storeName, tradeInEnabled = true }: Props) {
       className="relative -mt-32 bg-[#0a0a0a] lg:-mt-36"
       style={{ willChange: 'opacity' }}
     >
-      {/* ── Radial glow — white center on dark bg ─────────────── */}
+      {/* ── Radial glow ───────────────────────────────────────── */}
       <div
         aria-hidden
         className="pointer-events-none absolute inset-0"
@@ -69,7 +63,7 @@ export default function Hero({ storeName, tradeInEnabled = true }: Props) {
         }}
       />
 
-      {/* ── Dot grid (white on dark) ───────────────────────────── */}
+      {/* ── Dot grid ──────────────────────────────────────────── */}
       <div
         aria-hidden
         className="pointer-events-none absolute inset-0"
@@ -89,44 +83,67 @@ export default function Hero({ storeName, tradeInEnabled = true }: Props) {
       >
         <div className="mx-auto max-w-4xl text-center">
 
-          {/* Eyebrow */}
-          <p
-            className={mounted ? 'anim-fade-up' : 'opacity-0'}
-            style={{
-              '--delay': '0ms',
-              fontSize: '0.7rem',
-              fontWeight: 500,
-              textTransform: 'uppercase',
-              letterSpacing: '0.22em',
-              color: 'rgba(255,255,255,0.4)',
-            } as React.CSSProperties}
+          {/* ── Logo + marca ───────────────────────────────────── */}
+          <div
+            className={`flex flex-col items-center gap-3 ${mounted ? 'anim-fade-up' : 'opacity-0'}`}
+            style={{ '--delay': '0ms' } as React.CSSProperties}
           >
-            {storeName}
-          </p>
+            <Image
+              src="/brand/store-rqta-logo.png"
+              alt="Store RQTA"
+              width={760}
+              height={420}
+              priority
+              className="h-auto w-[84px] object-contain sm:w-[100px]"
+              style={{ filter: 'brightness(0) invert(1)', opacity: 0.86 }}
+            />
 
-          {/* Title */}
+            {/* Divisor sutil */}
+            <div
+              className="h-px w-8"
+              style={{ background: 'rgba(255,255,255,0.15)' }}
+            />
+
+            {/* Firma geográfica — "Reconquista" con protagonismo */}
+            <p
+              style={{
+                fontSize: '0.63rem',
+                fontWeight: 500,
+                textTransform: 'uppercase',
+                letterSpacing: '0.30em',
+                color: 'rgba(255,255,255,0.38)',
+              }}
+            >
+              <span style={{ color: 'rgba(255,255,255,0.72)', letterSpacing: '0.28em' }}>
+                Reconquista
+              </span>
+              {' '}·{' '}
+              <span>Apple Premium Store</span>
+            </p>
+          </div>
+
+          {/* ── Headline ───────────────────────────────────────── */}
           <h1
-            className={`mt-5 text-[clamp(2.6rem,7vw,5.2rem)] font-semibold leading-[1.06] tracking-[-0.045em] ${mounted ? 'anim-fade-up' : 'opacity-0'}`}
-            style={{ '--delay': '120ms', color: '#ffffff' } as React.CSSProperties}
+            className={`mt-8 text-[clamp(2.6rem,7vw,5.2rem)] font-semibold leading-[1.06] tracking-[-0.045em] sm:mt-10 ${mounted ? 'anim-fade-up' : 'opacity-0'}`}
+            style={{ '--delay': '140ms', color: '#ffffff' } as React.CSSProperties}
           >
             Comprá Apple.{' '}
             <span style={{ color: 'rgba(255,255,255,0.35)' }}>Sin intermediarios.</span>
           </h1>
 
-          {/* Subtitle */}
+          {/* ── Subtítulo ──────────────────────────────────────── */}
           <p
-            className={`mx-auto mt-5 max-w-xl text-base sm:text-lg leading-relaxed ${mounted ? 'anim-fade-up' : 'opacity-0'}`}
-            style={{ '--delay': '240ms', color: 'rgba(255,255,255,0.5)' } as React.CSSProperties}
+            className={`mx-auto mt-5 max-w-xl text-base leading-relaxed sm:text-lg ${mounted ? 'anim-fade-up' : 'opacity-0'}`}
+            style={{ '--delay': '260ms', color: 'rgba(255,255,255,0.5)' } as React.CSSProperties}
           >
             Productos seleccionados, precios claros y una experiencia premium.
           </p>
 
-          {/* CTAs */}
+          {/* ── CTAs ───────────────────────────────────────────── */}
           <div
             className={`mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row ${mounted ? 'anim-fade-up' : 'opacity-0'}`}
-            style={{ '--delay': '360ms' } as React.CSSProperties}
+            style={{ '--delay': '380ms' } as React.CSSProperties}
           >
-            {/* Primary — white on dark */}
             <Link href="/productos" className="btn-apple-light">
               Ver productos
               <ArrowRight className="h-3.5 w-3.5" />
@@ -138,27 +155,17 @@ export default function Hero({ storeName, tradeInEnabled = true }: Props) {
             )}
           </div>
 
-          {/* Stats */}
-          <div
-            className={`mt-8 sm:mt-14 flex flex-wrap justify-center gap-x-7 gap-y-4 sm:gap-x-10 sm:gap-y-5 ${mounted ? 'anim-fade-up' : 'opacity-0'}`}
-            style={{ '--delay': '480ms' } as React.CSSProperties}
-          >
-            {STATS.map(({ value, label }) => (
-              <div key={label} className="text-center">
-                <p className="text-xl font-semibold tracking-[-0.03em]" style={{ color: '#ffffff' }}>{value}</p>
-                <p className="mt-1 text-[10px] font-medium uppercase tracking-[0.18em]" style={{ color: 'rgba(255,255,255,0.3)' }}>{label}</p>
-              </div>
-            ))}
-          </div>
         </div>
 
-        {/* ── Visual showcase ──────────────────────────────────── */}
+        {/* ── Visual showcase ────────────────────────────────── */}
         <div
-          className={`mx-auto mt-12 sm:mt-20 max-w-5xl ${mounted ? 'anim-scale-in' : 'opacity-0'}`}
-          style={{ '--delay': '580ms' } as React.CSSProperties}
+          className={`mx-auto mt-14 max-w-5xl sm:mt-20 ${mounted ? 'anim-scale-in' : 'opacity-0'}`}
+          style={{ '--delay': '500ms' } as React.CSSProperties}
         >
-          <div className="relative overflow-hidden rounded-t-[2rem] border border-b-0 px-6 pt-8 sm:px-10 sm:pt-10"
-               style={{ borderColor: 'rgba(255,255,255,0.08)', background: 'rgba(255,255,255,0.04)' }}>
+          <div
+            className="relative overflow-hidden rounded-t-[2rem] border border-b-0 px-6 pt-8 sm:px-10 sm:pt-10"
+            style={{ borderColor: 'rgba(255,255,255,0.08)', background: 'rgba(255,255,255,0.04)' }}
+          >
             <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
               {PREVIEWS.map(({ label, Icon }) => (
                 <div
@@ -166,8 +173,10 @@ export default function Hero({ storeName, tradeInEnabled = true }: Props) {
                   className="hero-preview-card flex flex-col items-center gap-4 rounded-[1.25rem] px-4 py-7 sm:py-9"
                   style={{ border: '1px solid rgba(255,255,255,0.08)', background: 'rgba(255,255,255,0.05)' }}
                 >
-                  <span className="flex h-12 w-12 items-center justify-center rounded-2xl"
-                        style={{ background: 'rgba(255,255,255,0.08)' }}>
+                  <span
+                    className="flex h-12 w-12 items-center justify-center rounded-2xl"
+                    style={{ background: 'rgba(255,255,255,0.08)' }}
+                  >
                     <Icon className="h-5 w-5" style={{ color: 'rgba(255,255,255,0.5)' }} />
                   </span>
                   <span className="text-sm font-medium" style={{ color: 'rgba(255,255,255,0.7)' }}>{label}</span>
