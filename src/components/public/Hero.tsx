@@ -83,33 +83,37 @@ export default function Hero({ tradeInEnabled = true }: Props) {
       >
         <div className="mx-auto max-w-4xl text-center">
 
-          {/* ── Sello de marca — logo pequeño + pill ───────────── */}
+          {/* ── Logo grande ────────────────────────────────────── */}
           <div
-            className={`flex flex-col items-center gap-3 ${mounted ? 'anim-fade-up' : 'opacity-0'}`}
+            className={`flex justify-center ${mounted ? 'anim-fade-up' : 'opacity-0'}`}
             style={{ '--delay': '0ms' } as React.CSSProperties}
           >
-            {/* Logo como sello pequeño y elegante */}
             <Image
               src="/brand/store-rqta-logo.png"
               alt="Store RQTA"
               width={760}
               height={420}
               priority
-              className="h-auto w-12 object-contain sm:w-14"
-              style={{ filter: 'brightness(0) invert(1)', opacity: 0.70 }}
+              className="h-auto w-28 object-contain sm:w-36 lg:w-44"
+              style={{ filter: 'brightness(0) invert(1)', opacity: 0.90 }}
             />
+          </div>
 
-            {/* Pill de ubicación */}
+          {/* ── Pill — Apple Premium Store ──────────────────────── */}
+          <div
+            className={`mt-5 flex justify-center ${mounted ? 'anim-fade-up' : 'opacity-0'}`}
+            style={{ '--delay': '100ms' } as React.CSSProperties}
+          >
             <div
               className="inline-flex items-center gap-2 rounded-full px-4 py-1.5"
               style={{
-                border: '1px solid rgba(255,255,255,0.10)',
-                background: 'rgba(255,255,255,0.04)',
+                border: '1px solid rgba(255,255,255,0.12)',
+                background: 'rgba(255,255,255,0.05)',
               }}
             >
               <span
                 className="h-1.5 w-1.5 rounded-full"
-                style={{ background: 'rgba(255,255,255,0.35)' }}
+                style={{ background: 'rgba(255,255,255,0.40)' }}
               />
               <span
                 style={{
@@ -117,7 +121,7 @@ export default function Hero({ tradeInEnabled = true }: Props) {
                   fontWeight: 500,
                   letterSpacing: '0.30em',
                   textTransform: 'uppercase',
-                  color: 'rgba(255,255,255,0.42)',
+                  color: 'rgba(255,255,255,0.45)',
                 }}
               >
                 Apple Premium Store
@@ -125,59 +129,31 @@ export default function Hero({ tradeInEnabled = true }: Props) {
             </div>
           </div>
 
-          {/* ── RECONQUISTA — tipografía display dominante ──────── */}
+          {/* ── Reconquista — display dominante ────────────────── */}
           <p
             className={`mt-6 font-semibold leading-none tracking-[-0.04em] sm:mt-7 ${mounted ? 'anim-fade-up' : 'opacity-0'}`}
             style={{
-              '--delay': '120ms',
-              fontSize: 'clamp(3.2rem, 12vw, 8rem)',
+              '--delay': '200ms',
+              fontSize: 'clamp(3.8rem, 13vw, 9rem)',
               color: '#ffffff',
             } as React.CSSProperties}
           >
             Reconquista
           </p>
 
-          {/* ── Divisor con líneas laterales ───────────────────── */}
-          <div
-            className={`mt-6 flex items-center gap-4 sm:mt-7 ${mounted ? 'anim-fade-up' : 'opacity-0'}`}
-            style={{ '--delay': '220ms' } as React.CSSProperties}
-          >
-            <div className="h-px flex-1" style={{ background: 'rgba(255,255,255,0.08)' }} />
-            <span
-              style={{
-                fontSize: '0.58rem',
-                fontWeight: 500,
-                letterSpacing: '0.32em',
-                textTransform: 'uppercase',
-                color: 'rgba(255,255,255,0.25)',
-              }}
-            >
-              Store RQTA
-            </span>
-            <div className="h-px flex-1" style={{ background: 'rgba(255,255,255,0.08)' }} />
-          </div>
-
-          {/* ── Headline — texto de apoyo ───────────────────────── */}
+          {/* ── Headline secundario ─────────────────────────────── */}
           <h1
-            className={`mt-6 text-lg font-medium leading-snug tracking-[-0.01em] sm:mt-7 sm:text-xl md:text-2xl ${mounted ? 'anim-fade-up' : 'opacity-0'}`}
-            style={{ '--delay': '320ms', color: 'rgba(255,255,255,0.58)' } as React.CSSProperties}
+            className={`mt-5 text-base font-medium leading-snug tracking-[-0.01em] sm:mt-6 sm:text-lg md:text-xl ${mounted ? 'anim-fade-up' : 'opacity-0'}`}
+            style={{ '--delay': '320ms', color: 'rgba(255,255,255,0.45)' } as React.CSSProperties}
           >
             Comprá Apple.{' '}
-            <span style={{ color: 'rgba(255,255,255,0.26)' }}>Sin intermediarios.</span>
+            <span style={{ color: 'rgba(255,255,255,0.22)' }}>Sin intermediarios.</span>
           </h1>
-
-          {/* ── Subtítulo ──────────────────────────────────────── */}
-          <p
-            className={`mx-auto mt-3 max-w-sm text-sm leading-relaxed ${mounted ? 'anim-fade-up' : 'opacity-0'}`}
-            style={{ '--delay': '420ms', color: 'rgba(255,255,255,0.30)' } as React.CSSProperties}
-          >
-            Productos seleccionados, precios claros y una experiencia premium.
-          </p>
 
           {/* ── CTAs ───────────────────────────────────────────── */}
           <div
             className={`mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row ${mounted ? 'anim-fade-up' : 'opacity-0'}`}
-            style={{ '--delay': '520ms' } as React.CSSProperties}
+            style={{ '--delay': '420ms' } as React.CSSProperties}
           >
             <Link href="/productos" className="btn-apple-light">
               Ver productos
@@ -195,7 +171,7 @@ export default function Hero({ tradeInEnabled = true }: Props) {
         {/* ── Visual showcase ────────────────────────────────── */}
         <div
           className={`mx-auto mt-14 max-w-5xl sm:mt-20 ${mounted ? 'anim-scale-in' : 'opacity-0'}`}
-          style={{ '--delay': '640ms' } as React.CSSProperties}
+          style={{ '--delay': '540ms' } as React.CSSProperties}
         >
           <div
             className="relative overflow-hidden rounded-t-[2rem] border border-b-0 px-6 pt-8 sm:px-10 sm:pt-10"
