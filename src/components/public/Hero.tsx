@@ -94,7 +94,7 @@ export default function Hero({ tradeInEnabled = true }: Props) {
               width={760}
               height={420}
               priority
-              className="h-auto w-28 object-contain sm:w-36 lg:w-44"
+              className="h-auto w-24 object-contain sm:w-32 lg:w-40"
               style={{ filter: 'brightness(0) invert(1)', opacity: 0.90 }}
             />
           </div>
@@ -105,23 +105,23 @@ export default function Hero({ tradeInEnabled = true }: Props) {
             style={{ '--delay': '100ms' } as React.CSSProperties}
           >
             <div
-              className="inline-flex items-center gap-2 rounded-full px-4 py-1.5"
+              className="inline-flex items-center gap-1.5 rounded-full px-3.5 py-1"
               style={{
-                border: '1px solid rgba(255,255,255,0.12)',
-                background: 'rgba(255,255,255,0.05)',
+                border: '1px solid rgba(255,255,255,0.10)',
+                background: 'rgba(255,255,255,0.04)',
               }}
             >
               <span
-                className="h-1.5 w-1.5 rounded-full"
-                style={{ background: 'rgba(255,255,255,0.40)' }}
+                className="h-1 w-1 rounded-full"
+                style={{ background: 'rgba(255,255,255,0.35)' }}
               />
               <span
                 style={{
-                  fontSize: '0.6rem',
+                  fontSize: '0.55rem',
                   fontWeight: 500,
-                  letterSpacing: '0.30em',
+                  letterSpacing: '0.26em',
                   textTransform: 'uppercase',
-                  color: 'rgba(255,255,255,0.45)',
+                  color: 'rgba(255,255,255,0.40)',
                 }}
               >
                 Apple Premium Store
@@ -134,7 +134,7 @@ export default function Hero({ tradeInEnabled = true }: Props) {
             className={`mt-6 font-semibold leading-none tracking-[-0.04em] sm:mt-7 ${mounted ? 'anim-fade-up' : 'opacity-0'}`}
             style={{
               '--delay': '200ms',
-              fontSize: 'clamp(3.8rem, 13vw, 9rem)',
+              fontSize: 'clamp(2.8rem, 10vw, 6.5rem)',
               color: '#ffffff',
             } as React.CSSProperties}
           >
