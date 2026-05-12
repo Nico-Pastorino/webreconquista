@@ -81,11 +81,11 @@ export default function Hero({ tradeInEnabled = true }: Props) {
         className="relative mx-auto w-full max-w-7xl px-6 pb-0 pt-[8rem] sm:pt-[11rem] lg:px-8 lg:pt-[15rem]"
         style={{ willChange: 'transform' }}
       >
-        <div className="mx-auto max-w-4xl text-center">
+        <div className="mx-auto max-w-3xl text-center">
 
-          {/* ── Logo + marca ───────────────────────────────────── */}
+          {/* ── Logo ───────────────────────────────────────────── */}
           <div
-            className={`flex flex-col items-center gap-3 ${mounted ? 'anim-fade-up' : 'opacity-0'}`}
+            className={`flex justify-center ${mounted ? 'anim-fade-up' : 'opacity-0'}`}
             style={{ '--delay': '0ms' } as React.CSSProperties}
           >
             <Image
@@ -94,55 +94,54 @@ export default function Hero({ tradeInEnabled = true }: Props) {
               width={760}
               height={420}
               priority
-              className="h-auto w-[84px] object-contain sm:w-[100px]"
-              style={{ filter: 'brightness(0) invert(1)', opacity: 0.86 }}
+              className="h-auto w-20 object-contain sm:w-28 lg:w-36"
+              style={{ filter: 'brightness(0) invert(1)', opacity: 0.88 }}
             />
-
-            {/* Divisor sutil */}
-            <div
-              className="h-px w-8"
-              style={{ background: 'rgba(255,255,255,0.15)' }}
-            />
-
-            {/* Firma geográfica — "Reconquista" con protagonismo */}
-            <p
-              style={{
-                fontSize: '0.63rem',
-                fontWeight: 500,
-                textTransform: 'uppercase',
-                letterSpacing: '0.30em',
-                color: 'rgba(255,255,255,0.38)',
-              }}
-            >
-              <span style={{ color: 'rgba(255,255,255,0.72)', letterSpacing: '0.28em' }}>
-                Reconquista
-              </span>
-              {' '}·{' '}
-              <span>Apple Premium Store</span>
-            </p>
           </div>
 
-          {/* ── Headline ───────────────────────────────────────── */}
+          {/* ── Reconquista (heading de marca) ─────────────────── */}
+          <p
+            className={`mt-5 text-3xl font-semibold leading-tight tracking-[-0.03em] sm:mt-6 sm:text-4xl lg:text-5xl ${mounted ? 'anim-fade-up' : 'opacity-0'}`}
+            style={{ '--delay': '100ms', color: '#ffffff' } as React.CSSProperties}
+          >
+            Reconquista
+          </p>
+
+          {/* ── Apple Premium Store ─────────────────────────────── */}
+          <p
+            className={`mt-2 text-[10px] font-medium uppercase tracking-[0.38em] sm:text-xs ${mounted ? 'anim-fade-up' : 'opacity-0'}`}
+            style={{ '--delay': '180ms', color: 'rgba(255,255,255,0.38)' } as React.CSSProperties}
+          >
+            Apple Premium Store
+          </p>
+
+          {/* ── Divisor ────────────────────────────────────────── */}
+          <div
+            className={`mx-auto mt-7 h-px w-10 sm:mt-8 ${mounted ? 'anim-fade-up' : 'opacity-0'}`}
+            style={{ '--delay': '220ms', background: 'rgba(255,255,255,0.12)' } as React.CSSProperties}
+          />
+
+          {/* ── Headline — rol secundario ───────────────────────── */}
           <h1
-            className={`mt-8 text-[clamp(2.6rem,7vw,5.2rem)] font-semibold leading-[1.06] tracking-[-0.045em] sm:mt-10 ${mounted ? 'anim-fade-up' : 'opacity-0'}`}
-            style={{ '--delay': '140ms', color: '#ffffff' } as React.CSSProperties}
+            className={`mt-7 text-2xl font-semibold leading-snug tracking-[-0.03em] sm:mt-8 sm:text-3xl md:text-4xl ${mounted ? 'anim-fade-up' : 'opacity-0'}`}
+            style={{ '--delay': '300ms', color: 'rgba(255,255,255,0.72)' } as React.CSSProperties}
           >
             Comprá Apple.{' '}
-            <span style={{ color: 'rgba(255,255,255,0.35)' }}>Sin intermediarios.</span>
+            <span style={{ color: 'rgba(255,255,255,0.28)' }}>Sin intermediarios.</span>
           </h1>
 
           {/* ── Subtítulo ──────────────────────────────────────── */}
           <p
-            className={`mx-auto mt-5 max-w-xl text-base leading-relaxed sm:text-lg ${mounted ? 'anim-fade-up' : 'opacity-0'}`}
-            style={{ '--delay': '260ms', color: 'rgba(255,255,255,0.5)' } as React.CSSProperties}
+            className={`mx-auto mt-4 max-w-md text-sm leading-relaxed sm:text-base ${mounted ? 'anim-fade-up' : 'opacity-0'}`}
+            style={{ '--delay': '400ms', color: 'rgba(255,255,255,0.38)' } as React.CSSProperties}
           >
             Productos seleccionados, precios claros y una experiencia premium.
           </p>
 
           {/* ── CTAs ───────────────────────────────────────────── */}
           <div
-            className={`mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row ${mounted ? 'anim-fade-up' : 'opacity-0'}`}
-            style={{ '--delay': '380ms' } as React.CSSProperties}
+            className={`mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row ${mounted ? 'anim-fade-up' : 'opacity-0'}`}
+            style={{ '--delay': '500ms' } as React.CSSProperties}
           >
             <Link href="/productos" className="btn-apple-light">
               Ver productos
@@ -160,7 +159,7 @@ export default function Hero({ tradeInEnabled = true }: Props) {
         {/* ── Visual showcase ────────────────────────────────── */}
         <div
           className={`mx-auto mt-14 max-w-5xl sm:mt-20 ${mounted ? 'anim-scale-in' : 'opacity-0'}`}
-          style={{ '--delay': '500ms' } as React.CSSProperties}
+          style={{ '--delay': '620ms' } as React.CSSProperties}
         >
           <div
             className="relative overflow-hidden rounded-t-[2rem] border border-b-0 px-6 pt-8 sm:px-10 sm:pt-10"
