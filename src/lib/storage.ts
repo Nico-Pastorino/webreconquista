@@ -150,6 +150,14 @@ async function readDemoStore(): Promise<DemoStoreData> {
 }
 
 async function writeDemoStore(store: DemoStoreData): Promise<void> {
+  // Guard: never attempt to write files in production (Vercel filesystem is read-only).
+  // If this is reached in production, it means DATABASE_URL is not configured.
+  if (process.env.NODE_ENV === 'production' || process.env.VERCEL) {
+    throw new Error(
+      'DATABASE_URL no está configurada en Vercel. ' +
+      'Ir a: Vercel → Project → Settings → Environment Variables → agregar DATABASE_URL con la cadena de conexión de Supabase (Transaction Pooler, puerto 6543).'
+    )
+  }
   await fs.writeFile(DEMO_STORE_PATH, `${JSON.stringify(store, null, 2)}\n`, 'utf8')
 }
 
@@ -1013,5 +1021,18 @@ const postgresStorage = {
 type Storage = typeof demoStorage
 
 export async function getStorage(): Promise<Storage> {
-  return hasUsableDatabaseUrl() ? postgresStorage : demoStorage
+  if (hasUsableDatabaseUrl()) return postgresStorage
+
+  // In production (Vercel), never use the JSON-based demo storage —
+  // the filesystem is read-only and writes will throw EROFS.
+  if (process.env.NODE_ENV === 'production' || process.env.VERCEL) {
+    throw new Error(
+      'DATABASE_URL no está configurada en Vercel. ' +
+      'Ir a: Vercel → Project → Settings → Environment Variables → agregar DATABASE_URL con la cadena de conexión de Supabase. ' +
+      'En Supabase: Project → Settings → Database → Connection String → Transaction pooler (puerto 6543).'
+    )
+  }
+
+  // Local development fallback: use the JSON demo store (read/write works locally)
+  return demoStorage
 }
