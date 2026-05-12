@@ -18,16 +18,22 @@ export const metadata: Metadata = {
   keywords: ['iPhone', 'iPad', 'Mac', 'Apple Watch', 'AirPods', 'Apple Argentina'],
   icons: {
     icon: [
-      { url: '/favicon.png', type: 'image/png' },
+      { url: '/favicon.ico',       type: 'image/x-icon' },
+      { url: '/favicon-32x32.png', type: 'image/png', sizes: '32x32' },
+      { url: '/favicon-16x16.png', type: 'image/png', sizes: '16x16' },
     ],
     apple: [
-      { url: '/brand/store-rqta-logo.png', sizes: '512x512', type: 'image/png' },
+      { url: '/apple-touch-icon.png', sizes: '180x180', type: 'image/png' },
+    ],
+    other: [
+      { rel: 'icon', url: '/favicon-512.png', sizes: '512x512', type: 'image/png' },
     ],
   },
   openGraph: {
     type: 'website',
     locale: 'es_AR',
     siteName: 'STORE RQTA',
+    images: [{ url: '/favicon-512.png', width: 512, height: 512 }],
   },
 }
 

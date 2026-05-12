@@ -3,6 +3,8 @@ import { ImageResponse } from 'next/og'
 export const size = { width: 32, height: 32 }
 export const contentType = 'image/png'
 
+// Genera el favicon de 32x32 via ImageResponse como respaldo dinámico.
+// El favicon principal viene de /public/favicon-32x32.png (referenciado en metadata).
 export default function Icon() {
   return new ImageResponse(
     (
@@ -15,11 +17,10 @@ export default function Icon() {
           alignItems: 'center',
           justifyContent: 'center',
           background: '#0a0a0a',
-          borderRadius: '6px',
+          borderRadius: '5px',
           gap: '1px',
         }}
       >
-        {/* R — lettermark dominante */}
         <span
           style={{
             color: '#ffffff',
@@ -32,7 +33,6 @@ export default function Icon() {
         >
           R
         </span>
-        {/* QTA — completando la marca */}
         <span
           style={{
             color: 'rgba(255,255,255,0.45)',
