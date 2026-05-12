@@ -8,7 +8,13 @@ import ProductsTable from '@/components/admin/ProductsTable'
 
 export default async function AdminProductsPage() {
   await requireAdminSession()
-  const [products, dollarRate] = await Promise.all([getAllProductsAdmin(), getDollarRate()])
+  let products: import('@/types').Product[] = []
+  let dollarRate = 1200
+  try {
+    ;[products, dollarRate] = await Promise.all([getAllProductsAdmin(), getDollarRate()])
+  } catch (err) {
+    console.error('[Admin/productos] data fetch error:', err)
+  }
 
   return (
     <div className="mx-auto max-w-7xl px-6 py-12 lg:px-8">

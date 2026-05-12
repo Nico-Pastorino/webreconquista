@@ -6,7 +6,12 @@ import TradeInManager from '@/components/admin/TradeInManager'
 
 export default async function AdminTradeInPage() {
   await requireAdminSession()
-  const values = await getAllTradeInValues()
+  let values: import('@/types').TradeInValue[] = []
+  try {
+    values = await getAllTradeInValues()
+  } catch (err) {
+    console.error('[Admin/canje] data fetch error:', err)
+  }
 
   return (
     <div className="mx-auto max-w-7xl px-6 py-12 lg:px-8">

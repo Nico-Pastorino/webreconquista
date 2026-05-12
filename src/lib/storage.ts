@@ -635,30 +635,40 @@ const demoStorage = {
 const postgresStorage = {
   async getProducts(category?: Category, label?: string): Promise<ProductCard[]> {
     const sql = getSql()
-    let rows: ProductCard[]
-    if (category && label) {
-      rows = await sql<ProductCard[]>`
-        SELECT id, slug, name, category, price_usd, image_url, featured, product_label
-        FROM products
-        WHERE active = TRUE AND category = ${category} AND product_label = ${label}
-        ORDER BY featured DESC, created_at DESC
-      `
-    } else if (category) {
-      rows = await sql<ProductCard[]>`
-        SELECT id, slug, name, category, price_usd, image_url, featured, product_label
-        FROM products
-        WHERE active = TRUE AND category = ${category}
-        ORDER BY featured DESC, created_at DESC
-      `
-    } else {
-      rows = await sql<ProductCard[]>`
-        SELECT id, slug, name, category, price_usd, image_url, featured, product_label
-        FROM products
-        WHERE active = TRUE
-        ORDER BY featured DESC, created_at DESC
-      `
+    try {
+      let rows: ProductCard[]
+      if (category && label) {
+        rows = await sql<ProductCard[]>`
+          SELECT id, slug, name, category, price_usd, image_url, featured, product_label
+          FROM products
+          WHERE active = TRUE AND category = ${category} AND product_label = ${label}
+          ORDER BY featured DESC, created_at DESC
+        `
+      } else if (category) {
+        rows = await sql<ProductCard[]>`
+          SELECT id, slug, name, category, price_usd, image_url, featured, product_label
+          FROM products WHERE active = TRUE AND category = ${category}
+          ORDER BY featured DESC, created_at DESC
+        `
+      } else {
+        rows = await sql<ProductCard[]>`
+          SELECT id, slug, name, category, price_usd, image_url, featured, product_label
+          FROM products WHERE active = TRUE ORDER BY featured DESC, created_at DESC
+        `
+      }
+      return rows.map((row) => ({ ...row, price_usd: Number(row.price_usd), product_label: row.product_label ?? null }))
+    } catch (err: unknown) {
+      // Fallback: if product_label column doesn't exist (old schema), query without it
+      const pgErr = err as { code?: string }
+      if (pgErr?.code === '42703') {
+        console.warn('[Storage] product_label column missing — run migration-002. Falling back.')
+        const rows = category
+          ? await sql<ProductCard[]>`SELECT id,slug,name,category,price_usd,image_url,featured FROM products WHERE active=TRUE AND category=${category} ORDER BY featured DESC,created_at DESC`
+          : await sql<ProductCard[]>`SELECT id,slug,name,category,price_usd,image_url,featured FROM products WHERE active=TRUE ORDER BY featured DESC,created_at DESC`
+        return rows.map((r) => ({ ...r, price_usd: Number(r.price_usd), product_label: null }))
+      }
+      throw err
     }
-    return rows.map((row) => ({ ...row, price_usd: Number(row.price_usd), product_label: row.product_label ?? null }))
   },
 
   async getFeaturedProducts(): Promise<ProductCard[]> {
@@ -670,7 +680,7 @@ const postgresStorage = {
       ORDER BY created_at DESC
       LIMIT 8
     `
-    return rows.map((row) => ({ ...row, price_usd: Number(row.price_usd) }))
+    return rows.map((row) => ({ ...row, price_usd: Number(row.price_usd), product_label: null }))
   },
 
   async getProductBySlug(slug: string): Promise<Product | null> {

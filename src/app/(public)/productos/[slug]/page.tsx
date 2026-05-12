@@ -28,25 +28,50 @@ interface Props {
 
 export async function generateMetadata({ params }: Props) {
   const { slug } = await params
-  const product = await getProductBySlug(slug)
-  if (!product) return { title: 'Producto no encontrado' }
-  return {
-    title: `${product.name} | Precio y cuotas`,
-    description: product.description ?? `Comprá ${product.name} con garantía y envío.`,
+  try {
+    const product = await getProductBySlug(slug)
+    if (!product) return { title: 'Producto no encontrado' }
+    return {
+      title: `${product.name} | Precio y cuotas`,
+      description: product.description ?? `Comprá ${product.name} con garantía y envío.`,
+    }
+  } catch {
+    return { title: 'Producto | STORE RQTA' }
   }
+}
+
+const DEFAULT_SETTINGS = {
+  whatsapp_number: '5491100000000',
+  whatsapp_message: 'Hola! Me interesa: ',
+  store_name: 'Store RQTA',
+  store_tagline: '',
+  trade_in_enabled: true,
+  show_usd_price: true,
+  show_installments: true,
 }
 
 export default async function ProductDetailPage({ params }: Props) {
   const { slug } = await params
 
-  const [product, dollarRate, groups, options, settings, tradeInModels] = await Promise.all([
-    getProductBySlug(slug),
-    getDollarRate(),
-    getFinancingGroups(true),
-    getFinancingOptions(undefined, true),
-    getSiteSettings(),
-    getTradeInModels(),
-  ])
+  let product = null
+  let dollarRate = 1200
+  let groups: import('@/types').FinancingGroup[] = []
+  let options: import('@/types').FinancingOption[] = []
+  let settings = DEFAULT_SETTINGS
+  let tradeInModels: string[] = []
+
+  try {
+    ;[product, dollarRate, groups, options, settings, tradeInModels] = await Promise.all([
+      getProductBySlug(slug),
+      getDollarRate(),
+      getFinancingGroups(true),
+      getFinancingOptions(undefined, true),
+      getSiteSettings(),
+      getTradeInModels(),
+    ])
+  } catch (err) {
+    console.error('[ProductDetail] data fetch error:', err)
+  }
 
   if (!product) notFound()
 
