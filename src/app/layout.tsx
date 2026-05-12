@@ -17,9 +17,12 @@ export const metadata: Metadata = {
   description: 'Tienda Apple con interfaz minimalista, productos seleccionados y una experiencia premium.',
   keywords: ['iPhone', 'iPad', 'Mac', 'Apple Watch', 'AirPods', 'Apple Argentina'],
   icons: {
-    icon: '/favicon.png',
-    shortcut: '/favicon.png',
-    apple: '/brand/store-rqta-logo.png',
+    icon: [
+      { url: '/favicon.png', type: 'image/png' },
+    ],
+    apple: [
+      { url: '/brand/store-rqta-logo.png', sizes: '512x512', type: 'image/png' },
+    ],
   },
   openGraph: {
     type: 'website',
