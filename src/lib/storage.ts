@@ -24,6 +24,7 @@ type ProductInput = {
   active?: boolean
   description?: string | null
   specs?: Record<string, string> | null
+  product_label?: string | null
 }
 
 type ProductUpdateInput = ProductInput
@@ -111,6 +112,7 @@ function toProductCard(product: Product): ProductCard {
     price_usd: Number(product.price_usd),
     image_url: product.image_url ?? null,
     featured: product.featured,
+    product_label: product.product_label ?? null,
   }
 }
 
@@ -120,6 +122,7 @@ function normalizeProduct(product: Product): Product {
     price_usd: Number(product.price_usd),
     image_url: product.image_url ?? null,
     specs: product.specs ?? null,
+    product_label: product.product_label ?? null,
   }
 }
 
@@ -131,6 +134,7 @@ function normalizeProductPayload(input: ProductInput | ProductUpdateInput) {
     active: input.active ?? true,
     description: input.description ?? null,
     specs: input.specs ?? null,
+    product_label: input.product_label ?? null,
   }
 }
 
@@ -150,10 +154,14 @@ async function writeDemoStore(store: DemoStoreData): Promise<void> {
 }
 
 const demoStorage = {
-  async getProducts(category?: Category): Promise<ProductCard[]> {
+  async getProducts(category?: Category, label?: string): Promise<ProductCard[]> {
     const store = await readDemoStore()
     return store.products
-      .filter((product) => product.active && (!category || product.category === category))
+      .filter((product) =>
+        product.active &&
+        (!category || product.category === category) &&
+        (!label || product.product_label === label)
+      )
       .sort((a, b) => Number(b.featured) - Number(a.featured) || new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
       .map(toProductCard)
   },
@@ -209,6 +217,7 @@ const demoStorage = {
       active: normalized.active,
       description: normalized.description,
       specs: normalized.specs,
+      product_label: normalized.product_label,
       created_at: new Date().toISOString(),
     }
 
@@ -244,6 +253,7 @@ const demoStorage = {
       active: normalized.active,
       description: normalized.description,
       specs: normalized.specs,
+      product_label: normalized.product_label,
     }
 
     store.products[index] = updated
@@ -615,22 +625,32 @@ const demoStorage = {
 }
 
 const postgresStorage = {
-  async getProducts(category?: Category): Promise<ProductCard[]> {
+  async getProducts(category?: Category, label?: string): Promise<ProductCard[]> {
     const sql = getSql()
-    const rows = category
-      ? await sql<ProductCard[]>`
-          SELECT id, slug, name, category, price_usd, image_url, featured
-          FROM products
-          WHERE active = TRUE AND category = ${category}
-          ORDER BY featured DESC, created_at DESC
-        `
-      : await sql<ProductCard[]>`
-          SELECT id, slug, name, category, price_usd, image_url, featured
-          FROM products
-          WHERE active = TRUE
-          ORDER BY featured DESC, created_at DESC
-        `
-    return rows.map((row) => ({ ...row, price_usd: Number(row.price_usd) }))
+    let rows: ProductCard[]
+    if (category && label) {
+      rows = await sql<ProductCard[]>`
+        SELECT id, slug, name, category, price_usd, image_url, featured, product_label
+        FROM products
+        WHERE active = TRUE AND category = ${category} AND product_label = ${label}
+        ORDER BY featured DESC, created_at DESC
+      `
+    } else if (category) {
+      rows = await sql<ProductCard[]>`
+        SELECT id, slug, name, category, price_usd, image_url, featured, product_label
+        FROM products
+        WHERE active = TRUE AND category = ${category}
+        ORDER BY featured DESC, created_at DESC
+      `
+    } else {
+      rows = await sql<ProductCard[]>`
+        SELECT id, slug, name, category, price_usd, image_url, featured, product_label
+        FROM products
+        WHERE active = TRUE
+        ORDER BY featured DESC, created_at DESC
+      `
+    }
+    return rows.map((row) => ({ ...row, price_usd: Number(row.price_usd), product_label: row.product_label ?? null }))
   },
 
   async getFeaturedProducts(): Promise<ProductCard[]> {
@@ -668,8 +688,8 @@ const postgresStorage = {
     const normalized = normalizeProductPayload(input)
     const slug = slugify(normalized.name)
     const rows = await sql<Product[]>`
-      INSERT INTO products (slug, name, category, price_usd, image_url, featured, active, description, specs)
-      VALUES (${slug}, ${normalized.name}, ${normalized.category}, ${normalized.price_usd}, ${normalized.image_url}, ${normalized.featured}, ${normalized.active}, ${normalized.description}, ${normalized.specs ? JSON.stringify(normalized.specs) : null})
+      INSERT INTO products (slug, name, category, price_usd, image_url, featured, active, description, specs, product_label)
+      VALUES (${slug}, ${normalized.name}, ${normalized.category}, ${normalized.price_usd}, ${normalized.image_url}, ${normalized.featured}, ${normalized.active}, ${normalized.description}, ${normalized.specs ? JSON.stringify(normalized.specs) : null}, ${normalized.product_label})
       RETURNING *
     `
     return normalizeProduct(rows[0])
@@ -682,7 +702,8 @@ const postgresStorage = {
       UPDATE products
       SET name = ${normalized.name}, category = ${normalized.category}, price_usd = ${normalized.price_usd},
           image_url = ${normalized.image_url}, featured = ${normalized.featured}, active = ${normalized.active},
-          description = ${normalized.description}, specs = ${normalized.specs ? JSON.stringify(normalized.specs) : null}
+          description = ${normalized.description}, specs = ${normalized.specs ? JSON.stringify(normalized.specs) : null},
+          product_label = ${normalized.product_label}
       WHERE id = ${id}
       RETURNING *
     `

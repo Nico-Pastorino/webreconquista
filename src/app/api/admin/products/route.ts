@@ -20,7 +20,7 @@ export async function POST(req: NextRequest) {
   const err = await guard(); if (err) return err
   try {
     const body = await req.json()
-    const { name, category, price_usd, image_url, featured, active, description, specs } = body
+    const { name, category, price_usd, image_url, featured, active, description, specs, product_label } = body
     if (!name || !category || !price_usd) {
       return NextResponse.json({ error: 'Campos requeridos: name, category, price_usd' }, { status: 400 })
     }
@@ -33,6 +33,7 @@ export async function POST(req: NextRequest) {
       active,
       description,
       specs,
+      product_label: product_label ?? null,
     })
     revalidatePath('/productos')
     revalidatePath('/')

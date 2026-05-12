@@ -17,6 +17,8 @@ export interface Product {
   active: boolean
   description: string | null
   specs: Record<string, string> | null
+  /** 'Sellado Nuevo' | 'Seminuevo' | null */
+  product_label: string | null
   created_at: string
 }
 
@@ -84,6 +86,7 @@ export interface ProductCard {
   price_usd: number
   image_url: string | null
   featured: boolean
+  product_label: string | null
 }
 
 export interface InstallmentOption {

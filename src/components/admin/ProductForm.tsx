@@ -14,6 +14,12 @@ const CATEGORIES = [
   { value: 'accesorios', label: 'Accesorios' },
 ]
 
+const PRODUCT_LABELS = [
+  { value: '', label: 'Sin etiqueta' },
+  { value: 'Sellado Nuevo', label: 'Sellado Nuevo' },
+  { value: 'Seminuevo', label: 'Seminuevo' },
+]
+
 interface Props {
   product?: Product
 }
@@ -73,6 +79,7 @@ export default function ProductForm({ product }: Props) {
     featured: product?.featured ?? false,
     active: product?.active ?? true,
     description: product?.description ?? '',
+    product_label: product?.product_label ?? '',
   })
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
@@ -86,7 +93,11 @@ export default function ProductForm({ product }: Props) {
     setLoading(true)
     setError('')
     try {
-      const body = { ...form, price_usd: parseFloat(form.price_usd) }
+      const body = {
+      ...form,
+      price_usd: parseFloat(form.price_usd),
+      product_label: form.product_label || null,
+    }
       const res = isEdit
         ? await fetch(`/api/admin/products/${product!.id}`, {
             method: 'PUT',
@@ -145,6 +156,21 @@ export default function ProductForm({ product }: Props) {
               {CATEGORIES.map((c) => (
                 <option key={c.value} value={c.value}>
                   {c.label}
+                </option>
+              ))}
+            </select>
+          </Field>
+
+          {/* Etiqueta comercial */}
+          <Field label="Etiqueta comercial">
+            <select
+              value={form.product_label}
+              onChange={(e) => set('product_label', e.target.value)}
+              className={inputCls + ' appearance-none'}
+            >
+              {PRODUCT_LABELS.map((l) => (
+                <option key={l.value} value={l.value}>
+                  {l.label}
                 </option>
               ))}
             </select>

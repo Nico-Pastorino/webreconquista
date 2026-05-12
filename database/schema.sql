@@ -16,18 +16,22 @@ CREATE TYPE battery_state AS ENUM ('100-90', '89-70', 'MENOS-70');
 
 -- Productos
 CREATE TABLE products (
-  id          SERIAL PRIMARY KEY,
-  slug        TEXT UNIQUE NOT NULL,
-  name        TEXT NOT NULL,
-  category    product_category NOT NULL,
-  price_usd   NUMERIC(10, 2) NOT NULL CHECK (price_usd > 0),
-  image_url   TEXT NOT NULL,
-  featured    BOOLEAN NOT NULL DEFAULT FALSE,
-  active      BOOLEAN NOT NULL DEFAULT TRUE,
-  description TEXT,
-  specs       JSONB,
-  created_at  TIMESTAMPTZ NOT NULL DEFAULT NOW()
+  id            SERIAL PRIMARY KEY,
+  slug          TEXT UNIQUE NOT NULL,
+  name          TEXT NOT NULL,
+  category      product_category NOT NULL,
+  price_usd     NUMERIC(10, 2) NOT NULL CHECK (price_usd > 0),
+  image_url     TEXT NOT NULL,
+  featured      BOOLEAN NOT NULL DEFAULT FALSE,
+  active        BOOLEAN NOT NULL DEFAULT TRUE,
+  description   TEXT,
+  specs         JSONB,
+  product_label TEXT,
+  created_at    TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
+
+-- Migration (run once on existing DBs):
+-- ALTER TABLE products ADD COLUMN IF NOT EXISTS product_label TEXT;
 
 CREATE INDEX idx_products_category ON products(category) WHERE active = TRUE;
 CREATE INDEX idx_products_featured  ON products(featured)  WHERE active = TRUE;

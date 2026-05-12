@@ -13,7 +13,7 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
   const err = await guard(); if (err) return err
   const { id } = await params
   const body = await req.json()
-  const { name, category, price_usd, image_url, featured, active, description, specs } = body
+  const { name, category, price_usd, image_url, featured, active, description, specs, product_label } = body
   try {
     const product = await (await getStorage()).updateProduct(Number(id), {
       name,
@@ -24,6 +24,7 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
       active,
       description,
       specs,
+      product_label: product_label ?? null,
     })
     if (!product) return NextResponse.json({ error: 'No encontrado' }, { status: 404 })
     revalidatePath('/productos')

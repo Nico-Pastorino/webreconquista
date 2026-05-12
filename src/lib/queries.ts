@@ -13,8 +13,8 @@ import { getStorage } from './storage'
 
 // ─── Productos ───────────────────────────────────────────────
 
-export async function getProducts(category?: Category): Promise<ProductCard[]> {
-  return (await getStorage()).getProducts(category)
+export async function getProducts(category?: Category, label?: string): Promise<ProductCard[]> {
+  return (await getStorage()).getProducts(category, label)
 }
 
 export async function getFeaturedProducts(): Promise<ProductCard[]> {

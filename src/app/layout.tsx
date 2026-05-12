@@ -11,20 +11,20 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   title: {
-    default: 'Store RQTA',
-    template: '%s | Store RQTA',
+    default: 'STORE RQTA',
+    template: '%s | STORE RQTA',
   },
   description: 'Tienda Apple con interfaz minimalista, productos seleccionados y una experiencia premium.',
   keywords: ['iPhone', 'iPad', 'Mac', 'Apple Watch', 'AirPods', 'Apple Argentina'],
   icons: {
     icon: '/favicon.png',
     shortcut: '/favicon.png',
-    apple: '/favicon.png',
+    apple: '/brand/store-rqta-logo.png',
   },
   openGraph: {
     type: 'website',
     locale: 'es_AR',
-    siteName: 'Store RQTA',
+    siteName: 'STORE RQTA',
   },
 }
 

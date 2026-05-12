@@ -62,9 +62,16 @@ export default function ProductCard({ product, dollarRate, installmentPlans, sho
       </div>
 
       <div className="flex flex-1 flex-col gap-1">
-        <p className="mb-2 text-[11px] font-medium uppercase tracking-[0.24em] text-[#6B7280]">
-          {CATEGORY_LABELS[product.category] ?? product.category}
-        </p>
+        <div className="mb-2 flex flex-wrap items-center gap-2">
+          <p className="text-[11px] font-medium uppercase tracking-[0.24em] text-[#6B7280]">
+            {CATEGORY_LABELS[product.category] ?? product.category}
+          </p>
+          {product.product_label && (
+            <span className="rounded-full border border-[#E5E7EB] bg-[#F5F5F7] px-2 py-0.5 text-[10px] font-medium tracking-[0.06em] text-[#6B7280]">
+              {product.product_label}
+            </span>
+          )}
+        </div>
 
         <h3 className="mb-4 line-clamp-2 text-lg font-semibold leading-snug tracking-[-0.03em] text-[#111111]">
           {product.name}
