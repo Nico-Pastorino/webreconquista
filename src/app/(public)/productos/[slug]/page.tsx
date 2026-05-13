@@ -1,4 +1,5 @@
 import { notFound } from 'next/navigation'
+import { connection } from 'next/server'
 import Link from 'next/link'
 import {
   getProductBySlug,
@@ -51,6 +52,8 @@ const DEFAULT_SETTINGS = {
 }
 
 export default async function ProductDetailPage({ params }: Props) {
+  await connection()
+
   const { slug } = await params
 
   let product = null

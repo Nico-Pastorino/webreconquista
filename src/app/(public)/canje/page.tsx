@@ -1,6 +1,7 @@
 import { getDollarRate, getTradeInModels, getSiteSettings } from '@/lib/queries'
 import TradeInSimulator from '@/components/public/TradeInSimulator'
 import { ArrowRight, RefreshCw } from 'lucide-react'
+import { connection } from 'next/server'
 
 export const revalidate = 120
 
@@ -10,6 +11,8 @@ export const metadata = {
 }
 
 export default async function CanjecPage() {
+  await connection()
+
   let dollarRate = 1200
   let models: string[] = []
   let settings = { trade_in_enabled: true }

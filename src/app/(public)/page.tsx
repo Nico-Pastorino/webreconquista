@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { connection } from 'next/server'
 import { ArrowRight, ArrowUpRight, BadgeCheck, CreditCard, Headphones, Laptop, Package, RefreshCw, Smartphone, Tablet, Watch } from 'lucide-react'
 import { getFeaturedProducts, getDollarRate, getInstallmentPlans, getSiteSettings } from '@/lib/queries'
 import ProductCard from '@/components/public/ProductCard'
@@ -28,6 +29,8 @@ const DEFAULT_SETTINGS: SiteSettings = {
 }
 
 export default async function HomePage() {
+  await connection()
+
   let featured: ProductCardType[] = []
   let dollarRate = 1200
   let installmentPlans: InstallmentPlan[] = []

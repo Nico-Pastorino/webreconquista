@@ -2,8 +2,9 @@ import { NextResponse } from 'next/server'
 import { getDollarRate, getInstallmentPlans, getSiteSettings } from '@/lib/queries'
 import { DEFAULT_DOLLAR_RATE, DEFAULT_SITE_SETTINGS, logDatabaseError } from '@/lib/env'
 
-// Datos globales: dólar, cuotas, settings — muy cacheados
-export const revalidate = 120
+// Datos globales: dólar, cuotas, settings. Se resuelve en runtime para no
+// depender de Supabase durante el build de Vercel.
+export const dynamic = 'force-dynamic'
 
 export async function GET() {
   try {

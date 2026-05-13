@@ -1,5 +1,6 @@
 import { getDollarRate, getInstallmentPlans, getProducts, getSiteSettings } from '@/lib/queries'
 import CatalogPageContent from '@/components/public/CatalogPageContent'
+import { connection } from 'next/server'
 
 export const revalidate = 300
 
@@ -9,6 +10,8 @@ export const metadata = {
 }
 
 export default async function IphoneSeminuevosPage() {
+  await connection()
+
   let products: import('@/types').ProductCard[] = []
   let dollarRate = 1200
   let installmentPlans: import('@/types').InstallmentPlan[] = []

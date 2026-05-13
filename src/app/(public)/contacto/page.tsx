@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { MessageCircle, Phone, ShieldCheck } from 'lucide-react'
 import { getSiteSettings } from '@/lib/queries'
 import { buildWhatsAppUrl } from '@/lib/utils'
+import { connection } from 'next/server'
 
 export const metadata = {
   title: 'Contacto | Store RQTA',
@@ -9,6 +10,8 @@ export const metadata = {
 }
 
 export default async function ContactPage() {
+  await connection()
+
   let settings = {
     whatsapp_number: '5491100000000',
     whatsapp_message: 'Hola! Quiero hacer una consulta en Store RQTA.',

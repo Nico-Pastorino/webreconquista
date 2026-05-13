@@ -2,6 +2,7 @@ import { getSiteSettings } from '@/lib/queries'
 import Navbar from '@/components/public/Navbar'
 import Footer from '@/components/public/Footer'
 import type { SiteSettings } from '@/types'
+import { connection } from 'next/server'
 
 export const revalidate = 60
 
@@ -16,6 +17,8 @@ const DEFAULT_SETTINGS: SiteSettings = {
 }
 
 export default async function PublicLayout({ children }: { children: React.ReactNode }) {
+  await connection()
+
   let settings = DEFAULT_SETTINGS
   try {
     settings = await getSiteSettings()
