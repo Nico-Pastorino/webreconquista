@@ -3,6 +3,8 @@ import path from 'node:path'
 import type {
   Category,
   DollarRate,
+  ExchangeRate,
+  ExchangeRateSource,
   FinancingGroup,
   FinancingOption,
   InstallmentPlan,
@@ -101,6 +103,11 @@ type TradeInCreateInput = {
 
 type SiteSettingsUpdate = Partial<SiteSettings>
 
+type ExchangeRateUpdateResult = {
+  rate: ExchangeRate
+  error?: string
+}
+
 const DEMO_STORE_PATH = path.join(process.cwd(), 'database', 'demo-store.json')
 
 function toProductCard(product: Product): ProductCard {
@@ -135,6 +142,47 @@ function normalizeProductPayload(input: ProductInput | ProductUpdateInput) {
     description: input.description ?? null,
     specs: input.specs ?? null,
     product_label: input.product_label ?? null,
+  }
+}
+
+function buildExchangeRate(
+  input: Omit<ExchangeRate, 'api_value' | 'admin_margin' | 'final_value'> & {
+    api_value: number | string
+    admin_margin: number | string
+    final_value: number | string
+  },
+): ExchangeRate {
+  return {
+    ...input,
+    api_value: Number(input.api_value),
+    admin_margin: Number(input.admin_margin),
+    final_value: Number(input.final_value),
+  }
+}
+
+function buildLegacyExchangeRate(rate: number, updatedAt: string | null = null): ExchangeRate {
+  const timestamp = updatedAt ?? new Date().toISOString()
+  return {
+    id: 1,
+    api_value: Number(rate),
+    admin_margin: 0,
+    final_value: Number(rate),
+    source: 'legacy_fallback',
+    last_api_update: null,
+    last_manual_update: null,
+    updated_at: timestamp,
+  }
+}
+
+function validatePositiveRate(value: number, label: string): void {
+  if (!Number.isFinite(value) || value <= 0) {
+    throw new Error(`${label} debe ser un número mayor a 0`)
+  }
+}
+
+function validateMargin(value: number): void {
+  if (!Number.isFinite(value) || value < 0) {
+    throw new Error('El margen debe ser un número mayor o igual a 0')
   }
 }
 
@@ -279,8 +327,8 @@ const demoStorage = {
   },
 
   async getDollarRate(): Promise<number> {
-    const store = await readDemoStore()
-    return Number(store.dollar_rate.rate ?? 1200)
+    const rate = await demoStorage.getExchangeRate()
+    return rate.final_value
   },
 
   async getDollarRateRecord(): Promise<DollarRate | null> {
@@ -303,6 +351,54 @@ const demoStorage = {
     store.dollar_rate = updated
     await writeDemoStore(store)
     return updated
+  },
+
+  async getExchangeRate(): Promise<ExchangeRate> {
+    const store = await readDemoStore()
+    return buildLegacyExchangeRate(Number(store.dollar_rate.rate ?? 1200), store.dollar_rate.updated_at)
+  },
+
+  async updateExchangeRateFromApi(apiValue: number, source: Extract<ExchangeRateSource, 'api_cron' | 'api_manual_refresh'>): Promise<ExchangeRateUpdateResult> {
+    validatePositiveRate(apiValue, 'api_value')
+    const store = await readDemoStore()
+    const updated: DollarRate = {
+      id: store.dollar_rate?.id ?? 1,
+      rate: Number(apiValue),
+      updated_at: new Date().toISOString(),
+    }
+    store.dollar_rate = updated
+    await writeDemoStore(store)
+    return { rate: { ...buildLegacyExchangeRate(updated.rate, updated.updated_at), source, last_api_update: updated.updated_at } }
+  },
+
+  async updateExchangeRateMargin(adminMargin: number): Promise<ExchangeRate> {
+    validateMargin(adminMargin)
+    const store = await readDemoStore()
+    const base = Number(store.dollar_rate.rate ?? 1200)
+    const finalValue = base + adminMargin
+    validatePositiveRate(finalValue, 'final_value')
+    const updated: DollarRate = {
+      id: store.dollar_rate?.id ?? 1,
+      rate: finalValue,
+      updated_at: new Date().toISOString(),
+    }
+    store.dollar_rate = updated
+    await writeDemoStore(store)
+    return {
+      ...buildLegacyExchangeRate(base, updated.updated_at),
+      admin_margin: adminMargin,
+      final_value: finalValue,
+      source: 'admin_margin_update',
+      last_manual_update: updated.updated_at,
+    }
+  },
+
+  async recordExchangeRateError(errorMessage: string, source: Extract<ExchangeRateSource, 'api_cron' | 'api_manual_refresh'>): Promise<void> {
+    console.error('[ExchangeRate/demo]', { source, errorMessage })
+  },
+
+  async getLatestExchangeRateError(): Promise<string | null> {
+    return null
   },
 
   // getInstallmentPlans: retorna opciones activas de financing_options mapeadas
@@ -735,9 +831,8 @@ const postgresStorage = {
   },
 
   async getDollarRate(): Promise<number> {
-    const sql = getSql()
-    const rows = await sql<DollarRate[]>`SELECT rate FROM dollar_rate ORDER BY id DESC LIMIT 1`
-    return Number(rows[0]?.rate ?? 1200)
+    const rate = await postgresStorage.getExchangeRate()
+    return rate.final_value
   },
 
   async getDollarRateRecord(): Promise<DollarRate | null> {
@@ -755,6 +850,105 @@ const postgresStorage = {
       RETURNING *
     `
     return { ...rows[0], rate: Number(rows[0].rate) }
+  },
+
+  async getExchangeRate(): Promise<ExchangeRate> {
+    const sql = getSql()
+    try {
+      const rows = await sql<ExchangeRate[]>`
+        SELECT * FROM exchange_rate
+        ORDER BY id ASC
+        LIMIT 1
+      `
+      if (rows[0]) return buildExchangeRate(rows[0])
+    } catch (error) {
+      const pgError = error as { code?: string }
+      if (pgError?.code !== '42P01' && pgError?.code !== '42703') throw error
+    }
+
+    const legacy = await postgresStorage.getDollarRateRecord()
+    return buildLegacyExchangeRate(Number(legacy?.rate ?? 1200), legacy?.updated_at ?? null)
+  },
+
+  async updateExchangeRateFromApi(apiValue: number, source: Extract<ExchangeRateSource, 'api_cron' | 'api_manual_refresh'>): Promise<ExchangeRateUpdateResult> {
+    validatePositiveRate(apiValue, 'api_value')
+    const sql = getSql()
+    try {
+      const rows = await sql<ExchangeRate[]>`
+        INSERT INTO exchange_rate (id, api_value, admin_margin, final_value, source, last_api_update, updated_at)
+        VALUES (1, ${apiValue}, 0, ${apiValue}, ${source}, NOW(), NOW())
+        ON CONFLICT (id) DO UPDATE
+        SET api_value = EXCLUDED.api_value,
+            final_value = EXCLUDED.api_value + exchange_rate.admin_margin,
+            source = EXCLUDED.source,
+            last_api_update = NOW(),
+            updated_at = NOW()
+        RETURNING *
+      `
+      const rate = buildExchangeRate(rows[0])
+      await sql`
+        UPDATE dollar_rate
+        SET rate = ${rate.final_value}, updated_at = NOW()
+        WHERE id = (SELECT id FROM dollar_rate ORDER BY id DESC LIMIT 1)
+      `
+      await sql`
+        INSERT INTO exchange_rate_history (api_value, admin_margin, final_value, source)
+        VALUES (${rate.api_value}, ${rate.admin_margin}, ${rate.final_value}, ${source})
+      `
+      return { rate }
+    } catch (error) {
+      const message = error instanceof Error ? error.message : 'No se pudo actualizar la cotización'
+      await postgresStorage.recordExchangeRateError(message, source).catch(() => {})
+      return { rate: await postgresStorage.getExchangeRate(), error: message }
+    }
+  },
+
+  async updateExchangeRateMargin(adminMargin: number): Promise<ExchangeRate> {
+    validateMargin(adminMargin)
+    const sql = getSql()
+    const current = await postgresStorage.getExchangeRate()
+    const rows = await sql<ExchangeRate[]>`
+      INSERT INTO exchange_rate (id, api_value, admin_margin, final_value, source, last_manual_update, updated_at)
+      VALUES (1, ${current.api_value}, ${adminMargin}, ${current.api_value + adminMargin}, 'admin_margin_update', NOW(), NOW())
+      ON CONFLICT (id) DO UPDATE
+      SET admin_margin = EXCLUDED.admin_margin,
+          final_value = exchange_rate.api_value + EXCLUDED.admin_margin,
+          source = 'admin_margin_update',
+          last_manual_update = NOW(),
+          updated_at = NOW()
+      RETURNING *
+    `
+    const rate = buildExchangeRate(rows[0])
+    await sql`
+      UPDATE dollar_rate
+      SET rate = ${rate.final_value}, updated_at = NOW()
+      WHERE id = (SELECT id FROM dollar_rate ORDER BY id DESC LIMIT 1)
+    `
+    await sql`
+      INSERT INTO exchange_rate_history (api_value, admin_margin, final_value, source)
+      VALUES (${rate.api_value}, ${rate.admin_margin}, ${rate.final_value}, 'admin_margin_update')
+    `
+    return rate
+  },
+
+  async recordExchangeRateError(errorMessage: string, source: Extract<ExchangeRateSource, 'api_cron' | 'api_manual_refresh'>): Promise<void> {
+    const sql = getSql()
+    const current = await postgresStorage.getExchangeRate().catch(() => null)
+    await sql`
+      INSERT INTO exchange_rate_history (api_value, admin_margin, final_value, source, error_message)
+      VALUES (${current?.api_value ?? null}, ${current?.admin_margin ?? null}, ${current?.final_value ?? null}, ${source}, ${errorMessage})
+    `
+  },
+
+  async getLatestExchangeRateError(): Promise<string | null> {
+    const sql = getSql()
+    const rows = await sql<{ error_message: string | null }[]>`
+      SELECT error_message
+      FROM exchange_rate_history
+      ORDER BY created_at DESC
+      LIMIT 1
+    `
+    return rows[0]?.error_message ?? null
   },
 
   // getInstallmentPlans: retorna opciones activas mapeadas a InstallmentPlan

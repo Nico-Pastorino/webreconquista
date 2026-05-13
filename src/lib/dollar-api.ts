@@ -14,10 +14,11 @@ interface DolarApiOfficialResponse {
   fechaActualizacion: string
 }
 
-const DOLAR_API_OFFICIAL_URL = 'https://dolarapi.com/v1/dolares/oficial'
+export const DEFAULT_DOLLAR_API_URL = 'https://dolarapi.com/v1/dolares/oficial'
 
 export async function fetchOfficialDollarQuote(): Promise<PublicDollarQuote> {
-  const response = await fetch(DOLAR_API_OFFICIAL_URL, {
+  // Store RQTA uses DolarApi "Dólar Oficial" and applies the "venta" value.
+  const response = await fetch(process.env.DOLLAR_API_URL || DEFAULT_DOLLAR_API_URL, {
     cache: 'no-store',
     headers: {
       Accept: 'application/json',
@@ -30,7 +31,7 @@ export async function fetchOfficialDollarQuote(): Promise<PublicDollarQuote> {
 
   const data = (await response.json()) as DolarApiOfficialResponse
 
-  if (!data?.venta || Number.isNaN(Number(data.venta))) {
+  if (!data?.venta || Number.isNaN(Number(data.venta)) || Number(data.venta) <= 0) {
     throw new Error('Respuesta inválida de DolarApi')
   }
 

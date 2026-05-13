@@ -37,6 +37,34 @@ export interface DollarRate {
   updated_at: string
 }
 
+export type ExchangeRateSource =
+  | 'api_cron'
+  | 'api_manual_refresh'
+  | 'admin_margin_update'
+  | 'legacy_fallback'
+  | 'seed'
+
+export interface ExchangeRate {
+  id: number
+  api_value: number
+  admin_margin: number
+  final_value: number
+  source: ExchangeRateSource
+  last_api_update: string | null
+  last_manual_update: string | null
+  updated_at: string
+}
+
+export interface ExchangeRateHistory {
+  id: number
+  api_value: number | null
+  admin_margin: number | null
+  final_value: number | null
+  source: ExchangeRateSource
+  error_message: string | null
+  created_at: string
+}
+
 export interface TradeInValue {
   id: number
   model: string

@@ -3,41 +3,56 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { Check, RefreshCw } from 'lucide-react'
-import type { PublicDollarQuote } from '@/lib/dollar-api'
+import type { ExchangeRate } from '@/types'
 
 interface Props {
-  currentRate: number
-  lastUpdatedAt?: string | null
-  publicQuote?: PublicDollarQuote | null
+  currentRate: ExchangeRate | null
+  latestError?: string | null
 }
 
-export default function DollarEditor({ currentRate, lastUpdatedAt = null, publicQuote = null }: Props) {
+const FALLBACK_RATE: ExchangeRate = {
+  id: 1,
+  api_value: 1200,
+  admin_margin: 0,
+  final_value: 1200,
+  source: 'legacy_fallback',
+  last_api_update: null,
+  last_manual_update: null,
+  updated_at: new Date().toISOString(),
+}
+
+export default function DollarEditor({ currentRate, latestError = null }: Props) {
   const router = useRouter()
-  const [rate, setRate] = useState(currentRate.toString())
+  const rate = currentRate ?? FALLBACK_RATE
+  const [margin, setMargin] = useState(rate.admin_margin.toString())
   const [loading, setLoading] = useState(false)
   const [syncing, setSyncing] = useState(false)
   const [saved, setSaved] = useState(false)
   const [error, setError] = useState('')
+  const [warning, setWarning] = useState(latestError ? 'No se pudo actualizar la cotización. Se mantiene el último valor válido.' : '')
 
   async function handleSave() {
-    if (!rate || isNaN(Number(rate))) {
-      setError('Ingresá un valor válido')
+    const parsedMargin = Number(margin)
+    if (margin === '' || !Number.isFinite(parsedMargin) || parsedMargin < 0) {
+      setError('Ingresá un margen válido mayor o igual a 0')
       return
     }
     setLoading(true)
     setError('')
+    setWarning('')
     try {
       const res = await fetch('/api/admin/dollar', {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ rate: parseFloat(rate) }),
+        body: JSON.stringify({ admin_margin: parsedMargin }),
       })
       if (res.ok) {
         setSaved(true)
         router.refresh()
         setTimeout(() => setSaved(false), 3000)
       } else {
-        setError('Error al guardar')
+        const data = await res.json().catch(() => null)
+        setError(data?.error ?? 'Error al guardar')
       }
     } finally {
       setLoading(false)
@@ -47,6 +62,7 @@ export default function DollarEditor({ currentRate, lastUpdatedAt = null, public
   async function handleSyncFromApi() {
     setSyncing(true)
     setError('')
+    setWarning('')
     try {
       const res = await fetch('/api/admin/dollar', {
         method: 'POST',
@@ -55,11 +71,11 @@ export default function DollarEditor({ currentRate, lastUpdatedAt = null, public
       const data = await res.json()
 
       if (!res.ok) {
-        setError(data.error ?? 'No se pudo sincronizar')
+        setWarning(data.error ?? 'No se pudo actualizar la cotización. Se mantiene el último valor válido.')
         return
       }
 
-      setRate(String(data.rate))
+      setMargin(String(data.rate.admin_margin))
       setSaved(true)
       router.refresh()
       setTimeout(() => setSaved(false), 3000)
@@ -68,69 +84,73 @@ export default function DollarEditor({ currentRate, lastUpdatedAt = null, public
     }
   }
 
-  const preview = 1099 * (parseFloat(rate) || 0)
+  const parsedMargin = Number(margin)
+  const previewFinalRate = rate.api_value + (Number.isFinite(parsedMargin) ? parsedMargin : 0)
+  const preview = 1099 * previewFinalRate
 
   return (
     <div className="max-w-sm">
       <div className="surface-card rounded-[2rem] p-8">
-        <p className="admin-section-heading">Valor actual</p>
+        <p className="admin-section-heading">Dólar aplicado</p>
         <p className="mt-3 text-5xl font-semibold tracking-[-0.06em] text-[#111111]">
-          ${currentRate.toLocaleString('es-AR')}
+          ${rate.final_value.toLocaleString('es-AR')}
         </p>
-        <p className="mt-1 text-xs uppercase tracking-[0.18em] text-[#666666]">ARS por USD</p>
-        {lastUpdatedAt && (
-          <p className="mt-3 text-xs text-[#6B7280]">
-            Última actualización guardada: {new Date(lastUpdatedAt).toLocaleString('es-AR')}
-          </p>
-        )}
+        <p className="mt-1 text-xs uppercase tracking-[0.18em] text-[#666666]">ARS por USD final</p>
 
         <div className="mt-8 space-y-5">
-          {publicQuote && (
-            <div className="rounded-[22px] border border-[#E5E7EB] bg-[#F5F5F7] px-5 py-4">
-              <p className="text-[11px] uppercase tracking-[0.18em] text-[#666666]">
-                API pública · {publicQuote.name}
-              </p>
-              <p className="mt-2 text-2xl font-semibold tracking-[-0.04em] text-[#111111]">
-                ${publicQuote.sell.toLocaleString('es-AR')}
-              </p>
-              <p className="mt-1 text-xs text-[#6B7280]">
-                Compra ${publicQuote.buy.toLocaleString('es-AR')} · Actualizado {new Date(publicQuote.updatedAt).toLocaleString('es-AR')}
-              </p>
-              <button
-                onClick={handleSyncFromApi}
-                disabled={syncing}
-                className="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-full border border-[#D1D5DB] bg-white px-5 py-3 text-sm font-medium text-[#111111] transition-colors hover:bg-[#F9FAFB] disabled:opacity-50"
-              >
-                {syncing ? (
-                  <>
-                    <svg className="h-4 w-4 animate-spin" fill="none" viewBox="0 0 24 24">
-                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
-                    </svg>
-                    Sincronizando
-                  </>
-                ) : (
-                  <>
-                    <RefreshCw className="h-4 w-4" />
-                    Usar cotización pública
-                  </>
-                )}
-              </button>
-            </div>
-          )}
+          <div className="rounded-[22px] border border-[#E5E7EB] bg-[#F5F5F7] px-5 py-4">
+            <p className="text-[11px] uppercase tracking-[0.18em] text-[#666666]">Dólar API actual</p>
+            <p className="mt-2 text-2xl font-semibold tracking-[-0.04em] text-[#111111]">
+              ${rate.api_value.toLocaleString('es-AR')}
+            </p>
+            <p className="mt-1 text-xs text-[#6B7280]">
+              Última actualización API: {rate.last_api_update ? new Date(rate.last_api_update).toLocaleString('es-AR') : 'nunca'}
+            </p>
+            <p className="mt-1 text-xs text-[#6B7280]">
+              Última modificación manual: {rate.last_manual_update ? new Date(rate.last_manual_update).toLocaleString('es-AR') : 'nunca'}
+            </p>
+            <button
+              onClick={handleSyncFromApi}
+              disabled={syncing || loading}
+              className="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-full border border-[#D1D5DB] bg-white px-5 py-3 text-sm font-medium text-[#111111] transition-colors hover:bg-[#F9FAFB] disabled:opacity-50"
+            >
+              {syncing ? (
+                <>
+                  <svg className="h-4 w-4 animate-spin" fill="none" viewBox="0 0 24 24">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+                  </svg>
+                  Actualizando
+                </>
+              ) : (
+                <>
+                  <RefreshCw className="h-4 w-4" />
+                  Actualizar ahora
+                </>
+              )}
+            </button>
+          </div>
 
           <div className="flex flex-col gap-2">
-            <label className="text-sm font-medium text-[#111111]">Nuevo valor</label>
+            <label className="text-sm font-medium text-[#111111]">Margen sobre dólar</label>
             <input
               type="number"
-              placeholder="1200"
-              min="1"
+              placeholder="30"
+              min="0"
               step="1"
-              value={rate}
-              onChange={(e) => setRate(e.target.value)}
+              value={margin}
+              onChange={(e) => setMargin(e.target.value)}
               className="w-full rounded-[22px] border border-[#e5e7eb] bg-white px-5 py-3 text-sm text-[#111111] placeholder:text-[#8d8d8d] outline-none transition-colors focus:border-[#d1d5db] focus:ring-4 focus:ring-black/5"
             />
             {error && <p className="text-xs text-[#666666]">{error}</p>}
+            {warning && <p className="text-xs text-[#666666]">{warning}</p>}
+          </div>
+
+          <div className="rounded-[22px] bg-[#f5f5f7] px-5 py-4">
+            <p className="text-[11px] uppercase tracking-[0.18em] text-[#666666]">Dólar final con margen</p>
+            <p className="mt-2 text-xl font-semibold tracking-[-0.04em] text-[#111111]">
+              ${previewFinalRate.toLocaleString('es-AR')} ARS
+            </p>
           </div>
 
           <div className="rounded-[22px] bg-[#f5f5f7] px-5 py-4">
@@ -155,7 +175,7 @@ export default function DollarEditor({ currentRate, lastUpdatedAt = null, public
                 </svg>
                 Guardando
               </>
-            ) : 'Actualizar dólar'}
+            ) : 'Guardar margen'}
           </button>
         </div>
       </div>

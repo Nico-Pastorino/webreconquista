@@ -1,15 +1,14 @@
 export const dynamic = 'force-dynamic'
 
 import { requireAdminSession } from '@/lib/auth'
-import { getDollarRateRecord } from '@/lib/queries'
+import { getExchangeRate, getLatestExchangeRateError } from '@/lib/queries'
 import DollarEditor from '@/components/admin/DollarEditor'
-import { fetchOfficialDollarQuote } from '@/lib/dollar-api'
 
 export default async function AdminDollarPage() {
   await requireAdminSession()
-  const [current, publicQuote] = await Promise.all([
-    getDollarRateRecord(),
-    fetchOfficialDollarQuote().catch(() => null),
+  const [current, latestError] = await Promise.all([
+    getExchangeRate(),
+    getLatestExchangeRateError(),
   ])
 
   return (
@@ -22,11 +21,7 @@ export default async function AdminDollarPage() {
           Última actualización: {current ? new Date(current.updated_at).toLocaleString('es-AR') : 'nunca'}
         </p>
       </div>
-      <DollarEditor
-        currentRate={Number(current?.rate ?? 1200)}
-        lastUpdatedAt={current?.updated_at ?? null}
-        publicQuote={publicQuote}
-      />
+      <DollarEditor currentRate={current} latestError={latestError} />
     </div>
   )
 }

@@ -18,7 +18,7 @@ const BATTERY_OPTIONS = [
   { value: 'MENOS-70', label: 'Menos de 70%' },
 ]
 
-export default function TradeInSimulator({ models, productPriceUsd, dollarRate }: Props) {
+export default function TradeInSimulator({ models, productPriceUsd }: Props) {
   const [selectedModel, setSelectedModel] = useState('')
   const [capacities, setCapacities] = useState<string[]>([])
   const [selectedCapacity, setSelectedCapacity] = useState('')
@@ -83,10 +83,6 @@ export default function TradeInSimulator({ models, productPriceUsd, dollarRate }
       <p className="mb-8 max-w-md text-sm leading-7 text-[#6B7280]">
         Ingresá los datos de tu iPhone usado y te decimos cuánto vale.
       </p>
-      <p className="mb-8 text-[11px] uppercase tracking-[0.2em] text-[#6B7280]">
-        Dólar de referencia ${dollarRate}
-      </p>
-
       <div className="flex flex-col gap-5">
         <Select
           label="Modelo de tu iPhone"

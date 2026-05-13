@@ -5,6 +5,7 @@ import type {
   FinancingGroup,
   FinancingOption,
   DollarRate,
+  ExchangeRate,
   TradeInValue,
   SiteSettings,
   Category,
@@ -51,6 +52,26 @@ export async function getDollarRate(): Promise<number> {
 
 export async function getDollarRateRecord(): Promise<DollarRate | null> {
   return withReadFallback('getDollarRateRecord', null, async () => (await getStorage()).getDollarRateRecord())
+}
+
+export async function getExchangeRate(): Promise<ExchangeRate | null> {
+  return withReadFallback('getExchangeRate', null, async () => (await getStorage()).getExchangeRate())
+}
+
+export async function updateExchangeRateFromApi(apiValue: number, source: 'api_cron' | 'api_manual_refresh') {
+  return (await getStorage()).updateExchangeRateFromApi(apiValue, source)
+}
+
+export async function updateExchangeRateMargin(adminMargin: number): Promise<ExchangeRate> {
+  return (await getStorage()).updateExchangeRateMargin(adminMargin)
+}
+
+export async function recordExchangeRateError(errorMessage: string, source: 'api_cron' | 'api_manual_refresh'): Promise<void> {
+  return (await getStorage()).recordExchangeRateError(errorMessage, source)
+}
+
+export async function getLatestExchangeRateError(): Promise<string | null> {
+  return withReadFallback('getLatestExchangeRateError', null, async () => (await getStorage()).getLatestExchangeRateError())
 }
 
 export async function getInstallmentPlans(): Promise<InstallmentPlan[]> {
