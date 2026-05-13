@@ -10,63 +10,73 @@ import type {
   Category,
 } from '@/types'
 import { getStorage } from './storage'
+import { DEFAULT_DOLLAR_RATE, DEFAULT_SITE_SETTINGS, logDatabaseError } from './env'
+
+async function withReadFallback<T>(context: string, fallback: T, query: () => Promise<T>): Promise<T> {
+  try {
+    return await query()
+  } catch (error) {
+    logDatabaseError(context, error)
+    return fallback
+  }
+}
 
 // ─── Productos ───────────────────────────────────────────────
 
 export async function getProducts(category?: Category, label?: string): Promise<ProductCard[]> {
-  return (await getStorage()).getProducts(category, label)
+  return withReadFallback('getProducts', [], async () => (await getStorage()).getProducts(category, label))
 }
 
 export async function getFeaturedProducts(): Promise<ProductCard[]> {
-  return (await getStorage()).getFeaturedProducts()
+  return withReadFallback('getFeaturedProducts', [], async () => (await getStorage()).getFeaturedProducts())
 }
 
 export async function getProductBySlug(slug: string): Promise<Product | null> {
-  return (await getStorage()).getProductBySlug(slug)
+  return withReadFallback('getProductBySlug', null, async () => (await getStorage()).getProductBySlug(slug))
 }
 
 export async function getProductByIdAdmin(id: number): Promise<Product | null> {
-  return (await getStorage()).getProductById(id)
+  return withReadFallback('getProductByIdAdmin', null, async () => (await getStorage()).getProductById(id))
 }
 
 export async function getAllProductsAdmin(): Promise<Product[]> {
-  return (await getStorage()).getAllProductsAdmin()
+  return withReadFallback('getAllProductsAdmin', [], async () => (await getStorage()).getAllProductsAdmin())
 }
 
 // ─── Configuración global ─────────────────────────────────────
 
 export async function getDollarRate(): Promise<number> {
-  return (await getStorage()).getDollarRate()
+  return withReadFallback('getDollarRate', DEFAULT_DOLLAR_RATE, async () => (await getStorage()).getDollarRate())
 }
 
 export async function getDollarRateRecord(): Promise<DollarRate | null> {
-  return (await getStorage()).getDollarRateRecord()
+  return withReadFallback('getDollarRateRecord', null, async () => (await getStorage()).getDollarRateRecord())
 }
 
 export async function getInstallmentPlans(): Promise<InstallmentPlan[]> {
-  return (await getStorage()).getInstallmentPlans()
+  return withReadFallback('getInstallmentPlans', [], async () => (await getStorage()).getInstallmentPlans())
 }
 
 export async function getAllInstallmentPlans(): Promise<InstallmentPlan[]> {
-  return (await getStorage()).getAllInstallmentPlans()
+  return withReadFallback('getAllInstallmentPlans', [], async () => (await getStorage()).getAllInstallmentPlans())
 }
 
 export async function getFinancingGroups(activeOnly = false): Promise<FinancingGroup[]> {
-  return (await getStorage()).getFinancingGroups(activeOnly)
+  return withReadFallback('getFinancingGroups', [], async () => (await getStorage()).getFinancingGroups(activeOnly))
 }
 
 export async function getFinancingOptions(groupId?: number, activeOnly = false): Promise<FinancingOption[]> {
-  return (await getStorage()).getFinancingOptions(groupId, activeOnly)
+  return withReadFallback('getFinancingOptions', [], async () => (await getStorage()).getFinancingOptions(groupId, activeOnly))
 }
 
 // ─── Plan Canje ───────────────────────────────────────────────
 
 export async function getTradeInModels(): Promise<string[]> {
-  return (await getStorage()).getTradeInModels()
+  return withReadFallback('getTradeInModels', [], async () => (await getStorage()).getTradeInModels())
 }
 
 export async function getTradeInCapacities(model: string): Promise<string[]> {
-  return (await getStorage()).getTradeInCapacities(model)
+  return withReadFallback('getTradeInCapacities', [], async () => (await getStorage()).getTradeInCapacities(model))
 }
 
 export async function getTradeInEntry(
@@ -74,15 +84,15 @@ export async function getTradeInEntry(
   capacity: string,
   batteryState: string,
 ): Promise<TradeInValue | null> {
-  return (await getStorage()).getTradeInEntry(model, capacity, batteryState)
+  return withReadFallback('getTradeInEntry', null, async () => (await getStorage()).getTradeInEntry(model, capacity, batteryState))
 }
 
 export async function getAllTradeInValues(): Promise<TradeInValue[]> {
-  return (await getStorage()).getAllTradeInValues()
+  return withReadFallback('getAllTradeInValues', [], async () => (await getStorage()).getAllTradeInValues())
 }
 
 export async function getTradeInCount(): Promise<number> {
-  return (await getStorage()).getTradeInCount()
+  return withReadFallback('getTradeInCount', 0, async () => (await getStorage()).getTradeInCount())
 }
 
 export async function upsertManyTradeInValues(
@@ -98,7 +108,7 @@ export async function updateTradeInValueActive(id: number, active: boolean): Pro
 // ─── Site Settings ────────────────────────────────────────────
 
 export async function getSiteSettings(): Promise<SiteSettings> {
-  return (await getStorage()).getSiteSettings()
+  return withReadFallback('getSiteSettings', DEFAULT_SITE_SETTINGS, async () => (await getStorage()).getSiteSettings())
 }
 
 export async function updateSetting(key: string, value: string): Promise<void> {

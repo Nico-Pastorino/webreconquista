@@ -12,7 +12,7 @@ import type {
   TradeInValue,
 } from '@/types'
 import { slugify } from './calculations'
-import { hasUsableDatabaseUrl } from './env'
+import { logDatabaseEnvError, validateDatabaseEnv } from './env'
 import { getSql } from './db'
 
 type ProductInput = {
@@ -1008,7 +1008,7 @@ const postgresStorage = {
       whatsapp_message: map.whatsapp_message ?? 'Hola! Me interesa: ',
       store_name: map.store_name ?? 'Store RQTA',
       store_tagline: map.store_tagline ?? '',
-      trade_in_enabled: map.trade_in_enabled === 'true',
+      trade_in_enabled: map.trade_in_enabled !== 'false',
       show_usd_price: map.show_usd_price !== 'false',
       show_installments: map.show_installments !== 'false',
     }
@@ -1031,11 +1031,13 @@ const postgresStorage = {
 type Storage = typeof demoStorage
 
 export async function getStorage(): Promise<Storage> {
-  if (hasUsableDatabaseUrl()) return postgresStorage
+  const validation = validateDatabaseEnv()
+  if (validation.ok) return postgresStorage
 
   // In production (Vercel), never use the JSON-based demo storage —
   // the filesystem is read-only and writes will throw EROFS.
   if (process.env.NODE_ENV === 'production' || process.env.VERCEL) {
+    logDatabaseEnvError('getStorage', validation)
     throw new Error(
       'DATABASE_URL no está configurada en Vercel. ' +
       'Ir a: Vercel → Project → Settings → Environment Variables → agregar DATABASE_URL con la cadena de conexión de Supabase. ' +

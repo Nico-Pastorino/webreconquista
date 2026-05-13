@@ -1,5 +1,5 @@
 import postgres from 'postgres'
-import { hasUsableDatabaseUrl } from './env'
+import { logDatabaseEnvError, validateDatabaseEnv } from './env'
 
 let sql: ReturnType<typeof postgres> | undefined
 
@@ -18,21 +18,22 @@ function createClient(connectionString: string) {
 }
 
 export function getSql(): ReturnType<typeof postgres> {
-  const databaseUrl = process.env.DATABASE_URL
+  const validation = validateDatabaseEnv()
 
-  if (!hasUsableDatabaseUrl(databaseUrl)) {
+  if (!validation.ok || !validation.url) {
+    logDatabaseEnvError('getSql', validation)
     throw new Error('DATABASE_URL no configurada para PostgreSQL')
   }
 
   if (process.env.NODE_ENV === 'production') {
     if (!sql) {
-      sql = createClient(databaseUrl!)
+      sql = createClient(validation.url)
     }
     return sql
   }
 
   if (!global._sql) {
-    global._sql = createClient(databaseUrl!)
+    global._sql = createClient(validation.url)
   }
 
   return global._sql

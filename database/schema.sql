@@ -1,5 +1,11 @@
 -- ============================================================
--- Schema para tienda Apple - PostgreSQL (Neon / Supabase)
+-- Schema para tienda Apple - PostgreSQL (Supabase)
+-- La app usa Supabase como PostgreSQL directo mediante DATABASE_URL.
+-- Variables requeridas en Vercel Production:
+--   DATABASE_URL     Connection string de Supabase Transaction Pooler.
+--   ADMIN_PASSWORD   Password del panel admin.
+-- No requiere NEXT_PUBLIC_SUPABASE_ANON_KEY ni SUPABASE_SERVICE_ROLE_KEY
+-- mientras no se use @supabase/supabase-js.
 -- ============================================================
 
 -- Categorías como enum
@@ -72,6 +78,12 @@ CREATE TABLE dollar_rate (
   rate       NUMERIC(10, 2) NOT NULL CHECK (rate > 0),
   updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
+
+-- Compat opcional para herramientas externas que esperen exchange_rate.
+-- La aplicación lee y escribe dollar_rate.
+CREATE OR REPLACE VIEW exchange_rate AS
+SELECT id, rate AS value, updated_at
+FROM dollar_rate;
 
 -- Plan canje - valores de usados
 CREATE TABLE trade_in_values (

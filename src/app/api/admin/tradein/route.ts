@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getAdminSession } from '@/lib/auth'
-import { getAllTradeInValues, upsertManyTradeInValues, updateTradeInValueActive } from '@/lib/queries'
+import { getAllTradeInValues, upsertManyTradeInValues } from '@/lib/queries'
 import { getStorage } from '@/lib/storage'
 import { revalidatePath } from 'next/cache'
 
