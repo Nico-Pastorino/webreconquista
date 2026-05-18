@@ -19,7 +19,8 @@
       "active": true,
       "description": "",
       "specs": null,
-      "created_at": "2026-04-29T03:31:45.417Z"
+      "created_at": "2026-04-29T03:31:45.417Z",
+      "product_label": "Sellado Nuevo"
     },
     {
       "id": 1,
@@ -43,14 +44,10 @@
       "image_url": "https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-finish-select-202309-6-1inch-pink?wid=800&hei=800&fmt=png-alpha",
       "featured": true,
       "active": true,
-      "description": "El iPhone 15 con Dynamic Island y cámara de 48 MP.",
-      "specs": {
-        "chip": "A16 Bionic",
-        "pantalla": "6.1\" Super Retina XDR",
-        "cámara": "48 MP Main",
-        "batería": "Todo el día"
-      },
-      "created_at": "2026-01-09T10:00:00.000Z"
+      "description": "El iPhone 15 con Dynamic Island y cámara de 48 MP. \nExelente producto",
+      "specs": null,
+      "created_at": "2026-01-09T10:00:00.000Z",
+      "product_label": "Seminuevo"
     },
     {
       "id": 3,
@@ -153,8 +150,8 @@
   ],
   "dollar_rate": {
     "id": 1,
-    "rate": 1410,
-    "updated_at": "2026-05-06T18:14:11.914Z"
+    "rate": 1430,
+    "updated_at": "2026-05-12T15:19:00.426Z"
   },
   "trade_in_values": [
     {
