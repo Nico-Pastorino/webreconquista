@@ -1,25 +1,64 @@
 'use client'
 
-import { useState, useCallback } from 'react'
-import { Search, X, Check, ImageIcon, Upload } from 'lucide-react'
+import { useState, useCallback, useRef } from 'react'
+import { Search, X, Check, ImageIcon, Upload, Loader2, AlertCircle } from 'lucide-react'
 import {
   PRODUCT_IMAGE_LIBRARY,
   LIBRARY_CATEGORIES,
   findLibraryImageBySrc,
   type LibraryCategory,
 } from '@/lib/product-image-library'
+import type { UploadedImage } from '@/types'
 
 interface Props {
   value: string
   onChange: (src: string) => void
 }
 
+type Tab = 'library' | 'uploads'
+
+const ACCEPTED = ['image/jpeg', 'image/png', 'image/webp']
+const MAX_INPUT_BYTES = 5 * 1024 * 1024 // 5 MB raw input limit
+
+async function compressToWebP(file: File, maxPx: number, quality: number): Promise<Blob> {
+  return new Promise((resolve, reject) => {
+    const img = new Image()
+    const url = URL.createObjectURL(file)
+    img.onload = () => {
+      URL.revokeObjectURL(url)
+      const ratio = Math.min(1, maxPx / Math.max(img.naturalWidth, img.naturalHeight))
+      const w = Math.round(img.naturalWidth * ratio)
+      const h = Math.round(img.naturalHeight * ratio)
+      const canvas = document.createElement('canvas')
+      canvas.width = w
+      canvas.height = h
+      const ctx = canvas.getContext('2d')
+      if (!ctx) return reject(new Error('Canvas no disponible'))
+      ctx.drawImage(img, 0, 0, w, h)
+      canvas.toBlob(
+        (blob) => (blob ? resolve(blob) : reject(new Error('Compresión fallida'))),
+        'image/webp',
+        quality,
+      )
+    }
+    img.onerror = () => { URL.revokeObjectURL(url); reject(new Error('Imagen inválida')) }
+    img.src = url
+  })
+}
+
 export default function ImagePicker({ value, onChange }: Props) {
   const [open, setOpen] = useState(false)
+  const [tab, setTab] = useState<Tab>('library')
   const [search, setSearch] = useState('')
   const [category, setCategory] = useState<LibraryCategory | 'all'>('all')
-  // IDs de imágenes que fallaron al cargar — se ocultan automáticamente
   const [failed, setFailed] = useState<Set<string>>(new Set())
+
+  // uploads tab state
+  const [uploadedImages, setUploadedImages] = useState<UploadedImage[]>([])
+  const [loadingImages, setLoadingImages] = useState(false)
+  const [uploading, setUploading] = useState(false)
+  const [uploadError, setUploadError] = useState<string | null>(null)
+  const fileInputRef = useRef<HTMLInputElement>(null)
 
   const markFailed = useCallback((id: string) => {
     setFailed((prev) => new Set([...prev, id]))
@@ -42,10 +81,78 @@ export default function ImagePicker({ value, onChange }: Props) {
     [onChange],
   )
 
-  const openPicker = () => {
+  async function fetchUploadedImages() {
+    setLoadingImages(true)
+    try {
+      const res = await fetch('/api/admin/images')
+      if (res.ok) {
+        const data = await res.json()
+        setUploadedImages(data.images ?? [])
+      }
+    } finally {
+      setLoadingImages(false)
+    }
+  }
+
+  function openPicker() {
     setSearch('')
     setCategory('all')
+    setUploadError(null)
     setOpen(true)
+  }
+
+  function switchTab(t: Tab) {
+    setTab(t)
+    if (t === 'uploads' && uploadedImages.length === 0 && !loadingImages) {
+      fetchUploadedImages()
+    }
+  }
+
+  async function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0]
+    e.target.value = ''
+    if (!file) return
+
+    setUploadError(null)
+
+    if (!ACCEPTED.includes(file.type)) {
+      setUploadError('Solo se aceptan JPG, PNG o WebP.')
+      return
+    }
+    if (file.size > MAX_INPUT_BYTES) {
+      setUploadError('La imagen no puede superar 5 MB.')
+      return
+    }
+
+    setUploading(true)
+    try {
+      const [thumbnail, medium] = await Promise.all([
+        compressToWebP(file, 400, 0.70),
+        compressToWebP(file, 900, 0.75),
+      ])
+
+      const fd = new FormData()
+      fd.append('thumbnail', thumbnail, 'thumb.webp')
+      fd.append('medium', medium, 'medium.webp')
+      fd.append('filename', file.name.replace(/\.[^.]+$/, ''))
+
+      const res = await fetch('/api/admin/upload', { method: 'POST', body: fd })
+      const data = await res.json()
+
+      if (!res.ok) {
+        setUploadError(data.error ?? 'Error al subir imagen.')
+        return
+      }
+
+      setUploadedImages((prev) => [data.image, ...prev])
+      // Auto-select the medium version
+      onChange(data.image.medium_url)
+      setOpen(false)
+    } catch (err) {
+      setUploadError(err instanceof Error ? err.message : 'Error inesperado.')
+    } finally {
+      setUploading(false)
+    }
   }
 
   return (
@@ -53,7 +160,6 @@ export default function ImagePicker({ value, onChange }: Props) {
       {/* ── Trigger ─────────────────────────────────────────────────────── */}
       <div className="flex flex-col gap-3">
         <div className="flex items-center gap-3">
-          {/* Miniatura actual */}
           <div className="relative flex h-16 w-16 shrink-0 items-center justify-center overflow-hidden rounded-[18px] border border-[#e5e7eb] bg-[#f5f5f7]">
             {value ? (
               // eslint-disable-next-line @next/next/no-img-element
@@ -87,13 +193,11 @@ export default function ImagePicker({ value, onChange }: Props) {
       {/* ── Modal ───────────────────────────────────────────────────────── */}
       {open && (
         <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center">
-          {/* Backdrop */}
           <div
             className="absolute inset-0 bg-black/40 backdrop-blur-sm"
             onClick={() => setOpen(false)}
           />
 
-          {/* Panel */}
           <div className="relative z-10 flex w-full flex-col rounded-t-[2rem] sm:rounded-[2rem] bg-white shadow-2xl sm:mx-4 sm:max-w-2xl max-h-[90dvh]">
             {/* Header */}
             <div className="flex items-center justify-between px-6 pt-6 pb-4 border-b border-[#eaeaea]">
@@ -102,7 +206,7 @@ export default function ImagePicker({ value, onChange }: Props) {
                   Biblioteca de imágenes
                 </h2>
                 <p className="text-xs text-[#6B7280] mt-0.5">
-                  {PRODUCT_IMAGE_LIBRARY.length} imágenes disponibles
+                  {PRODUCT_IMAGE_LIBRARY.length} imágenes en biblioteca
                 </p>
               </div>
               <button
@@ -114,104 +218,191 @@ export default function ImagePicker({ value, onChange }: Props) {
               </button>
             </div>
 
-            {/* Search + Filters */}
-            <div className="px-6 py-4 space-y-3 border-b border-[#eaeaea]">
-              <div className="relative">
-                <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-[#9CA3AF]" />
-                <input
-                  type="search"
-                  placeholder="Buscar por nombre…"
-                  value={search}
-                  onChange={(e) => setSearch(e.target.value)}
-                  className="w-full rounded-full border border-[#e5e7eb] bg-[#f5f5f7] py-2.5 pl-10 pr-4 text-sm text-[#111111] placeholder:text-[#9CA3AF] outline-none focus:border-[#d1d5db] focus:ring-4 focus:ring-black/5"
-                  autoFocus
-                />
-              </div>
-              <div className="flex gap-2 flex-wrap">
-                {LIBRARY_CATEGORIES.map((cat) => (
-                  <button
-                    key={cat.value}
-                    type="button"
-                    onClick={() => setCategory(cat.value)}
-                    className={`rounded-full px-3.5 py-1.5 text-xs font-medium transition-colors ${
-                      category === cat.value
-                        ? 'bg-black text-white'
-                        : 'bg-[#f5f5f7] text-[#6B7280] hover:bg-[#ececec] hover:text-[#111111]'
-                    }`}
-                  >
-                    {cat.label}
-                  </button>
-                ))}
-              </div>
+            {/* Tabs */}
+            <div className="flex gap-1 px-6 pt-4 pb-0">
+              {(['library', 'uploads'] as Tab[]).map((t) => (
+                <button
+                  key={t}
+                  type="button"
+                  onClick={() => switchTab(t)}
+                  className={`rounded-full px-4 py-1.5 text-xs font-medium transition-colors ${
+                    tab === t
+                      ? 'bg-black text-white'
+                      : 'bg-[#f5f5f7] text-[#6B7280] hover:bg-[#ececec] hover:text-[#111]'
+                  }`}
+                >
+                  {t === 'library' ? 'Biblioteca' : 'Mis imágenes'}
+                </button>
+              ))}
             </div>
 
-            {/* Grid */}
-            <div className="flex-1 overflow-y-auto px-6 py-4">
-              {filtered.length === 0 ? (
-                <div className="flex flex-col items-center justify-center py-12 text-[#9CA3AF]">
-                  <ImageIcon className="h-8 w-8 mb-2" />
-                  <p className="text-sm">Sin resultados para &ldquo;{search}&rdquo;</p>
-                </div>
-              ) : (
-                <div className="grid grid-cols-3 gap-3 sm:grid-cols-4">
-                  {filtered.map((img) => {
-                    const isSelected = img.src === value
-                    return (
+            {/* ── Library tab ── */}
+            {tab === 'library' && (
+              <>
+                <div className="px-6 py-4 space-y-3 border-b border-[#eaeaea]">
+                  <div className="relative">
+                    <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-[#9CA3AF]" />
+                    <input
+                      type="search"
+                      placeholder="Buscar por nombre…"
+                      value={search}
+                      onChange={(e) => setSearch(e.target.value)}
+                      className="w-full rounded-full border border-[#e5e7eb] bg-[#f5f5f7] py-2.5 pl-10 pr-4 text-sm text-[#111111] placeholder:text-[#9CA3AF] outline-none focus:border-[#d1d5db] focus:ring-4 focus:ring-black/5"
+                      autoFocus
+                    />
+                  </div>
+                  <div className="flex gap-2 flex-wrap">
+                    {LIBRARY_CATEGORIES.map((cat) => (
                       <button
-                        key={img.id}
+                        key={cat.value}
                         type="button"
-                        onClick={() => select(img.src)}
-                        className={`group relative flex flex-col gap-2 rounded-[1.25rem] border-2 p-2 text-left transition-all ${
-                          isSelected
-                            ? 'border-black bg-black/5'
-                            : 'border-transparent bg-[#f5f5f7] hover:border-[#d1d5db] hover:bg-white'
+                        onClick={() => setCategory(cat.value)}
+                        className={`rounded-full px-3.5 py-1.5 text-xs font-medium transition-colors ${
+                          category === cat.value
+                            ? 'bg-black text-white'
+                            : 'bg-[#f5f5f7] text-[#6B7280] hover:bg-[#ececec] hover:text-[#111111]'
                         }`}
                       >
-                        {/* Checkmark */}
-                        {isSelected && (
-                          <span className="absolute right-2 top-2 flex h-5 w-5 items-center justify-center rounded-full bg-black">
-                            <Check className="h-3 w-3 text-white" />
-                          </span>
-                        )}
-                        {/* Imagen */}
-                        <div className="aspect-square w-full overflow-hidden rounded-[0.875rem] bg-white">
-                          {/* eslint-disable-next-line @next/next/no-img-element */}
-                          <img
-                            src={img.src}
-                            alt={img.alt}
-                            loading="lazy"
-                            onError={() => markFailed(img.id)}
-                            className="h-full w-full object-contain p-2"
-                          />
-                        </div>
-                        {/* Nombre */}
-                        <p className="line-clamp-2 px-0.5 text-[10px] font-medium leading-tight text-[#374151]">
-                          {img.name}
-                        </p>
+                        {cat.label}
                       </button>
-                    )
-                  })}
+                    ))}
+                  </div>
+                </div>
+
+                <div className="flex-1 overflow-y-auto px-6 py-4">
+                  {filtered.length === 0 ? (
+                    <div className="flex flex-col items-center justify-center py-12 text-[#9CA3AF]">
+                      <ImageIcon className="h-8 w-8 mb-2" />
+                      <p className="text-sm">Sin resultados para &ldquo;{search}&rdquo;</p>
+                    </div>
+                  ) : (
+                    <div className="grid grid-cols-3 gap-3 sm:grid-cols-4">
+                      {filtered.map((img) => {
+                        const isSelected = img.src === value
+                        return (
+                          <button
+                            key={img.id}
+                            type="button"
+                            onClick={() => select(img.src)}
+                            className={`group relative flex flex-col gap-2 rounded-[1.25rem] border-2 p-2 text-left transition-all ${
+                              isSelected
+                                ? 'border-black bg-black/5'
+                                : 'border-transparent bg-[#f5f5f7] hover:border-[#d1d5db] hover:bg-white'
+                            }`}
+                          >
+                            {isSelected && (
+                              <span className="absolute right-2 top-2 flex h-5 w-5 items-center justify-center rounded-full bg-black">
+                                <Check className="h-3 w-3 text-white" />
+                              </span>
+                            )}
+                            <div className="aspect-square w-full overflow-hidden rounded-[0.875rem] bg-white">
+                              {/* eslint-disable-next-line @next/next/no-img-element */}
+                              <img
+                                src={img.src}
+                                alt={img.alt}
+                                loading="lazy"
+                                onError={() => markFailed(img.id)}
+                                className="h-full w-full object-contain p-2"
+                              />
+                            </div>
+                            <p className="line-clamp-2 px-0.5 text-[10px] font-medium leading-tight text-[#374151]">
+                              {img.name}
+                            </p>
+                          </button>
+                        )
+                      })}
+                    </div>
+                  )}
+                </div>
+              </>
+            )}
+
+            {/* ── Uploads tab ── */}
+            {tab === 'uploads' && (
+              <div className="flex-1 overflow-y-auto px-6 py-4">
+                {loadingImages ? (
+                  <div className="flex items-center justify-center py-12 text-[#9CA3AF]">
+                    <Loader2 className="h-5 w-5 animate-spin" />
+                  </div>
+                ) : uploadedImages.length === 0 ? (
+                  <div className="flex flex-col items-center justify-center py-12 text-[#9CA3AF]">
+                    <ImageIcon className="h-8 w-8 mb-2" />
+                    <p className="text-sm">Todavía no subiste ninguna imagen.</p>
+                    <p className="mt-1 text-xs">Usá el botón &ldquo;Subir imagen&rdquo; de abajo.</p>
+                  </div>
+                ) : (
+                  <div className="grid grid-cols-3 gap-3 sm:grid-cols-4">
+                    {uploadedImages.map((img) => {
+                      const isSelected = img.medium_url === value
+                      return (
+                        <button
+                          key={img.id}
+                          type="button"
+                          onClick={() => select(img.medium_url)}
+                          className={`group relative flex flex-col gap-2 rounded-[1.25rem] border-2 p-2 text-left transition-all ${
+                            isSelected
+                              ? 'border-black bg-black/5'
+                              : 'border-transparent bg-[#f5f5f7] hover:border-[#d1d5db] hover:bg-white'
+                          }`}
+                        >
+                          {isSelected && (
+                            <span className="absolute right-2 top-2 flex h-5 w-5 items-center justify-center rounded-full bg-black">
+                              <Check className="h-3 w-3 text-white" />
+                            </span>
+                          )}
+                          <div className="aspect-square w-full overflow-hidden rounded-[0.875rem] bg-white">
+                            {/* eslint-disable-next-line @next/next/no-img-element */}
+                            <img
+                              src={img.thumbnail_url}
+                              alt={img.filename}
+                              loading="lazy"
+                              className="h-full w-full object-contain p-2"
+                            />
+                          </div>
+                          <p className="line-clamp-2 px-0.5 text-[10px] font-medium leading-tight text-[#374151]">
+                            {img.filename}
+                          </p>
+                        </button>
+                      )
+                    })}
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* Footer */}
+            <div className="border-t border-[#eaeaea] px-6 py-4">
+              {uploadError && (
+                <div className="mb-3 flex items-start gap-2 rounded-[1rem] bg-red-50 px-4 py-3 text-xs text-red-600">
+                  <AlertCircle className="mt-0.5 h-3.5 w-3.5 shrink-0" />
+                  {uploadError}
                 </div>
               )}
-            </div>
-
-            {/* Footer — upload futuro */}
-            <div className="border-t border-[#eaeaea] px-6 py-4">
               <div className="flex items-center justify-between">
                 <p className="text-xs text-[#9CA3AF]">
-                  ¿No encontrás la imagen? Podés agregar imágenes locales en{' '}
-                  <code className="font-mono text-[11px]">/public/product-library/</code>
+                  JPG, PNG o WebP · máx. 5 MB
                 </p>
                 <button
                   type="button"
-                  title="Próximamente"
-                  disabled
-                  className="inline-flex items-center gap-1.5 rounded-full border border-[#e5e7eb] px-3.5 py-1.5 text-xs font-medium text-[#9CA3AF] cursor-not-allowed"
+                  disabled={uploading}
+                  onClick={() => fileInputRef.current?.click()}
+                  className="inline-flex items-center gap-1.5 rounded-full border border-[#e5e7eb] px-3.5 py-1.5 text-xs font-medium text-[#374151] transition-colors hover:border-[#111] hover:text-[#111] disabled:cursor-not-allowed disabled:opacity-50"
                 >
-                  <Upload className="h-3.5 w-3.5" />
-                  Subir imagen
+                  {uploading ? (
+                    <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                  ) : (
+                    <Upload className="h-3.5 w-3.5" />
+                  )}
+                  {uploading ? 'Subiendo…' : 'Subir imagen'}
                 </button>
               </div>
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept="image/jpeg,image/png,image/webp"
+                className="hidden"
+                onChange={handleFileChange}
+              />
             </div>
           </div>
         </div>

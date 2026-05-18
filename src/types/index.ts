@@ -146,3 +146,11 @@ export interface TradeInResult {
   final_price_usd: number
   final_price_ars: number
 }
+
+export interface UploadedImage {
+  id: number
+  filename: string
+  thumbnail_url: string
+  medium_url: string
+  created_at: string
+}

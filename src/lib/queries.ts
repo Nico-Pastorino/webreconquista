@@ -9,7 +9,9 @@ import type {
   TradeInValue,
   SiteSettings,
   Category,
+  UploadedImage,
 } from '@/types'
+import { getSql } from './db'
 import { getStorage } from './storage'
 import { DEFAULT_DOLLAR_RATE, DEFAULT_SITE_SETTINGS, logDatabaseError } from './env'
 
@@ -141,4 +143,35 @@ export async function updateSetting(key: string, value: string): Promise<void> {
       : value
 
   await storage.updateSiteSettings({ [key]: normalized } as Partial<SiteSettings>)
+}
+
+// ─── Imágenes subidas ─────────────────────────────────────────
+
+export async function getUploadedImages(): Promise<UploadedImage[]> {
+  try {
+    const sql = getSql()
+    const rows = await sql<UploadedImage[]>`
+      SELECT id, filename, thumbnail_url, medium_url, created_at
+      FROM uploaded_images
+      ORDER BY created_at DESC
+      LIMIT 200
+    `
+    return [...rows]
+  } catch {
+    return []
+  }
+}
+
+export async function saveUploadedImage(
+  filename: string,
+  thumbnail_url: string,
+  medium_url: string,
+): Promise<UploadedImage> {
+  const sql = getSql()
+  const [row] = await sql<UploadedImage[]>`
+    INSERT INTO uploaded_images (filename, thumbnail_url, medium_url)
+    VALUES (${filename}, ${thumbnail_url}, ${medium_url})
+    RETURNING id, filename, thumbnail_url, medium_url, created_at
+  `
+  return row
 }
