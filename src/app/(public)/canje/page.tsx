@@ -15,7 +15,7 @@ export default async function CanjecPage() {
 
   let dollarRate = 1200
   let models: string[] = []
-  let settings = { trade_in_enabled: true }
+  let settings = { trade_in_enabled: true, whatsapp_number: '' }
 
   try {
     ;[dollarRate, models, settings] = await Promise.all([
@@ -115,7 +115,7 @@ export default async function CanjecPage() {
             <h2 className="text-2xl font-semibold tracking-[-0.04em] text-[#111111] sm:text-3xl">Calculá el valor de tu iPhone.</h2>
           </div>
           {models.length > 0 ? (
-            <TradeInSimulator models={models} dollarRate={dollarRate} />
+            <TradeInSimulator models={models} dollarRate={dollarRate} whatsappNumber={settings.whatsapp_number} />
           ) : (
             <div className="rounded-[36px] border border-[#ECECEF] bg-[#F5F5F7] p-10 text-center">
               <p className="text-[#666666]">

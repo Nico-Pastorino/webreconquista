@@ -1,15 +1,18 @@
 'use client'
 
 import { useState } from 'react'
+import { MessageCircle } from 'lucide-react'
 import Select from '@/components/ui/Select'
 import Button from '@/components/ui/Button'
 import { formatARS, formatUSD } from '@/lib/calculations'
+import { buildWhatsAppUrl } from '@/lib/utils'
 import type { TradeInResult } from '@/types'
 
 interface Props {
   models: string[]
   productPriceUsd?: number
   dollarRate: number
+  whatsappNumber?: string
 }
 
 const BATTERY_OPTIONS = [
@@ -18,7 +21,33 @@ const BATTERY_OPTIONS = [
   { value: 'MENOS-70', label: 'Menos de 70%' },
 ]
 
-export default function TradeInSimulator({ models, productPriceUsd }: Props) {
+function buildTradeInMessage(
+  model: string,
+  capacity: string,
+  battery: string,
+  result: TradeInResult,
+): string {
+  const batteryLabel = BATTERY_OPTIONS.find((o) => o.value === battery)?.label ?? battery
+  const lines = [
+    'Hola, quiero consultar por el Plan Canje.',
+    '',
+    'Quiero cambiar mi equipo usado:',
+    `Modelo: ${model}`,
+    `Capacidad: ${capacity}`,
+    `Estado de batería: ${batteryLabel}`,
+    `Valor estimado: ${formatUSD(result.trade_in_value_usd)} (${formatARS(result.trade_in_value_ars)})`,
+  ]
+  if (result.final_price_ars > 0) {
+    lines.push('')
+    lines.push('Diferencia a pagar:')
+    lines.push(`${formatARS(result.final_price_ars)} / ${formatUSD(result.final_price_usd)}`)
+  }
+  lines.push('')
+  lines.push('Estoy interesado en renovar por un equipo de Store RQTA.')
+  return lines.join('\n')
+}
+
+export default function TradeInSimulator({ models, productPriceUsd, whatsappNumber }: Props) {
   const [selectedModel, setSelectedModel] = useState('')
   const [capacities, setCapacities] = useState<string[]>([])
   const [selectedCapacity, setSelectedCapacity] = useState('')
@@ -74,6 +103,14 @@ export default function TradeInSimulator({ models, productPriceUsd }: Props) {
         { value: '', label: 'Seleccioná capacidad' },
         ...capacities.map((c) => ({ value: c, label: c })),
       ]
+
+  const waUrl =
+    result && whatsappNumber
+      ? buildWhatsAppUrl(
+          whatsappNumber,
+          buildTradeInMessage(selectedModel, selectedCapacity, batteryState, result),
+        )
+      : null
 
   return (
     <div className="rounded-[36px] bg-white p-7 shadow-[0_28px_70px_rgba(17,17,17,0.06)] sm:p-9">
@@ -143,6 +180,23 @@ export default function TradeInSimulator({ models, productPriceUsd }: Props) {
               </>
             )}
           </div>
+
+          {/* Botón WhatsApp — aparece solo cuando hay resultado */}
+          {waUrl ? (
+            <a
+              href={waUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-6 flex items-center justify-center gap-2.5 rounded-full bg-black px-6 py-3.5 text-sm font-medium text-white transition-colors hover:bg-[#1f1f1f]"
+            >
+              <MessageCircle className="h-4 w-4" />
+              Consultar por WhatsApp
+            </a>
+          ) : whatsappNumber === '' ? null : (
+            <p className="mt-5 text-center text-xs text-[#6B7280]">
+              WhatsApp no configurado — contactá al administrador
+            </p>
+          )}
         </div>
       )}
     </div>

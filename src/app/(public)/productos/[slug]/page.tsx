@@ -88,9 +88,22 @@ export default async function ProductDetailPage({ params }: Props) {
 
   const categoryHref = `/${product.category}`
   const isIphone = product.category === 'iphone'
-  const whatsappMsg = `${settings.whatsapp_message}${product.name} - ${formatARS(priceARS)}`
-  const whatsappUrl = buildWhatsAppUrl(settings.whatsapp_number, whatsappMsg)
   const specs = product.specs as Record<string, string> | null
+
+  // Mensaje WhatsApp enriquecido con todos los datos del producto
+  const whatsappLines = [
+    'Hola, quiero consultar por este producto:',
+    '',
+    `Producto: ${product.name}`,
+    product.product_label ? `Estado: ${product.product_label}` : '',
+    `Categoría: ${CATEGORY_LABELS[product.category] ?? product.category}`,
+    `Precio: ${formatARS(priceARS)}`,
+    settings.show_usd_price ? `USD: ${product.price_usd}` : '',
+    '',
+    '¿Está disponible?',
+  ].filter((l) => l !== null && l !== undefined && !(l === '' && !product.product_label))
+  const whatsappMsg = whatsappLines.join('\n')
+  const whatsappUrl = buildWhatsAppUrl(settings.whatsapp_number, whatsappMsg)
 
   return (
     <div className="mx-auto w-full max-w-7xl px-5 py-10 sm:px-6 md:py-20 lg:px-8 lg:py-24">
@@ -140,6 +153,7 @@ export default async function ProductDetailPage({ params }: Props) {
                 models={tradeInModels}
                 productPriceUsd={product.price_usd}
                 dollarRate={dollarRate}
+                whatsappNumber={settings.whatsapp_number}
               />
             </div>
           )}
