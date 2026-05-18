@@ -109,9 +109,6 @@ export default function CanjeSimulator({ models, dollarRate, whatsappNumber }: P
       <h2 className="text-xl font-semibold tracking-[-0.035em] text-[#111111] sm:text-2xl">
         Cuánto vale tu iPhone
       </h2>
-      <p className="mt-1.5 text-xs text-[#9CA3AF]">
-        Dólar de referencia ${dollarRate.toLocaleString('es-AR')} · Estimación sujeta a inspección.
-      </p>
 
       {/* Form */}
       <div className="mt-6 flex flex-col gap-5">
