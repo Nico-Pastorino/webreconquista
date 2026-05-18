@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import type { SiteSettings } from '@/types'
-import { Check } from 'lucide-react'
+import { useToast } from '@/components/ui/Toast'
 
 interface Props { initialSettings: SiteSettings }
 
@@ -47,9 +47,9 @@ function Toggle({ checked, onChange, label }: { checked: boolean; onChange: (v: 
 
 export default function SettingsForm({ initialSettings }: Props) {
   const router = useRouter()
+  const toast = useToast()
   const [form, setForm] = useState(initialSettings)
   const [loading, setLoading] = useState(false)
-  const [saved, setSaved] = useState(false)
 
   function set(field: keyof SiteSettings, value: string | boolean) {
     setForm((f) => ({ ...f, [field]: value }))
@@ -72,9 +72,8 @@ export default function SettingsForm({ initialSettings }: Props) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
       })
-      setSaved(true)
+      toast.success('Configuración guardada')
       router.refresh()
-      setTimeout(() => setSaved(false), 3000)
     } finally {
       setLoading(false)
     }
@@ -116,9 +115,7 @@ export default function SettingsForm({ initialSettings }: Props) {
         disabled={loading}
         className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-black px-6 py-3.5 text-sm font-medium text-white transition-colors hover:bg-[#1f1f1f] disabled:opacity-50"
       >
-        {saved ? (
-          <><Check className="h-4 w-4" /> Guardado</>
-        ) : loading ? (
+        {loading ? (
           <>
             <svg className="h-4 w-4 animate-spin" fill="none" viewBox="0 0 24 24">
               <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />

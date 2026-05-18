@@ -3,6 +3,8 @@
 import { useState, useMemo } from 'react'
 import type { TradeInValue } from '@/types'
 import { ChevronDown, ChevronRight, Copy, Plus, Trash2, Zap } from 'lucide-react'
+import { useConfirm } from '@/components/ui/ConfirmDialog'
+import { useToast } from '@/components/ui/Toast'
 
 // ─── Constants ────────────────────────────────────────────────
 
@@ -80,11 +82,12 @@ export default function TradeInManager({ initialValues }: Props) {
   const [genFilter, setGenFilter] = useState('')
   const [statusFilter, setStatusFilter] = useState<'all' | 'active' | 'inactive'>('all')
   const [panel, setPanel] = useState<'none' | 'add' | 'quick' | 'duplicate'>('none')
-  const [toast, setToast] = useState<string | null>(null)
+  const confirm = useConfirm()
+  const toast = useToast()
 
-  function showToast(msg: string) {
-    setToast(msg)
-    setTimeout(() => setToast(null), 3000)
+  function showToast(msg: string, type: 'success' | 'error' = 'success') {
+    if (type === 'error') toast.error(msg)
+    else toast.success(msg)
   }
 
   // ─── Grouping ───────────────────────────────────────────────
@@ -146,7 +149,7 @@ export default function TradeInManager({ initialValues }: Props) {
       setPendingEdits({})
       showToast('Cambios guardados')
     } catch {
-      showToast('Error al guardar')
+      showToast('Error al guardar', 'error')
     } finally {
       setSaving(false)
     }
@@ -165,7 +168,7 @@ export default function TradeInManager({ initialValues }: Props) {
       })
     } catch {
       setValues((prev) => prev.map((v) => (v.id === id ? { ...v, active: current } : v)))
-      showToast('Error al cambiar estado')
+      showToast('Error al cambiar estado', 'error')
     } finally {
       setTogglingId(null)
     }
@@ -187,13 +190,20 @@ export default function TradeInManager({ initialValues }: Props) {
       showToast(makeActive ? 'Modelo activado' : 'Modelo desactivado')
     } catch {
       setValues((prev) => prev.map((v) => (v.model === model ? { ...v, active: !makeActive } : v)))
-      showToast('Error al cambiar estado del modelo')
+      showToast('Error al cambiar estado del modelo', 'error')
     }
   }
 
   // ─── Delete entry ────────────────────────────────────────────
   async function deleteEntry(id: number) {
-    if (!confirm('¿Eliminar esta entrada?')) return
+    const ok = await confirm({
+      title: 'Eliminar entrada',
+      message: '¿Querés eliminar este valor de canje?',
+      detail: 'Esta acción no se puede deshacer.',
+      confirmLabel: 'Eliminar',
+      variant: 'destructive',
+    })
+    if (!ok) return
     await fetch('/api/admin/tradein', {
       method: 'DELETE',
       headers: { 'Content-Type': 'application/json' },
@@ -216,13 +226,6 @@ export default function TradeInManager({ initialValues }: Props) {
 
   return (
     <div className="space-y-6">
-      {/* Toast */}
-      {toast && (
-        <div className="fixed bottom-6 right-6 z-50 rounded-full bg-black px-5 py-2.5 text-sm font-medium text-white shadow-lg">
-          {toast}
-        </div>
-      )}
-
       {/* Pending save bar */}
       {hasPending && (
         <div className="flex items-center justify-between rounded-[18px] bg-[#fffbeb] border border-[#fde68a] px-5 py-3">

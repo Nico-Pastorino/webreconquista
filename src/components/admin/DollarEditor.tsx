@@ -2,8 +2,9 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { Check, RefreshCw } from 'lucide-react'
+import { RefreshCw } from 'lucide-react'
 import type { ExchangeRate } from '@/types'
+import { useToast } from '@/components/ui/Toast'
 
 interface Props {
   currentRate: ExchangeRate | null
@@ -23,23 +24,21 @@ const FALLBACK_RATE: ExchangeRate = {
 
 export default function DollarEditor({ currentRate, latestError = null }: Props) {
   const router = useRouter()
+  const toast = useToast()
   const rate = currentRate ?? FALLBACK_RATE
   const [margin, setMargin] = useState(rate.admin_margin.toString())
   const [loading, setLoading] = useState(false)
   const [syncing, setSyncing] = useState(false)
-  const [saved, setSaved] = useState(false)
-  const [error, setError] = useState('')
-  const [warning, setWarning] = useState(latestError ? 'No se pudo actualizar la cotización. Se mantiene el último valor válido.' : '')
+  const [marginError, setMarginError] = useState('')
 
   async function handleSave() {
     const parsedMargin = Number(margin)
     if (margin === '' || !Number.isFinite(parsedMargin) || parsedMargin < 0) {
-      setError('Ingresá un margen válido mayor o igual a 0')
+      setMarginError('Ingresá un margen válido mayor o igual a 0')
       return
     }
     setLoading(true)
-    setError('')
-    setWarning('')
+    setMarginError('')
     try {
       const res = await fetch('/api/admin/dollar', {
         method: 'PUT',
@@ -47,12 +46,11 @@ export default function DollarEditor({ currentRate, latestError = null }: Props)
         body: JSON.stringify({ admin_margin: parsedMargin }),
       })
       if (res.ok) {
-        setSaved(true)
+        toast.success('Margen guardado')
         router.refresh()
-        setTimeout(() => setSaved(false), 3000)
       } else {
         const data = await res.json().catch(() => null)
-        setError(data?.error ?? 'Error al guardar')
+        toast.error(data?.error ?? 'Error al guardar')
       }
     } finally {
       setLoading(false)
@@ -61,24 +59,16 @@ export default function DollarEditor({ currentRate, latestError = null }: Props)
 
   async function handleSyncFromApi() {
     setSyncing(true)
-    setError('')
-    setWarning('')
     try {
-      const res = await fetch('/api/admin/dollar', {
-        method: 'POST',
-      })
-
+      const res = await fetch('/api/admin/dollar', { method: 'POST' })
       const data = await res.json()
-
       if (!res.ok) {
-        setWarning(data.error ?? 'No se pudo actualizar la cotización. Se mantiene el último valor válido.')
+        toast.warning(data.error ?? 'No se pudo actualizar la cotización. Se mantiene el último valor válido.')
         return
       }
-
       setMargin(String(data.rate.admin_margin))
-      setSaved(true)
+      toast.success('Cotización actualizada')
       router.refresh()
-      setTimeout(() => setSaved(false), 3000)
     } finally {
       setSyncing(false)
     }
@@ -142,8 +132,7 @@ export default function DollarEditor({ currentRate, latestError = null }: Props)
               onChange={(e) => setMargin(e.target.value)}
               className="w-full rounded-[22px] border border-[#e5e7eb] bg-white px-5 py-3 text-sm text-[#111111] placeholder:text-[#8d8d8d] outline-none transition-colors focus:border-[#d1d5db] focus:ring-4 focus:ring-black/5"
             />
-            {error && <p className="text-xs text-[#666666]">{error}</p>}
-            {warning && <p className="text-xs text-[#666666]">{warning}</p>}
+            {marginError && <p className="text-xs text-[#666666]">{marginError}</p>}
           </div>
 
           <div className="rounded-[22px] bg-[#f5f5f7] px-5 py-4">
@@ -165,9 +154,7 @@ export default function DollarEditor({ currentRate, latestError = null }: Props)
             disabled={loading || syncing}
             className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-black px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-[#1f1f1f] disabled:opacity-50"
           >
-            {saved ? (
-              <><Check className="h-4 w-4" /> Guardado</>
-            ) : loading ? (
+            {loading ? (
               <>
                 <svg className="h-4 w-4 animate-spin" fill="none" viewBox="0 0 24 24">
                   <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />

@@ -355,3 +355,37 @@
   transform: translateY(-6px) scale(1.02);
   box-shadow: 0 20px 44px rgba(0,0,0,0.09);
 }
+
+/* ── Dialog / Toast animations ────────────────────────────── */
+
+@keyframes dialogBackdropIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes dialogBackdropOut {
+  from { opacity: 1; }
+  to   { opacity: 0; }
+}
+@keyframes dialogPanelIn {
+  from { opacity: 0; transform: scale(0.95) translateY(12px); }
+  to   { opacity: 1; transform: scale(1)    translateY(0); }
+}
+@keyframes dialogPanelOut {
+  from { opacity: 1; transform: scale(1)    translateY(0); }
+  to   { opacity: 0; transform: scale(0.95) translateY(12px); }
+}
+@keyframes toastIn {
+  from { opacity: 0; transform: translateX(calc(100% + 28px)) scale(0.96); }
+  to   { opacity: 1; transform: translateX(0)                 scale(1); }
+}
+@keyframes toastOut {
+  from { opacity: 1; transform: scale(1);   max-height: 80px; }
+  to   { opacity: 0; transform: scale(0.92); max-height: 0; margin-top: -10px; }
+}
+
+.dialog-backdrop-in  { animation: dialogBackdropIn  0.2s ease both; }
+.dialog-backdrop-out { animation: dialogBackdropOut 0.18s ease both; }
+.dialog-panel-in     { animation: dialogPanelIn  0.28s cubic-bezier(0.16, 1, 0.3, 1) both; }
+.dialog-panel-out    { animation: dialogPanelOut 0.18s ease both; }
+.toast-in            { animation: toastIn  0.32s cubic-bezier(0.16, 1, 0.3, 1) both; }
+.toast-out           { animation: toastOut 0.24s ease both; overflow: hidden; }

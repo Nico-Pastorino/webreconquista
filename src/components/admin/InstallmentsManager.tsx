@@ -4,6 +4,8 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import type { FinancingGroup, FinancingOption } from '@/types'
 import { Trash2, Plus, ChevronDown, ChevronUp, Pencil, Check, X } from 'lucide-react'
+import { useConfirm } from '@/components/ui/ConfirmDialog'
+import { useToast } from '@/components/ui/Toast'
 
 interface Props {
   initialGroups: FinancingGroup[]
@@ -68,6 +70,8 @@ export default function InstallmentsManager({ initialGroups, initialOptions }: P
   const [editOptError, setEditOptError] = useState('')
 
   const [busy, setBusy] = useState(false)
+  const confirm = useConfirm()
+  const toast = useToast()
 
   function toggleExpand(groupId: number) {
     setExpandedGroups((prev) => {
@@ -131,7 +135,14 @@ export default function InstallmentsManager({ initialGroups, initialOptions }: P
   }
 
   async function deleteGroup(id: number) {
-    if (!confirm('¿Eliminar este grupo y todas sus cuotas?')) return
+    const ok = await confirm({
+      title: 'Eliminar grupo',
+      message: '¿Querés eliminar este grupo y todas sus cuotas?',
+      detail: 'Esta acción no se puede deshacer.',
+      confirmLabel: 'Eliminar',
+      variant: 'destructive',
+    })
+    if (!ok) return
     await fetch('/api/admin/financing-groups', {
       method: 'DELETE',
       headers: { 'Content-Type': 'application/json' },
@@ -139,6 +150,7 @@ export default function InstallmentsManager({ initialGroups, initialOptions }: P
     })
     setGroups((g) => g.filter((gr) => gr.id !== id))
     setOptions((o) => o.filter((op) => op.group_id !== id))
+    toast.success('Grupo eliminado')
     router.refresh()
   }
 
@@ -214,13 +226,21 @@ export default function InstallmentsManager({ initialGroups, initialOptions }: P
   }
 
   async function deleteOption(id: number) {
-    if (!confirm('¿Eliminar esta cuota?')) return
+    const ok = await confirm({
+      title: 'Eliminar cuota',
+      message: '¿Querés eliminar esta opción de pago?',
+      detail: 'Esta acción no se puede deshacer.',
+      confirmLabel: 'Eliminar',
+      variant: 'destructive',
+    })
+    if (!ok) return
     await fetch('/api/admin/financing-options', {
       method: 'DELETE',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ id }),
     })
     setOptions((o) => o.filter((op) => op.id !== id))
+    toast.success('Cuota eliminada')
     router.refresh()
   }
 

@@ -8,6 +8,8 @@ import { formatARS } from '@/lib/calculations'
 import { Pencil, Trash2 } from 'lucide-react'
 import { CATEGORY_LABELS } from '@/lib/utils'
 import ProductImage from '@/components/ui/ProductImage'
+import { useConfirm } from '@/components/ui/ConfirmDialog'
+import { useToast } from '@/components/ui/Toast'
 
 interface Props {
   products: Product[]
@@ -17,12 +19,22 @@ interface Props {
 export default function ProductsTable({ products, dollarRate }: Props) {
   const router = useRouter()
   const [deleting, setDeleting] = useState<number | null>(null)
+  const confirm = useConfirm()
+  const toast = useToast()
 
   async function handleDelete(id: number, name: string) {
-    if (!confirm(`¿Eliminar "${name}"?`)) return
+    const ok = await confirm({
+      title: 'Eliminar producto',
+      message: `¿Querés eliminar "${name}"?`,
+      detail: 'Esta acción no se puede deshacer.',
+      confirmLabel: 'Eliminar',
+      variant: 'destructive',
+    })
+    if (!ok) return
     setDeleting(id)
     try {
       await fetch(`/api/admin/products/${id}`, { method: 'DELETE' })
+      toast.success('Producto eliminado')
       router.refresh()
     } finally {
       setDeleting(null)

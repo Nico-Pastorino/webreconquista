@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import type { Product } from '@/types'
 import ImagePicker from '@/components/admin/ImagePicker'
+import { useToast } from '@/components/ui/Toast'
 
 const CATEGORIES = [
   { value: 'iphone', label: 'iPhone' },
@@ -69,6 +70,7 @@ const inputCls =
 
 export default function ProductForm({ product }: Props) {
   const router = useRouter()
+  const toast = useToast()
   const isEdit = !!product
 
   const [form, setForm] = useState({
@@ -82,7 +84,6 @@ export default function ProductForm({ product }: Props) {
     product_label: product?.product_label ?? '',
   })
   const [loading, setLoading] = useState(false)
-  const [error, setError] = useState('')
 
   function set(field: string, value: string | boolean) {
     setForm((prev) => ({ ...prev, [field]: value }))
@@ -91,7 +92,6 @@ export default function ProductForm({ product }: Props) {
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
     setLoading(true)
-    setError('')
     try {
       const body = {
       ...form,
@@ -111,11 +111,12 @@ export default function ProductForm({ product }: Props) {
           })
 
       if (res.ok) {
+        toast.success(isEdit ? 'Producto actualizado' : 'Producto creado')
         router.push('/admin/productos')
         router.refresh()
       } else {
         const data = await res.json()
-        setError(data.error ?? 'Error al guardar')
+        toast.error(data.error ?? 'Error al guardar')
       }
     } finally {
       setLoading(false)
@@ -124,12 +125,6 @@ export default function ProductForm({ product }: Props) {
 
   return (
     <form onSubmit={handleSubmit} className="mx-auto max-w-2xl">
-      {error && (
-        <div className="mb-6 rounded-[22px] border border-[#eaeaea] bg-[#f5f5f7] px-5 py-3.5 text-sm text-[#111111]">
-          {error}
-        </div>
-      )}
-
       <div className="surface-card rounded-[2rem] p-6 sm:p-8">
         <div className="grid gap-5 sm:grid-cols-2">
           {/* Nombre */}
