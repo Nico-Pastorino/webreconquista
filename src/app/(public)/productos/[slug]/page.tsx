@@ -154,6 +154,8 @@ export default async function ProductDetailPage({ params }: Props) {
                 productPriceUsd={product.price_usd}
                 dollarRate={dollarRate}
                 whatsappNumber={settings.whatsapp_number}
+                productName={product.name}
+                productLabel={product.product_label ?? undefined}
               />
             </div>
           )}
@@ -251,6 +253,9 @@ export default async function ProductDetailPage({ params }: Props) {
               models={tradeInModels}
               productPriceUsd={product.price_usd}
               dollarRate={dollarRate}
+              whatsappNumber={settings.whatsapp_number}
+              productName={product.name}
+              productLabel={product.product_label ?? undefined}
             />
           </div>
         </div>

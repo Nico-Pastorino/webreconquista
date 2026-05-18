@@ -13,6 +13,10 @@ interface Props {
   productPriceUsd?: number
   dollarRate: number
   whatsappNumber?: string
+  /** Name of the target product the user wants to acquire (e.g. "iPhone 15 Pro 256GB") */
+  productName?: string
+  /** Label of the target product (e.g. "Sellado Nuevo" | "Seminuevo") */
+  productLabel?: string
 }
 
 const BATTERY_OPTIONS = [
@@ -26,28 +30,42 @@ function buildTradeInMessage(
   capacity: string,
   battery: string,
   result: TradeInResult,
+  productName?: string,
+  productLabel?: string,
 ): string {
   const batteryLabel = BATTERY_OPTIONS.find((o) => o.value === battery)?.label ?? battery
+
   const lines = [
-    'Hola, quiero consultar por el Plan Canje.',
+    'Hola, quiero consultar por un Plan Canje en STORE RQTA.',
     '',
-    'Quiero cambiar mi equipo usado:',
-    `Modelo: ${model}`,
-    `Capacidad: ${capacity}`,
-    `Estado de batería: ${batteryLabel}`,
-    `Valor estimado: ${formatUSD(result.trade_in_value_usd)} (${formatARS(result.trade_in_value_ars)})`,
+    'Mi equipo actual:',
+    `• Modelo: ${model}`,
+    `• Capacidad: ${capacity}`,
+    `• Estado de batería: ${batteryLabel}`,
+    `• Valor estimado: ${formatUSD(result.trade_in_value_usd)} (${formatARS(result.trade_in_value_ars)})`,
   ]
+
+  // Only show target product block when inside a product page
+  if (productName) {
+    lines.push('')
+    lines.push('Equipo que quiero adquirir:')
+    lines.push(`• ${productName}`)
+    if (productLabel) lines.push(`• Estado: ${productLabel}`)
+  }
+
   if (result.final_price_ars > 0) {
     lines.push('')
-    lines.push('Diferencia a pagar:')
-    lines.push(`${formatARS(result.final_price_ars)} / ${formatUSD(result.final_price_usd)}`)
+    lines.push('Diferencia estimada a pagar:')
+    lines.push(`• ${formatUSD(result.final_price_usd)}`)
+    lines.push(`• ${formatARS(result.final_price_ars)}`)
   }
+
   lines.push('')
-  lines.push('Estoy interesado en renovar por un equipo de Store RQTA.')
+  lines.push('¿Podrían asesorarme con el cambio?')
   return lines.join('\n')
 }
 
-export default function TradeInSimulator({ models, productPriceUsd, whatsappNumber }: Props) {
+export default function TradeInSimulator({ models, productPriceUsd, whatsappNumber, productName, productLabel }: Props) {
   const [selectedModel, setSelectedModel] = useState('')
   const [capacities, setCapacities] = useState<string[]>([])
   const [selectedCapacity, setSelectedCapacity] = useState('')
@@ -108,7 +126,7 @@ export default function TradeInSimulator({ models, productPriceUsd, whatsappNumb
     result && whatsappNumber
       ? buildWhatsAppUrl(
           whatsappNumber,
-          buildTradeInMessage(selectedModel, selectedCapacity, batteryState, result),
+          buildTradeInMessage(selectedModel, selectedCapacity, batteryState, result, productName, productLabel),
         )
       : null
 
