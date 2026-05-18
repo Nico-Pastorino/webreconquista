@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { useState, useRef } from 'react'
-import { Airplay, ChevronDown, ChevronRight, Headphones, House, Laptop, Menu, Package, RefreshCw, Smartphone, Tablet, Watch, X } from 'lucide-react'
+import { Airplay, ChevronDown, ChevronRight, Headphones, House, Laptop, Menu, MessageCircle, Package, RefreshCw, Smartphone, Tablet, Watch, X } from 'lucide-react'
 
 const IPHONE_SUB = [
   { label: 'Ver todos los iPhone', href: '/iphone' },
@@ -17,7 +17,8 @@ const NAV_ITEMS = [
   { label: 'Watch',      href: '/watch',       icon: Watch,      highlight: false, dropdown: false },
   { label: 'AirPods',    href: '/airpods',     icon: Headphones, highlight: false, dropdown: false },
   { label: 'Accesorios', href: '/accesorios',  icon: Package,    highlight: false, dropdown: false },
-  { label: 'Plan Canje', href: '/plan-canje',  icon: RefreshCw,  highlight: true,  dropdown: false },
+  { label: 'Plan Canje', href: '/plan-canje',  icon: RefreshCw,      highlight: true,  dropdown: false },
+  { label: 'Contacto',  href: '/contacto',    icon: MessageCircle,  highlight: false, dropdown: false },
 ]
 
 const linkCls = 'inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-[13px] font-medium text-white/62 transition-colors hover:bg-white/7 hover:text-white whitespace-nowrap'
