@@ -18,13 +18,6 @@ const BATTERY_OPTIONS = [
   { value: 'MENOS-70', label: 'Menos de 70%' },
 ]
 
-const SCREEN_OPTIONS = [
-  { value: 'impecable',  label: 'Impecable' },
-  { value: 'con-marcas', label: 'Con marcas' },
-  { value: 'rota',       label: 'Rota' },
-] as const
-
-type ScreenCondition = (typeof SCREEN_OPTIONS)[number]['value']
 
 const selectCls =
   'w-full appearance-none rounded-[14px] border border-[#E5E7EB] bg-white px-4 py-3 text-sm text-[#111111] outline-none transition-colors focus:border-[#d1d5db] focus:ring-4 focus:ring-black/5 disabled:opacity-50'
@@ -42,7 +35,6 @@ export default function CanjeSimulator({ models, dollarRate, whatsappNumber }: P
   const [capacities, setCapacities] = useState<string[]>([])
   const [selectedCapacity, setSelectedCapacity] = useState('')
   const [batteryState, setBatteryState] = useState('100-90')
-  const [screenCondition, setScreenCondition] = useState<ScreenCondition>('impecable')
   const [result, setResult] = useState<TradeInResult | null>(null)
   const [loading, setLoading] = useState(false)
   const [loadingCaps, setLoadingCaps] = useState(false)
@@ -89,7 +81,6 @@ export default function CanjeSimulator({ models, dollarRate, whatsappNumber }: P
 
   // WhatsApp message
   const batteryLabel = BATTERY_OPTIONS.find((o) => o.value === batteryState)?.label ?? batteryState
-  const screenLabel = SCREEN_OPTIONS.find((o) => o.value === screenCondition)?.label ?? screenCondition
 
   const waMsg = result
     ? [
@@ -99,7 +90,6 @@ export default function CanjeSimulator({ models, dollarRate, whatsappNumber }: P
         `• Modelo: ${selectedModel}`,
         `• Capacidad: ${selectedCapacity}`,
         `• Batería: ${batteryLabel}`,
-        `• Estado de pantalla: ${screenLabel}`,
         `• Valor estimado: ${formatUSD(result.trade_in_value_usd)} (${formatARS(result.trade_in_value_ars)})`,
         '',
         '¿Están disponibles para coordinarlo?',
@@ -174,28 +164,7 @@ export default function CanjeSimulator({ models, dollarRate, whatsappNumber }: P
           </div>
         )}
 
-        {/* Screen condition */}
-        {fieldsReady && (
-          <div>
-            <FieldLabel>Estado de pantalla</FieldLabel>
-            <div className="grid grid-cols-3 gap-2">
-              {SCREEN_OPTIONS.map((o) => (
-                <button
-                  key={o.value}
-                  type="button"
-                  onClick={() => { setScreenCondition(o.value); setResult(null) }}
-                  className={`rounded-[12px] border py-2.5 text-[13px] font-medium transition-all ${
-                    screenCondition === o.value
-                      ? 'border-[#111111] bg-[#111111] text-white'
-                      : 'border-[#E5E7EB] bg-white text-[#374151] hover:border-[#d1d5db] hover:bg-[#f5f5f7]'
-                  }`}
-                >
-                  {o.label}
-                </button>
-              ))}
-            </div>
-          </div>
-        )}
+
 
         {/* Calculate / Result */}
         {fieldsReady && !result && (

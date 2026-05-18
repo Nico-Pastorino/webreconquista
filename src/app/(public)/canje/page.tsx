@@ -15,17 +15,17 @@ const STEPS = [
   {
     n: '01',
     title: 'Cotizá online',
-    desc: 'Completá el simulador. La estimación llega en segundos y queda guardada por 48 hs.',
+    desc: 'Completá el simulador. La estimación llega en segundos.',
   },
   {
     n: '02',
-    title: 'Coordinamos retiro',
-    desc: 'Te visitamos en CABA y GBA, o recibimos tu equipo por encomienda asegurada.',
+    title: 'Coordinamos la entrega',
+    desc: 'Coordinamos cómo recibimos tu equipo de la manera que más te convenga.',
   },
   {
     n: '03',
     title: 'Acreditamos en tu compra',
-    desc: 'Inspeccionamos en 24 hs y descontamos el monto final del Apple que elijas.',
+    desc: 'Inspeccionamos el equipo y descontamos el monto del Apple que elijas.',
   },
 ] as const
 
@@ -64,8 +64,8 @@ export default async function CanjecPage() {
 
   return (
     <>
-      {/* ── Hero ── */}
-      <section className="bg-[#0f0f0f] px-5 py-20 text-center sm:px-6 sm:py-24 lg:py-32">
+      {/* ── Hero — negative margin cancels the layout's pt-32 lg:pt-36 so the dark section fills flush ── */}
+      <section className="-mt-32 bg-[#0f0f0f] px-5 pb-20 pt-52 text-center sm:pb-24 sm:pt-56 lg:-mt-36 lg:pb-32 lg:pt-64">
         <div className="mx-auto max-w-3xl">
           <p className="mb-5 text-[10px] font-semibold uppercase tracking-[0.28em] text-[#5a5a5a] sm:text-[11px]">
             Plan Canje
