@@ -1,19 +1,18 @@
 export const dynamic = 'force-dynamic'
 
 import { requireAdminSession } from '@/lib/auth'
-import { getAllProductsAdmin, getDollarRate, getSiteSettings, getTradeInCount } from '@/lib/queries'
+import { getAllProductsAdmin, getDollarRate, getSiteSettings } from '@/lib/queries'
 import { formatARS } from '@/lib/calculations'
-import { Package, DollarSign, RefreshCw, Star } from 'lucide-react'
+import { Package, DollarSign, Star } from 'lucide-react'
 import Link from 'next/link'
 
 export default async function AdminDashboard() {
   await requireAdminSession()
 
-  const [products, dollarRate, settings, tradeInCount] = await Promise.all([
+  const [products, dollarRate, settings] = await Promise.all([
     getAllProductsAdmin(),
     getDollarRate(),
     getSiteSettings(),
-    getTradeInCount(),
   ])
 
   const activeProducts = products.filter((p) => p.active).length
@@ -22,7 +21,6 @@ export default async function AdminDashboard() {
   const stats = [
     { label: 'Productos activos', value: activeProducts, icon: Package, href: '/admin/productos' },
     { label: 'Valor del dólar', value: `$${dollarRate.toLocaleString('es-AR')}`, icon: DollarSign, href: '/admin/dolar' },
-    { label: 'Entradas de canje', value: tradeInCount, icon: RefreshCw, href: '/admin/canje' },
     { label: 'Destacados', value: featuredProducts, icon: Star, href: '/admin/productos' },
   ]
 
