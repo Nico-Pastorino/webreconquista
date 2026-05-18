@@ -152,5 +152,7 @@ export interface UploadedImage {
   filename: string
   thumbnail_url: string
   medium_url: string
+  source_type: 'supabase' | 'external'
+  external_url: string | null
   created_at: string
 }

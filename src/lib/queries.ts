@@ -151,7 +151,10 @@ export async function getUploadedImages(): Promise<UploadedImage[]> {
   try {
     const sql = getSql()
     const rows = await sql<UploadedImage[]>`
-      SELECT id, filename, thumbnail_url, medium_url, created_at
+      SELECT id, filename, thumbnail_url, medium_url,
+             COALESCE(source_type, 'supabase') AS source_type,
+             external_url,
+             created_at
       FROM uploaded_images
       ORDER BY created_at DESC
       LIMIT 200
@@ -166,12 +169,15 @@ export async function saveUploadedImage(
   filename: string,
   thumbnail_url: string,
   medium_url: string,
+  options?: { source_type?: 'supabase' | 'external'; external_url?: string | null },
 ): Promise<UploadedImage> {
   const sql = getSql()
+  const source_type = options?.source_type ?? 'supabase'
+  const external_url = options?.external_url ?? null
   const [row] = await sql<UploadedImage[]>`
-    INSERT INTO uploaded_images (filename, thumbnail_url, medium_url)
-    VALUES (${filename}, ${thumbnail_url}, ${medium_url})
-    RETURNING id, filename, thumbnail_url, medium_url, created_at
+    INSERT INTO uploaded_images (filename, thumbnail_url, medium_url, source_type, external_url)
+    VALUES (${filename}, ${thumbnail_url}, ${medium_url}, ${source_type}, ${external_url})
+    RETURNING id, filename, thumbnail_url, medium_url, source_type, external_url, created_at
   `
   return row
 }
