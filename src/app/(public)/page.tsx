@@ -87,22 +87,6 @@ export default async function HomePage() {
         </div>
       </section>
 
-      <section className="bg-white py-10 md:py-20 lg:py-24">
-        <div className="mx-auto w-full max-w-7xl px-5 sm:px-6 lg:px-8">
-          <div className="reveal-heading rounded-[1.5rem] border border-[#ECECEF] bg-[#F5F5F7] px-6 py-10 text-center transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_24px_48px_rgba(0,0,0,0.07)] sm:rounded-[2rem] sm:px-8 sm:py-14 md:px-12 md:py-16">
-            <p className="mb-3 text-[10px] font-medium uppercase tracking-[0.24em] text-[#6B7280] sm:mb-4 sm:text-[11px]">Plan Canje</p>
-            <h2 className="text-2xl font-semibold leading-[1.02] tracking-[-0.05em] text-[#111111] sm:text-3xl md:text-[clamp(2.15rem,4vw,3.9rem)]">Entregá tu iPhone y pagá la diferencia.</h2>
-            <p className="mx-auto mt-3 max-w-2xl text-sm leading-7 text-[#6B7280] sm:mt-4 sm:text-base md:text-lg md:leading-[1.625]">
-              Si ya tenés un iPhone, calculá el valor de tu usado y acelerá la compra del próximo.
-            </p>
-            <Link href="/plan-canje" className="btn-apple-primary mt-6 sm:mt-8">
-              Ir al Plan Canje
-              <ArrowRight className="h-3.5 w-3.5" />
-            </Link>
-          </div>
-        </div>
-      </section>
-
       <section className="bg-[#F5F5F7] py-12 md:py-20 lg:py-24">
         <div className="mx-auto w-full max-w-7xl px-5 sm:px-6 lg:px-8">
           <div className="mb-8 flex flex-col gap-4 md:mb-14 md:flex-row md:items-end md:justify-between">
@@ -131,6 +115,22 @@ export default async function HomePage() {
               : ['iPhone 15 Pro', 'iPhone 14', 'MacBook Air', 'AirPods Pro'].map((label) => (
                   <ProductPlaceholderCard key={label} title={label} />
                 ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="bg-white py-10 md:py-20 lg:py-24">
+        <div className="mx-auto w-full max-w-7xl px-5 sm:px-6 lg:px-8">
+          <div className="reveal-heading rounded-[1.5rem] border border-[#ECECEF] bg-[#F5F5F7] px-6 py-10 text-center transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_24px_48px_rgba(0,0,0,0.07)] sm:rounded-[2rem] sm:px-8 sm:py-14 md:px-12 md:py-16">
+            <p className="mb-3 text-[10px] font-medium uppercase tracking-[0.24em] text-[#6B7280] sm:mb-4 sm:text-[11px]">Plan Canje</p>
+            <h2 className="text-2xl font-semibold leading-[1.02] tracking-[-0.05em] text-[#111111] sm:text-3xl md:text-[clamp(2.15rem,4vw,3.9rem)]">Entregá tu iPhone y pagá la diferencia.</h2>
+            <p className="mx-auto mt-3 max-w-2xl text-sm leading-7 text-[#6B7280] sm:mt-4 sm:text-base md:text-lg md:leading-[1.625]">
+              Si ya tenés un iPhone, calculá el valor de tu usado y acelerá la compra del próximo.
+            </p>
+            <Link href="/plan-canje" className="btn-apple-primary mt-6 sm:mt-8">
+              Ir al Plan Canje
+              <ArrowRight className="h-3.5 w-3.5" />
+            </Link>
           </div>
         </div>
       </section>
